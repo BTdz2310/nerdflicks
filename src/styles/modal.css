@@ -1,0 +1,86 @@
+p{
+    margin: 0;
+}
+
+.modal-content{
+    background-color: #15172a!important;
+}
+
+.searchModal{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#searchText{
+    height: 40px;
+    width: 90%;
+    background-color: #000;
+    border: rgb(113, 44, 249) 1px solid;
+    padding: 0 10px;
+}
+
+#searchText:focus{
+    outline: none;
+}
+
+.typeSearch{
+    margin-bottom: 20px;
+}
+
+.containerSearch{
+    max-height: 480px;
+    overflow: scroll;
+}
+
+.searchingSearch{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+}
+
+.cardSearch{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 60px;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    user-select:none;
+}
+
+.typeObjSearch{
+    margin-left: 10px;
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.nameObjSearch{
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.taskObjSearch{
+    margin-right: 10px;
+    background-color: white;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.favoriteStar{
+    color: orange;
+}
+
+#favoriteSearch{
+    max-height: 240px;
+    overflow: scroll;
+}

@@ -1,5 +1,8 @@
+import Header from '@/components/header'
 import './globals.css'
 import { Inter } from 'next/font/google'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Providers } from '@/store/provider';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,8 +17,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <title>Xem Gì</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" />
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet" />
+      </head>
+      <body className={inter.className}>
+        <Providers>
+        <Header />
+          {children}
+        </Providers>
+      </body>
     </html>
   )
 }
