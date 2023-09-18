@@ -1,5 +1,41 @@
+.header{
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+header{
+    position: fixed;
+    width: 100%;
+    /* background-color: #1F1F1F; */
+    transition: top 0.3s linear;
+    top: 0;
+    left: 0;
+    opacity: 1!important;
+    z-index: 100;
+    height: 80px;
+}
+
+.header--hidden{
+    top: -80px;
+}
+
+.dropdown-menu{
+    top: 32px;
+}
+
+.dropdown:hover>.dropdown-menu {
+    display: block;
+  }
+
+.dropdown-toggle{
+    padding: 8px;
+}
+
+
 #nav-bar{
     background-color: inherit!important;
+    padding: 0;
 }
 
 .navbar .container{
@@ -19,19 +55,65 @@
 .navbar-brand h2{
     /* font-family: var(--font-dancing); */
     font-family: 'Dancing Script', cursive;
-    color: white;
-
+    /* color: #FC93AD; */
+    color: #F2F2F2;
 }
 
 .container a{
-    color: white!important;
+    color: rgb(172, 198, 198)!important;
     text-decoration: none;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: bold;
+    font-family: 'Chakra Petch', sans-serif;
+    text-transform:uppercase;
+    font-size: 14px;
+    -webkit-transition: color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transition: color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    position: relative;
 }
 
-.container a:hover{
-    text-decoration: underline;
+.container a::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 20%;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    border-bottom: 0px solid #acc6c6;
+    -webkit-box-shadow: inset 0px -1px 0px 0px #acc6c6;
+    -moz-box-shadow: inset 0px -1px 0px 0px #acc6c6;
+    box-shadow: inset 0px -1px 0px 0px #acc6c6;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.container a::before{
+    content: 'adww';
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.dropdown-menu a::after{
+    content: none;
+}
+
+.dropdown-divider{
+    border-top: 1px solid rgb(172, 198, 198)!important
+}
+
+.dropdown-menu a:hover{
+    background-color: #F5EFDF!important;
+}
+
+.dropdown-menu{
+    background-color: #03131A!important;
+}
+
+.container a:hover::after{
+    /* text-decoration: underline; */
+    opacity: 1;
+    bottom: 0px;
 }
 
 #basic-navbar-nav{
@@ -42,13 +124,19 @@
     color: white;
 }
 
-.me-auto{
+
+.navbar-collapse{
     display: flex;
     align-items: center;
-    gap: 50px;
+    gap: 30px;
     font-size: 0.8rem;
 }
 
 .searchIcon{
     cursor: pointer;
+}
+
+.searchNav{
+    display: flex;
+    gap: 10px;
 }

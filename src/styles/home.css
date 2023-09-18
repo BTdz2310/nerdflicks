@@ -1,0 +1,142 @@
+body{
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    user-select:none;
+}
+
+.now-playing{
+    /* background-image: url('https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/3tzPSJiCPqacAgRsMkMPof2ZinL.jpg');
+    height: 100vh;
+    width: 100%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat; */
+
+
+    position: relative; 
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* opacity: 0.6; */
+}
+
+.now-playing::after{
+    /* content: "";
+      background-image: url('https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/3tzPSJiCPqacAgRsMkMPof2ZinL.jpg');
+      background-size: 100% 100%;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+      opacity: 0.6; */
+}
+
+.heroImg{
+    /* background-image: url('https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/ctMserH8g2SeOAnCw5gFjdQF8mo.jpg'); */
+    background-size: 100% 100%;
+    position: absolute;
+    opacity: 0.2;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+}
+
+.playingSite{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    width: 100%;
+    height: 100%;
+    padding-top: 80px;
+    position: relative;
+}
+
+.leftMovie{
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    cursor: pointer;
+}
+
+.rightMovie{
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    cursor: pointer;
+}
+
+.hero-header{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 800;
+    margin-top: 20px;
+    margin-left: 40px;
+    position: relative;
+    /* top: 90px;
+    left: 40px; */
+}
+
+.nowPlayingMovie{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 80px;
+    gap: 40px;
+}
+
+.informationMoviePlaying{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+    align-items: start;
+}
+
+.detailMoviePlaying{
+    /* margin-top: 40px; */
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.titleMoviePlaying{
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.genreMoviePlaying{
+    display: flex;
+    gap: 10px;
+    /* margin: 5px 0; */
+}
+
+.imageMoviePlaying img{
+    border-radius: 10px;
+}
+
+.intoMovie{
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color:brown;
+    border-radius: 10px;
+}
+
+.intoMovie:hover{
+    text-decoration: underline;
+}
+
+.trending{
+    height: 500px;
+}

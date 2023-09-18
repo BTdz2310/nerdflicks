@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Providers } from '@/store/provider';
 
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -20,9 +21,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <title>Xem Gì</title>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" />
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Chakra+Petch&display=swap" rel="stylesheet" />
       </head>
       <body className={inter.className}>
         <Providers>
