@@ -1,5 +1,5 @@
 p{
-    margin: 0;
+    margin: 0!important;
 }
 
 .modal-content{
@@ -25,7 +25,11 @@ p{
 }
 
 .typeSearch{
-    margin-bottom: 20px;
+    margin-bottom: 20px!important;
+}
+
+#recentSearch{
+    margin-top: 20px!important;
 }
 
 .containerSearch{
@@ -41,11 +45,11 @@ p{
 }
 
 .cardSearch{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    height: 60px;
-    align-items: center;
+    display: flex!important;
+    flex-direction: row!important;
+    justify-content: space-between!important;
+    height: 60px!important;
+    align-items: center!important;
     gap: 10px;
     cursor: pointer;
     -webkit-user-select:none;

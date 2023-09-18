@@ -41,8 +41,10 @@ export interface MDataRtns {
 }
 
 // {showModal} : {showModal: boolean}
-const SearchModal = ({setShowModal}) => {
+const SearchModal = ({setShowModal}: {setShowModal: Function}) => {
     const [text, setText] = useState<string>('');
+
+    console.log(typeof setText)
 
     const [searchResult, setSearchResult] = useState<Array<MDataRtns>>([])
 
@@ -277,7 +279,7 @@ const SearchModal = ({setShowModal}) => {
                             ))}
                             </div>
                         </div>
-                        <p className="typeSearch" style={{marginTop: '20px'}}>Gần Đây</p>
+                        <p className="typeSearch" id='recentSearch'>Gần Đây</p>
                         <div id="favoriteSearch">
                             <div className="searchingSearch">
                             {selectedRecentlySearch.map((obj: StoreSearch, index: number)=>(

@@ -1,5 +1,5 @@
 'use client'
-import React, { lazy, useState } from 'react';
+import React, { lazy, useCallback, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -10,9 +10,9 @@ import '../styles/header.css'
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {FcSearch} from 'react-icons/fc'
-// import SearchModal from './SearchModal';
+import SearchModal from './SearchModal';
 
-const SearchModal = lazy(()=> import('./SearchModal'))
+// const SearchModal = lazy(()=> import('./SearchModal'))
 
 const Header = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -22,6 +22,10 @@ const Header = () => {
     const handleHome = () => {
         router.push('/')
     }
+
+    const handleShowModal = useCallback(()=>{
+        setShowModal(true)
+    }, [])
 
   return (
     <>
@@ -52,7 +56,7 @@ const Header = () => {
                         </Nav>
                     </Navbar.Collapse>
                     <div className="searchNav">
-                        <FcSearch fontSize={40} className='searchIcon' onClick={()=>setShowModal(true)}/>
+                        <FcSearch fontSize={40} className='searchIcon' onClick={handleShowModal}/>
                     </div>
                     {/* <Navbar.Toggle> */}
                     {/* </Navbar.Toggle> */}
