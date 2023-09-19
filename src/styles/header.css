@@ -21,7 +21,7 @@ header{
 }
 
 .dropdown-menu{
-    top: 32px;
+    top: 36px;
 }
 
 .dropdown:hover>.dropdown-menu {
@@ -59,7 +59,12 @@ header{
     color: #F2F2F2;
 }
 
-.container a{
+.multi-navbar{
+    margin: 0;
+    cursor: pointer;
+}
+
+.container a, .multi-navbar{
     color: rgb(172, 198, 198)!important;
     text-decoration: none;
     font-family: 'Chakra Petch', sans-serif;
@@ -70,7 +75,7 @@ header{
     position: relative;
 }
 
-.container a::after{
+.container a::after, .multi-navbar::after{
     content: '';
     position: absolute;
     left: 0;
@@ -86,13 +91,13 @@ header{
     transition: all 0.3s ease;
 }
 
-.container a::before{
+/* #mv-navbar::before{
     content: 'adww';
     opacity: 0;
     width: 100%;
     height: 100%;
     position: absolute;
-}
+} */
 
 .dropdown-menu a::after{
     content: none;
@@ -110,7 +115,7 @@ header{
     background-color: #03131A!important;
 }
 
-.container a:hover::after{
+.container a:hover::after, .multi-navbar:hover::after{
     /* text-decoration: underline; */
     opacity: 1;
     bottom: 0px;
@@ -139,4 +144,8 @@ header{
 .searchNav{
     display: flex;
     gap: 10px;
+}
+
+.watchListHeader{
+    cursor: pointer;
 }

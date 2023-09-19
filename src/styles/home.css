@@ -13,7 +13,7 @@ body{
 
 
     position: relative; 
-    height: 100vh;
+    height: max(100vh, 590px);
     width: 100%;
     display: flex;
     align-items: center;
@@ -36,7 +36,8 @@ body{
 
 .heroImg{
     /* background-image: url('https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/ctMserH8g2SeOAnCw5gFjdQF8mo.jpg'); */
-    background-size: 100% 100%;
+    /* background-size: 100% 100%; */
+    background-size: cover;
     position: absolute;
     opacity: 0.2;
     z-index: -1;
@@ -73,7 +74,7 @@ body{
 }
 
 .hero-header{
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: Georgia, sans-serif;
     font-weight: 800;
     margin-top: 20px;
     margin-left: 40px;

@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import '../styles/genre-icon.css'
+import Link from 'next/link'
 
 const genreColor = {
     28: '#FF0000',
@@ -63,7 +64,7 @@ const GenreIcon = ({arr}: {arr:Array<28|12|16|35|80|99|18|10751|14|36|27|10402|9
   return (
     <>
         {arr.map((id: 28|12|16|35|80|99|18|10751|14|36|27|10402|9648|10749|878|10770|53|10752|37, index: number)=>(
-            <p className="genreElement" key={index} style={{backgroundColor: genreColor[id], color: getColor(genreColor[id])}}>{genreName[id].replaceAll('"', '')}</p>    
+            <Link href={`/genre/${id}`} className="genreElement" key={index} style={{backgroundColor: genreColor[id], color: getColor(genreColor[id])}}>{genreName[id].replaceAll('"', '')}</Link>    
         ))}
     </>
   )

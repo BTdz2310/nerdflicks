@@ -1,17 +1,13 @@
 'use client'
-import React, { useEffect } from 'react'
-import Button from 'react-bootstrap/Button';
+import React, { useEffect, lazy } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import { useState } from 'react';
 import '../styles/modal.css'
-import { Card } from 'react-bootstrap';
 import debounce from 'lodash/debounce'
-import {PiTelevisionSimpleBold, PiChartLineUpDuotone} from 'react-icons/pi'
-import {BiMovie} from 'react-icons/bi'
-import {BsPerson} from 'react-icons/bs'
-import {AiOutlineStar, AiFillStar} from 'react-icons/ai'
-import { SearchState, StoreSearch, addFavorite, addRecent, removeFavorite, selectFavoriteSearch, selectRecentlySearch } from '@/store/features/searchSlice/searchSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { StoreSearch, selectFavoriteSearch, selectRecentlySearch } from '@/store/features/searchSlice/searchSlice';
+import { useSelector } from 'react-redux';
+
+const CardSearch = lazy(()=>import('./CardSearch'))
 
 
 export interface MDataRtns {
@@ -51,7 +47,6 @@ const SearchModal = ({setShowModal}: {setShowModal: Function}) => {
     const [show, setShow] = useState(true);
     // console.log('>>>show',show)
 
-    const dispatch = useDispatch();
     const selectedFavoriteSearch = useSelector(selectFavoriteSearch);
     const selectedRecentlySearch = useSelector(selectRecentlySearch)
 
@@ -61,25 +56,6 @@ const SearchModal = ({setShowModal}: {setShowModal: Function}) => {
         }
     }, [show])
 
-    const checkFavorite = (obj: StoreSearch) => {
-        // console.log('>>>>SELECTED',selectedFavoriteSearch)
-        // console.log(selectedFavoriteSearch.includes(obj))
-        // console.log(obj)
-        
-        // console.log('leng',selectedFavoriteSearch.length)
-        let k = 0;
-        for(let i=0; i<selectedFavoriteSearch.length; i++){
-            // console.log(selectedFavoriteSearch[i])
-
-            // console.log(obj2)
-            if(selectedFavoriteSearch[i].id===obj.id&&selectedFavoriteSearch[i].media_type===obj.media_type&&selectedFavoriteSearch[i].name===obj.name&&selectedFavoriteSearch[i].popularity===obj.popularity){
-                k = 1;
-                break;
-            }
-        }
-        if(k===1) return true;
-        return false;
-    }
 
     const handleChange = debounce((e:string) => {
         const options = {
@@ -99,29 +75,12 @@ const SearchModal = ({setShowModal}: {setShowModal: Function}) => {
             .catch(err => console.error(err));
     }, 500)
 
-    const handleFavorite = (element: StoreSearch) => {
-        dispatch(addFavorite(element))
-    }
-
-    const handleRemoveFavorite = (element: StoreSearch) => {
-        dispatch(removeFavorite(element))
-    }
-
-    const handleRecent = (element: StoreSearch) => {
-        dispatch(addRecent(element))
-    }
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
   
     return (
       <>
-                {/* {console.log(searchResult.length)} */}
-
-        {/* {console.log('<<<SELECT', selectedFavoriteSearch)} */}
         <Modal show={show} onHide={handleClose}>
-          {/* <Modal.Header >
-          </Modal.Header> */}
           <Modal.Body>
             <div className="searchModal">
                 <input type='text' id='searchText' placeholder='Tìm Kiếm Tên Phim, Diễn Viên...' onChange={(e)=>{
@@ -135,73 +94,17 @@ const SearchModal = ({setShowModal}: {setShowModal: Function}) => {
                         <p className='typeSearch'>Tìm Kiếm</p>
                         <div className='containerSearch'>
                             <div className="searchingSearch">
-                            {searchResult.map((obj: MDataRtns, index: number)=>(
-                                <Card className='cardSearch' key={index}>
-                                    {obj.media_type==='tv'?(
-                                        <>
-                                            <div className="typeObjSearch"  onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:obj.title?obj.title:'', popularity: obj.popularity})}>
-                                                <PiTelevisionSimpleBold fontSize={24}/>
-                                            </div>
-                                            <div className="nameObjSearch"  onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:obj.title?obj.title:'', popularity: obj.popularity})}>
-                                                <p>{obj.name} (<PiChartLineUpDuotone /> {obj.popularity})</p>
-                                            </div>
-                                            <div className="taskObjSearch"  onClick={()=>{
-                                                    const check = checkFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity});
-                                                    if(check){
-                                                        handleRemoveFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})
-                                                    }else{
-                                                        handleFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})
-                                                    }                     
-                                                }}>
-                                                {/* <AiOutlineStar fontSize={24} className='favoriteStar'/> */}
-                                                <AiFillStar fontSize={24} className={checkFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})?'favoriteStar':undefined}/>
-                                            </div>
-                                        </>
-                                    ):obj.media_type==='movie'?(
-                                        <>
-                                            <div className="typeObjSearch"  onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:obj.title?obj.title:'', popularity: obj.popularity})}>
-                                                <BiMovie fontSize={24}/>
-                                            </div>
-                                            <div className="nameObjSearch"  onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:obj.title?obj.title:'', popularity: obj.popularity})}>
-                                                <p>{obj.title} (<PiChartLineUpDuotone /> {obj.popularity})</p>
-                                            </div>
-                                            <div className="taskObjSearch"  onClick={()=>{
-                                                    const check = checkFavorite({id: obj.id, media_type: obj.media_type, name: obj.title?obj.title:'', popularity: obj.popularity});
-                                                    if(check){
-                                                        handleRemoveFavorite({id: obj.id, media_type: obj.media_type, name: obj.title?obj.title:'', popularity: obj.popularity})
-                                                    }else{
-                                                        handleFavorite({id: obj.id, media_type: obj.media_type, name: obj.title?obj.title:'', popularity: obj.popularity})
-                                                    }                     
-                                                }}>
-                                                {/* <AiOutlineStar fontSize={24} className='favoriteStar'/> */}
-                                                <AiFillStar fontSize={24}  className={checkFavorite({id: obj.id, media_type: obj.media_type, name: obj.title?obj.title:'', popularity: obj.popularity})?'favoriteStar':undefined} />
-                                            </div>
-
-                                        </>
-                                    ):(
-                                        <>
-                                            <div className="typeObjSearch"  onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:obj.title?obj.title:'', popularity: obj.popularity})}>
-                                                <BsPerson fontSize={24}/>
-                                            </div>
-                                            <div className="nameObjSearch"  onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:obj.title?obj.title:'', popularity: obj.popularity})}>
-                                                <p>{obj.name} (<PiChartLineUpDuotone /> {obj.popularity})</p>
-                                            </div>
-                                            <div className="taskObjSearch"  onClick={()=>{
-                                                    const check = checkFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity});
-                                                    if(check){
-                                                        handleRemoveFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})
-                                                    }else{
-                                                        handleFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})
-                                                    }                     
-                                                }}>
-                                                {/* <AiOutlineStar fontSize={24} className='favoriteStar'/> */}
-                                                <AiFillStar fontSize={24}  className={checkFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})?'favoriteStar':undefined}/>
-                                            </div>
-                                            
-                                        </>
-                                    )}
-                                </Card>
-                            ))}
+                            {searchResult.map((obj: MDataRtns, index: number)=>{
+                                const object: StoreSearch = {
+                                    id: obj.id,
+                                    media_type: obj.media_type,
+                                    name: obj.name?obj.name:obj.title?obj.title:'',
+                                    popularity: obj.popularity
+                                };
+                                return (
+                                    <CardSearch key={index} obj={object}/>
+                                )
+                            })}
                             </div>
                         </div>
                     </>
@@ -211,71 +114,7 @@ const SearchModal = ({setShowModal}: {setShowModal: Function}) => {
                         <div id="favoriteSearch">
                             <div className="searchingSearch">
                             {selectedFavoriteSearch.map((obj: StoreSearch, index: number)=>(
-                                <Card className='cardSearch' key={index} >
-                                    {obj.media_type==='tv'?(
-                                        <>
-                                            <div className="typeObjSearch" onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name, popularity: obj.popularity})}>
-                                                <PiTelevisionSimpleBold fontSize={24}/>
-                                            </div>
-                                            <div className="nameObjSearch" onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name, popularity: obj.popularity})}>
-                                                <p>{obj.name} (<PiChartLineUpDuotone /> {obj.popularity})</p>
-                                            </div>
-                                            <div className="taskObjSearch"  onClick={()=>{
-                                                    const check = checkFavorite(obj);
-                                                    if(check){
-                                                        handleRemoveFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})
-                                                    }else{
-                                                        handleFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})
-                                                    }                     
-                                                }}>
-                                                {/* <AiOutlineStar fontSize={24} className='favoriteStar'/> */}
-                                                <AiFillStar fontSize={24} className={checkFavorite(obj)?'favoriteStar':undefined}/>
-                                            </div>
-                                        </>
-                                    ):obj.media_type==='movie'?(
-                                        <>
-                                            <div className="typeObjSearch" onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name, popularity: obj.popularity})}>
-                                                <BiMovie fontSize={24}/>
-                                            </div>
-                                            <div className="nameObjSearch" onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name, popularity: obj.popularity})}>
-                                                <p>{obj.name} (<PiChartLineUpDuotone /> {obj.popularity})</p>
-                                            </div>
-                                            <div className="taskObjSearch"  onClick={()=>{
-                                                    const check = checkFavorite(obj);
-                                                    if(check){
-                                                        handleRemoveFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})
-                                                    }else{
-                                                        handleFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})
-                                                    }                     
-                                                }}>
-                                                {/* <AiOutlineStar fontSize={24} className='favoriteStar'/> */}
-                                                <AiFillStar fontSize={24}  className={checkFavorite(obj)?'favoriteStar':undefined} />
-                                            </div>
-
-                                        </>
-                                    ):(
-                                        <>
-                                            <div className="typeObjSearch" onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name, popularity: obj.popularity})}>
-                                                <BsPerson fontSize={24}/>
-                                            </div>
-                                            <div className="nameObjSearch" onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name, popularity: obj.popularity})}>
-                                                <p>{obj.name} (<PiChartLineUpDuotone /> {obj.popularity})</p>
-                                            </div>
-                                            <div className="taskObjSearch"  onClick={()=>{
-                                                    const check = checkFavorite(obj);
-                                                    if(check){
-                                                        handleRemoveFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})
-                                                    }else{
-                                                        handleFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})
-                                                    }                     
-                                                }}>
-                                                {/* <AiOutlineStar fontSize={24} className='favoriteStar'/> */}
-                                                <AiFillStar fontSize={24}  className={checkFavorite(obj)?'favoriteStar':undefined}/>
-                                            </div>
-                                            
-                                        </>
-                                    )}
-                                </Card>
+                                <CardSearch key={index} obj={obj}/>
                             ))}
                             </div>
                         </div>
@@ -283,71 +122,7 @@ const SearchModal = ({setShowModal}: {setShowModal: Function}) => {
                         <div id="favoriteSearch">
                             <div className="searchingSearch">
                             {selectedRecentlySearch.map((obj: StoreSearch, index: number)=>(
-                                <Card className='cardSearch' key={index}>
-                                    {obj.media_type==='tv'?(
-                                        <>
-                                            <div className="typeObjSearch" onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name, popularity: obj.popularity})}>
-                                                <PiTelevisionSimpleBold fontSize={24}/>
-                                            </div>
-                                            <div className="nameObjSearch" onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name, popularity: obj.popularity})}>
-                                                <p>{obj.name} (<PiChartLineUpDuotone /> {obj.popularity})</p>
-                                            </div>
-                                            <div className="taskObjSearch"  onClick={()=>{
-                                                    const check = checkFavorite(obj);
-                                                    if(check){
-                                                        handleRemoveFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})
-                                                    }else{
-                                                        handleFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})
-                                                    }                     
-                                                }}>
-                                                {/* <AiOutlineStar fontSize={24} className='favoriteStar'/> */}
-                                                <AiFillStar fontSize={24} className={checkFavorite(obj)?'favoriteStar':undefined}/>
-                                            </div>
-                                        </>
-                                    ):obj.media_type==='movie'?(
-                                        <>
-                                            <div className="typeObjSearch" onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name, popularity: obj.popularity})}>
-                                                <BiMovie fontSize={24}/>
-                                            </div>
-                                            <div className="nameObjSearch" onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name, popularity: obj.popularity})}>
-                                                <p>{obj.name} (<PiChartLineUpDuotone /> {obj.popularity})</p>
-                                            </div>
-                                            <div className="taskObjSearch"  onClick={()=>{
-                                                    const check = checkFavorite(obj);
-                                                    if(check){
-                                                        handleRemoveFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})
-                                                    }else{
-                                                        handleFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})
-                                                    }                     
-                                                }}>
-                                                {/* <AiOutlineStar fontSize={24} className='favoriteStar'/> */}
-                                                <AiFillStar fontSize={24}  className={checkFavorite(obj)?'favoriteStar':undefined} />
-                                            </div>
-
-                                        </>
-                                    ):(
-                                        <>
-                                            <div className="typeObjSearch" onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name, popularity: obj.popularity})}>
-                                                <BsPerson fontSize={24}/>
-                                            </div>
-                                            <div className="nameObjSearch" onClick={()=>handleRecent({id: obj.id, media_type: obj.media_type, name: obj.name, popularity: obj.popularity})}>
-                                                <p>{obj.name} (<PiChartLineUpDuotone /> {obj.popularity})</p>
-                                            </div>
-                                            <div className="taskObjSearch"  onClick={()=>{
-                                                    const check = checkFavorite(obj);
-                                                    if(check){
-                                                        handleRemoveFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})
-                                                    }else{
-                                                        handleFavorite({id: obj.id, media_type: obj.media_type, name: obj.name?obj.name:'', popularity: obj.popularity})
-                                                    }                     
-                                                }}>
-                                                {/* <AiOutlineStar fontSize={24} className='favoriteStar'/> */}
-                                                <AiFillStar fontSize={24}  className={checkFavorite(obj)?'favoriteStar':undefined}/>
-                                            </div>
-                                            
-                                        </>
-                                    )}
-                                </Card>
+                                <CardSearch key={index} obj={obj}/>
                             ))}
                             </div>
                         </div>
@@ -361,5 +136,3 @@ const SearchModal = ({setShowModal}: {setShowModal: Function}) => {
 }
 
 export default SearchModal
-
-// className={checkFavorite({id: obj.id, media_type: obj.media_type, name: obj.title?obj.title:'', popularity: obj.popularity})?'favoriteStar':undefined}

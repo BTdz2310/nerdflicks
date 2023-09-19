@@ -1,17 +1,17 @@
-import Image from 'next/image'
-import styles from './page.module.css'
 import '../styles/home.css'
-import RatingIcon from '@/components/RatingIcon'
-import NowPlaying from '@/components/NowPlaying'
+// import NowPlaying from '@/components/NowPlaying'
+import { lazy } from 'react'
+
+const NowPlaying = lazy(()=>import('@/components/NowPlaying'))
 
 export default function Home() {
   return (
-    <main className={styles.main}>
+    <main>
       <div className="now-playing">
         <NowPlaying />
       </div>
       <div className="trending">
-        
+
       </div>
     </main>
   )

@@ -1,7 +1,6 @@
 import Header from '@/components/header'
 import './globals.css'
 import { Inter } from 'next/font/google'
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Providers } from '@/store/provider';
 
 
