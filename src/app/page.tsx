@@ -3,6 +3,7 @@ import '../styles/home.css'
 import { lazy } from 'react'
 
 const NowPlaying = lazy(()=>import('@/components/NowPlaying'))
+const Trending = lazy(()=>import('@/components/Trending'))
 
 export default function Home() {
   return (
@@ -11,7 +12,7 @@ export default function Home() {
         <NowPlaying />
       </div>
       <div className="trending">
-
+        <Trending />
       </div>
     </main>
   )

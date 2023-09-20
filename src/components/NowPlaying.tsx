@@ -72,7 +72,7 @@ const NowPlaying = () => {
                 <div className="informationMoviePlaying">
                     <div className="detailMoviePlaying">
                         <p className="titleMoviePlaying" onClick={handleMove}>{data.results[index].title}</p>
-                        <div className="genreMoviePlaying"><GenreIcon arr={data.results[index].genre_ids}/></div>
+                        <div className="genreMoviePlaying"><GenreIcon arr={data.results[index].genre_ids} media_type={'movie'} link={true}/></div>
                         <p className="releaseMoviePlaying">{data.results[index].release_date.split('-').reverse().join(' - ')}</p>
                         <RatingIcon score={data.results[index].vote_average} size={20}/>
                     </div>

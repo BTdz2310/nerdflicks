@@ -22,18 +22,6 @@ body{
     /* opacity: 0.6; */
 }
 
-.now-playing::after{
-    /* content: "";
-      background-image: url('https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/3tzPSJiCPqacAgRsMkMPof2ZinL.jpg');
-      background-size: 100% 100%;
-      position: absolute;
-      top: 0px;
-      right: 0px;
-      bottom: 0px;
-      left: 0px;
-      opacity: 0.6; */
-}
-
 .heroImg{
     /* background-image: url('https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/ctMserH8g2SeOAnCw5gFjdQF8mo.jpg'); */
     /* background-size: 100% 100%; */
@@ -136,8 +124,4 @@ body{
 
 .intoMovie:hover{
     text-decoration: underline;
-}
-
-.trending{
-    height: 500px;
 }

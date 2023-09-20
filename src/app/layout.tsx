@@ -29,7 +29,6 @@ export default function RootLayout({
         <Providers>
         <Header />
           {children}
-          {console.log(typeof children)}
         </Providers>
       </body>
     </html>

@@ -1,0 +1,21 @@
+.round-bottom {
+    border-bottom-left-radius: 50% 30vh !important;
+    border-bottom-right-radius: 50% 30vh !important;
+    position: relative;
+    overflow: hidden;
+    width: 160%;
+    margin-bottom: -50px;
+    left: -30%;
+    background-color: #444;
+    background-position: center center;
+    background-size: cover;
+    height: 100%;
+    box-sizing: content-box!important;
+}
+.containerDiv {
+  width: 100vw;
+  height: 80vh;
+  padding-bottom: 50px;
+  overflow: hidden;
+  box-sizing: content-box;
+}
