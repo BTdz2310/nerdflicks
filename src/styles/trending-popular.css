@@ -70,6 +70,15 @@ p{
     border: 1px solid white;
 }
 
+.typeList{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border: 1px solid lightblue;
+    padding: 0 4px;
+    font-size: 12px;
+}
+
 .iconList .score{
     display: none;
 }
@@ -107,6 +116,8 @@ span.genreElement:hover{
     padding-bottom: 20px;
 }
 
+
+
 .movieInList:hover .imgList img{
     filter: brightness(60%);
     /* background-color: red; */
@@ -129,7 +140,7 @@ span.genreElement:hover{
 
     /* margin-left: 40px; */
     padding-left: 40px;
-    margin-right: 200px;
+    /* margin-right: 200px; */
 }
 
 .inList{
@@ -139,18 +150,18 @@ span.genreElement:hover{
     gap: 10px;
     flex-basis: 200px;
     align-items: start;
-    /* transition: scale .3s ease-out, opacity 1s linear; */
+    transition: scale .3s ease-out;
 }
 
 .movieInList:hover .inList{
-    position: absolute;
+    /* position: absolute; */
     scale: 1.3;
 
 }
 
 .movieInList:hover +.movieInList{
     /* margin-left: 20px; */
-    padding-left: 20px;
+    padding-left: 40px;
     /* padding-left: 200px; */
 }
 

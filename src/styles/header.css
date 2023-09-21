@@ -48,15 +48,30 @@ header{
 .navbar-brand{
     display: flex;
     align-items: center;
-    gap: 10px;
     cursor: pointer;
 }
+/* 
+.logoImg:hover #n1{
+    animation: netflix-n1-start 1s ease-in 2s;
+    transition: all 1s ease-in;
+    fill: #9bcefd;
+    animation-iteration-count: infinite;
+} */
+
+.logoImg img{
+    border-radius: 40px;
+}
+
 
 .navbar-brand h2{
     /* font-family: var(--font-dancing); */
-    font-family: 'Dancing Script', cursive;
+    /* font-family: var(--font-dancing-script); */
     /* color: #FC93AD; */
+    font-family: 'Fjalla One', sans-serif;
     color: #F2F2F2;
+    font-size: 24px;
+    align-self: self-end;
+    margin: 0;
 }
 
 .multi-navbar{
@@ -67,7 +82,7 @@ header{
 .container a, .multi-navbar{
     color: rgb(172, 198, 198)!important;
     text-decoration: none;
-    font-family: 'Chakra Petch', sans-serif;
+    /* font-family: var(--font-chakra-petch); */
     text-transform:uppercase;
     font-size: 14px;
     -webkit-transition: color 0.3s ease-in-out, opacity 0.3s ease-in-out;
@@ -91,13 +106,17 @@ header{
     transition: all 0.3s ease;
 }
 
-/* #mv-navbar::before{
-    content: 'adww';
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-} */
+#logoGif{
+    display: none;
+}
+
+.navbar-brand:hover #logo{
+    display: none;
+}
+
+.navbar-brand:hover #logoGif{
+    display: block;
+}
 
 .dropdown-menu a::after{
     content: none;
@@ -130,11 +149,12 @@ header{
 }
 
 
-.navbar-collapse{
+.navbar-collapse>div{
     display: flex;
     align-items: center;
     gap: 30px;
     font-size: 0.8rem;
+    font-family: 'Chakra Petch', sans-serif;
 }
 
 .searchIcon{

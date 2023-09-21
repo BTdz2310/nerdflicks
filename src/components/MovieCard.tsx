@@ -16,6 +16,9 @@ const MovieCard = ({obj}: {obj: rtnList}) => {
                 <div className="iconList">
                     <RatingIcon score={Number(obj.vote_average.toFixed(1))} size={30}/>
                 </div>
+                <div className="typeList">
+                    {obj.media_type==='movie'?(<span>Movie</span>):(<span>TV Show</span>)}
+                </div>
                 <div className="genreList">
 
                     <div>

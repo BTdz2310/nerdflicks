@@ -19,11 +19,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <title>Xem Gì</title>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <title>Nerdflicks</title>
+        <link rel="icon" href="https://icons8.com/icon/XPEgm3Fx2rpW/netflix" sizes="any" />
+        <link rel="preconnect" href="https://api.themoviedb.org" />
+        <link rel="dns-prefetch" href="https://api.themoviedb.org" />
+        <link rel="preconnect" href="https://image.tmdb.org" />
+        <link rel="dns-prefetch" href="https://image.tmdb.org" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Chakra+Petch&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch&family=Dancing+Script:wght@600&family=Fjalla+One&family=Montserrat:wght@300&display=swap" rel="stylesheet" />
       </head>
       <body className={inter.className}>
         <Providers>

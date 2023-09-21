@@ -4,11 +4,13 @@ import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Image from "next/image";
-import logo from "../../public/images/1275121.png";
+import logo from "../../public/images/icons8-netflix-logo-40.png";
 import "../styles/header.css";
+import logoGif from '../../public/images/logo-next-fljs.gif'
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const SearchModal = lazy(()=> import('./SearchModal'))
 
@@ -55,11 +57,20 @@ const Header = () => {
         <Navbar expand="lg" className="bg-body-tertiary" id="nav-bar">
           <Container>
             <Navbar.Brand onClick={()=>handleHome()}>
-              <Image src={logo} alt="logo" width={40} height={40} />
-              <h2>Xem Gì</h2>
+              {/* <Image src={logo} alt="logo" width={40} height={40} /> */}
+              <div className="logoImg">
+
+
+                <Image src={logo} alt="logo" id="logo"/>
+                <Image src={logoGif} alt="logo" id="logoGif"/>
+              </div>
+
+
+              <h2 >erdflicks</h2>
             </Navbar.Brand>
             {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> */}
             <Navbar.Collapse id="basic-navbar-nav">
+              <div >
               <div className="dropdown">
                 <p
                   className="dropdown-toggle multi-navbar"
@@ -138,6 +149,7 @@ const Header = () => {
               <Link href="/" className="navLinkHeader">
                 by genre
               </Link>
+              </div>
             </Navbar.Collapse>
             <div className="searchNav">
               <div className="watchListHeader">
