@@ -77,8 +77,8 @@ body{
     justify-content: space-between;
     align-items: center;
     height: 100%;
-    padding: 0 80px;
-    gap: 40px;
+    padding: 0 60px;
+    gap: 80px;
 }
 
 .informationMoviePlaying{
@@ -124,4 +124,64 @@ body{
 
 .intoMovie:hover{
     text-decoration: underline;
+}
+
+.indexSlider{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+    /* background-color: lightslategrey; */
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.circleContainer{
+    padding: 10px;
+    cursor: pointer;
+}
+
+.circle{
+    /* width: 10px; */
+    /* height: 10px; */
+    /* border-radius: 50%; */
+
+    height: 10px;
+    width: 30px;
+    border-radius: 40px;
+
+    transition: width 0.3s linear;
+    background-color: grey;
+    /* cursor: pointer; */
+    padding: 5px;
+}
+
+.circleContainer:hover .circle{
+    background-color: white;
+}
+
+.circleIndex{
+    display: flex;
+    /* gap: 5px; */
+}
+
+.prevIndex{
+    color: grey;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.nextIndex{
+    color: grey;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.prevIndex:hover, .nextIndex:hover{
+    color: white;
+}
+
+.choseCircle{
+    background-color: white;
+    width: 60px;
 }

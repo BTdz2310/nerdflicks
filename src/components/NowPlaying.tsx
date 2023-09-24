@@ -7,6 +7,7 @@ import Link from 'next/link';
 // import Spinner from 'react-bootstrap/Spinner';
 // import Image from "next/image";
 import { useRouter } from 'next/navigation';
+import { getAverageColor } from '@/utils/utils';
 
 const Spinner = lazy(()=>import('react-bootstrap/Spinner'))
 
@@ -45,7 +46,7 @@ const NowPlaying = () => {
             revalidateOnFocus: false,
             revalidateOnReconnect: false
         })
-        console.log('>>>>', data)
+        console.log('>>>>now', data)
 
         if(isLoading) return <Spinner animation="grow"/>
 
@@ -62,12 +63,12 @@ const NowPlaying = () => {
         <div className="heroImg" style={{backgroundImage: data.results[index].backdrop_path?`url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${data.results[index].backdrop_path})`:`url(${posterDefault})`}}></div>
         <div className="playingSite" >
             <h2 className='hero-header'>Đang chiếu rạp</h2>
-            <div className="leftMovie" onClick={()=>handleDecreaseIndex()}>
+            {/* <div className="leftMovie" onClick={()=>handleDecreaseIndex()}>
                 <img width="48" height="48" src="https://img.icons8.com/fluency/48/circled-left.png" alt="circled-left"/>
             </div>
             <div className="rightMovie" onClick={()=>handleIncreaseIndex()}>
                 <img width="48" height="48" src="https://img.icons8.com/fluency/48/circled-right.png" alt="circled-right"/>
-            </div>
+            </div> */}
             <div className="nowPlayingMovie">
                 <div className="informationMoviePlaying">
                     <div className="detailMoviePlaying">
@@ -80,8 +81,19 @@ const NowPlaying = () => {
                     <Link href={`/movie/${data.results[index].id}`} className='intoMovie'>Chi Tiết</Link>
                 </div>
                 <div className="imageMoviePlaying">
-                    <img src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2${data.results[index].poster_path}`} alt={data.results[index].title} width='300px' height='450px'/>
+                    <img src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2${data.results[index].poster_path}`} alt={data.results[index].title} width='300px' height='450px' crossOrigin='' onLoad={(e)=>console.log(getAverageColor(e.target, 4))}/>
                 </div>
+            </div>
+            <div className="indexSlider">
+                {/* <div className="prevIndex" onClick={()=>handleDecreaseIndex()}>&lt;</div> */}
+                <div className="circleIndex">
+                    {data.results.map((data: object,ind: number)=>(
+                        <div className="circleContainer" onClick={()=>setIndex(ind)} key={ind}>
+                            <div id={`circle${ind}`} className={ind===index?'circle choseCircle':'circle'}></div>
+                        </div>
+                    ))}
+                </div>
+                {/* <div className="nextIndex" onClick={()=>handleIncreaseIndex()}>&gt;</div> */}
             </div>
         </div>
         

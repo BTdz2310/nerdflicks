@@ -61,8 +61,8 @@ const Header = () => {
               <div className="logoImg">
 
 
-                <Image src={logo} alt="logo" id="logo"/>
-                <Image src={logoGif} alt="logo" id="logoGif"/>
+                <Image src={logo} alt="logo" id="logo" loading="eager"/>
+                <Image src={logoGif} alt="logo" id="logoGif" loading="eager"/>
               </div>
 
 
