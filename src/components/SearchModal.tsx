@@ -73,7 +73,7 @@ const SearchModal = ({setShowModal}: {setShowModal: Function}) => {
                 console.log(response)
             })
             .catch(err => console.error(err));
-    }, 500)
+    }, 200)
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);

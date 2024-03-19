@@ -1,0 +1,81 @@
+
+.sliderContainer{
+    /* width: 640px;
+    overflow: scroll; */
+    scroll-behavior: smooth;
+    position: relative;
+}
+
+.circleChange{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;    
+    background-color: rgb(48, 49, 52);
+    cursor: pointer;
+}
+
+.circleChange:hover path{
+    fill: white;
+}
+
+#changeLeft{
+    position: absolute;
+    z-index: 10;
+    top: 70px;
+    left: -20px;
+}
+
+.circleChange svg{
+    color: #9aa0a6;
+}
+
+.circleChange path{
+    fill: rgb(154, 160, 166);
+
+}
+
+.circleHidden{
+    display: none;
+}
+
+#changeRight{
+    position: absolute;
+    z-index: 10;
+    top: 70px;
+    right: -20px;
+}
+
+.sliderFlexContainer{
+    width: 380px;
+    overflow: hidden;
+
+    
+}
+
+.sliderFlex{
+    display: flex;
+    gap: 10px;
+
+    
+    /* height: 180px; */
+
+    transition-duration: 0.15s;
+    transition-timing-function: cubic-bezier(0.05,0,0,1);
+    will-change: transform;
+}
+
+.slideElement{
+    border-radius: 10px;
+    /* opacity: 0.8; */
+    filter: brightness(0.5);
+    cursor: pointer;
+
+    /* float: left; */
+
+    /* box-sizing: content-box; */
+}
+
+#focusIndex{
+    /* border: 2px solid white; */
+    filter: brightness(1);
+}

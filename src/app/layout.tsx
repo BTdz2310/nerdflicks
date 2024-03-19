@@ -1,4 +1,4 @@
-import Header from '@/components/header'
+import Header from '@/components/Header'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { Providers } from '@/store/provider';
@@ -27,10 +27,12 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://image.tmdb.org" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch&family=Dancing+Script:wght@600&family=Fjalla+One&family=Montserrat:wght@300&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch&family=Dancing+Script:wght@600&family=Fjalla+One&family=Montserrat:wght@600&display=swap" rel="stylesheet" />
       </head>
       <body className={inter.className}>
         <Providers>
+          {/*<header>keke</header>*/}
         <Header />
           {children}
         </Providers>

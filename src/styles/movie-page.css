@@ -11,8 +11,11 @@
     background-size: cover;
     height: 100%;
     box-sizing: content-box!important;
+    filter: brightness(0.6);
 }
+
 .containerDiv {
+  /* margin-top: 80px; */
   width: 100vw;
   height: 80vh;
   padding-bottom: 50px;

@@ -98,6 +98,30 @@ a {
   text-decoration: none;
 }
 
+.__loading{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.__tooltip--text{
+  visibility: hidden;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+  padding: 10px;
+  width: 200px;
+}
+
+.__tooltip:hover .__tooltip--text{
+  visibility: visible;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

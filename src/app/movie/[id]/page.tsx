@@ -42,7 +42,7 @@ const MoviePage = ({ params }: { params: { id: number } }) => {
             height: '500px'
         }}> */}
 
-      <div className="containerDiv">
+      <div className="containerDiv" style={{height: '2000px'}}>
         <div className="round-bottom" style={{
           backgroundImage: `url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${data.backdrop_path})`
         }}>
@@ -54,5 +54,5 @@ const MoviePage = ({ params }: { params: { id: number } }) => {
     </>
   );
 };
-
+// https://www.themoviedb.org/t/p/w1066_and_h600_bestv2
 export default MoviePage;
