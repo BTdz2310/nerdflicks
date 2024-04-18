@@ -32,6 +32,7 @@ const StyledNowPlaying = styled.div`
 const StyledBackground = styled.div`
   opacity:1;
   background-position: center;
+  transition: background 0.4s ease-in-out;
   background-size: cover;
   width: 100%;
   height: 100%;
@@ -103,6 +104,7 @@ const NowPlayingSide = styled.div`
   flex-direction: column;
   gap: 10px;
   right: 40px;
+  z-index: 1000;
 `
 
 const NowPlayingCircle = styled.div`
@@ -112,47 +114,14 @@ const NowPlayingCircle = styled.div`
   border-radius: 50%;
   background-color: #9B9B9B;
 `
-// function AnimatedText({children}: {children: string}) {
-//     const text = useRef(null);
-//
-//     useLayoutEffect( () => {
-//         gsap.registerPlugin(ScrollTrigger);
-//         gsap.from(text.current, {
-//             scrollTrigger: {
-//                 trigger: text.current,
-//                 scrub: true,
-//                 start: "top bottom",
-//                 end: "bottom+=400px bottom",
-//                 markers: true
-//             },
-//             opacity: 0,
-//             left: "-200px",
-//             ease: "power6.Out"
-//         })
-//     }, [])
-//
-//
-//
-//     return <p style={{marginTop: '40px'}} ref={text}>{children}</p>
-// }
-// const phrases = ["Los Flamencos National Reserve", "is a nature reserve located", "in the commune of San Pedro de Atacama", "The reserve covers a total area", "of 740 square kilometres (290 sq mi)"]
-
 
 const NowPlaying = ({data}: {data: Array<nowPlayingMovie>}) => {
     const [index, setIndex] = useState<number>(0);
-    const [offsetY, setOffsetY] = useState<number>(0);
-
-    // const handleScroll = () => setOffsetY(window.pageYOffset);
-    //
-    // useEffect(() => {
-    //     window.addEventListener('scroll', handleScroll);
-    //     console.log(offsetY)
-    //
-    //     return () => window.removeEventListener('scroll', handleScroll);
-    // }, []);
 
     const ref1 = useRef(null);
     const ref2 = useRef(null);
+    const certainLeft = useRef(null);
+    const certainRight = useRef(null);
 
     useLayoutEffect( () => {
         gsap.registerPlugin(ScrollTrigger);
@@ -165,10 +134,10 @@ const NowPlaying = ({data}: {data: Array<nowPlayingMovie>}) => {
                 // end: '400 top',
                 start: 0,
                 end: 400,
-                markers: true
+                // markers: true
             },
             opacity: 0,
-            y: -20,
+            y: -40,
             ease: "power1"
         })
 
@@ -180,12 +149,14 @@ const NowPlaying = ({data}: {data: Array<nowPlayingMovie>}) => {
                 // end: '400 top',
                 start: 400,
                 end: 800,
-                markers: true
+                // markers: true
             },
             opacity: 1,
-            y: -20,
+            y: -40,
             ease: "power1"
         })
+
+
     }, [])
 
     const router = useRouter();
@@ -195,7 +166,7 @@ const NowPlaying = ({data}: {data: Array<nowPlayingMovie>}) => {
     // if(isLoading) return (<div className='__loading'><Spinner animation="grow"/></div>)
 
   return (
-    <>
+      <>
         <StyledNowPlaying>
             <StyledBackground style={{backgroundImage: data[index].backdrop_path?`url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${data[index].backdrop_path})`:`url(${posterDefault})`}}></StyledBackground>
             <NowPlayingInfo>
@@ -203,7 +174,9 @@ const NowPlaying = ({data}: {data: Array<nowPlayingMovie>}) => {
                 <div ref={ref1}>
                     <SpanTitle>
                         <span style={{textTransform: 'none', fontSize: '24px', color: '#FD39C3', fontWeight: '300'}}>Đang Chiếu Rạp</span>
-                        <span>{data[index].title}</span>
+                        <Link href={`/movie/${data[index].id}`}>
+                            <span style={{fontSize: '56px'}}>{data[index].title}</span>
+                        </Link>
                     </SpanTitle>
                 </div>
 
@@ -228,13 +201,10 @@ const NowPlaying = ({data}: {data: Array<nowPlayingMovie>}) => {
                 ))}
             </NowPlayingSide>
         </StyledNowPlaying>
-
-
-        <div className="__trending">
-            <div className="__trending--background"></div>
-        </div>
-
-    </>
+          {/*<div className="__trending">*/}
+          {/*    <div className="__trending--background"></div>*/}
+          {/*</div>*/}
+      </>
   )
 
 

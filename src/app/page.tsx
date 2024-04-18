@@ -1,11 +1,13 @@
 'use client'
 import '../styles/home.css'
 // import NowPlaying from '@/components/NowPlaying'
-import {lazy, useEffect, useRef} from 'react'
+import {lazy, useEffect, useRef, useState} from 'react'
 import Check from "@/components/Check";
 import {options} from "@/utils/utils";
 import useSWR from "swr";
 import {Spinner} from "react-bootstrap";
+import Popular from "@/components/Popular";
+import {nowPlayingMovie} from "@/components/type/typeSome";
 
 const NowPlaying = lazy(()=>import('@/components/NowPlaying'))
 const Trending = lazy(()=>import('@/components/Trending'))
@@ -24,22 +26,40 @@ export default function Home() {
             revalidateOnReconnect: false
         })
 
+    const movie = useSWR(`https://api.themoviedb.org/3/movie/popular?language=vi&page=1`, fetcher,
+        {
+            revalidateIfStale: false,
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false
+        })
+
+    const tv = useSWR(`https://api.themoviedb.org/3/tv/popular?language=vi&page=1`, fetcher,
+        {
+            revalidateIfStale: false,
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false
+        })
+
     // useEffect(() => {
-    //     let scroll:any;
-    //     import("locomotive-scroll").then((locomotiveModule) => {
-    //         scroll = new locomotiveModule.default({
-    //             el: document.querySelector("[data-scroll-container]"),
-    //             smooth: true,
-    //             smoothMobile: false,
-    //             resetNativeScroll: true
-    //         });
-    //     });
+    //     const fetchData = async () => {
+    //         setLoading(true);
     //
-    //     // `useEffect`'s cleanup phase
-    //     return () => {
-    //         if (scroll) scroll.destroy();
+    //         const responseMovie = fetch(`https://api.themoviedb.org/3/movie/popular?language=vi&page=1`, options);
+    //         const responseTV = fetch(`https://api.themoviedb.org/3/tv/popular?language=vi&page=1`, options);
+    //         const jsonMovie = await responseMovie;
+    //         const jsonTV = await responseTV;
+    //
+    //         const movie = await jsonMovie.json();
+    //         const tv = await jsonTV.json();
+    //
+    //         setPopularMovie(movie.results);
+    //         setPopularTV(tv.results);
+    //
+    //         setLoading(false);
     //     }
-    // });
+    //
+    //     fetchData();
+    // }, []);
 
     useEffect( () => {
 
@@ -57,13 +77,25 @@ export default function Home() {
 
     }, [])
 
-    if(isLoading) return (<div className='__loading'><Spinner animation="grow"/></div>)
+    if(isLoading||movie.isLoading||tv.isLoading) return (<div className='__loading'><Spinner animation="grow"/></div>)
 
   return (
     <main>
 
         {/*<div style={{height: '2000px', background: 'red'}}></div>*/}
         <NowPlaying data={data.results}/>
+        <Popular data={{
+            movie: movie.data.results,
+            tv: tv.data.results
+        }}/>
+        <div className="category" style={{background: 'blue', zIndex: '100', position: 'relative', height: '2000px', width: '100vw'}}>
+
+        </div>
+        <div className='__hide' style={{display: 'none'}}>
+            {data.results.map((ele:nowPlayingMovie)=>(<img loading='eager' key={ele.id} src={`https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${ele.backdrop_path}`} style={{display: 'none'}}/>))}
+        </div>
+
+
         {/*<Check />*/}
       {/*/!*<div className="trending">*!/*/}
       {/*  <Trending />*/}
