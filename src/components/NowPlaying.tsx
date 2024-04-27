@@ -3,11 +3,11 @@ import React, {useEffect, useState, lazy, useRef, useLayoutEffect} from 'react'
 import useSWR from 'swr'
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import {nameGenre, options} from '@/utils/utils';
 import {nowPlayingMovie} from './type/typeSome';
 import styled from "styled-components";
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import {nameGenre} from "@/utils/utils";
 
 const Spinner = lazy(()=>import('react-bootstrap/Spinner'))
 
@@ -201,9 +201,6 @@ const NowPlaying = ({data}: {data: Array<nowPlayingMovie>}) => {
                 ))}
             </NowPlayingSide>
         </StyledNowPlaying>
-          {/*<div className="__trending">*/}
-          {/*    <div className="__trending--background"></div>*/}
-          {/*</div>*/}
       </>
   )
 

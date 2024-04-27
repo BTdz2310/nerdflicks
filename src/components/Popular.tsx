@@ -121,6 +121,11 @@ const StyledRight = styled.div`
   flex-grow: 1;
   height: calc(100% - 40px);
   position: relative;
+  
+  h2{
+    color: white;
+    font-size: 3.8vw;
+  }
 `
 
 const PopularList = styled.div`
@@ -146,6 +151,10 @@ interface objProp {
     tv: Array<nowPlayingMovie>
 }
 
+const short = (name: String) => {
+    return name.length>20?`${name.replace(/^(.{20}[^\s]*).*/, "$1")} ...`:name;
+}
+
 const Popular = ({data}: {data: objProp}) => {
 
     const [index, setIndex] = useState(0);
@@ -156,32 +165,21 @@ const Popular = ({data}: {data: objProp}) => {
     // const handleScroll = () => setOffsetY(window.pageYOffset);
     //
     // useEffect(() => {
-    //     window.addEventListener('scroll', handleScroll);
+    //     window.addEventListener('scroll', handleScroll);
     //
-    //     return () => window.removeEventListener('scroll', handleScroll);
+    //     return () => window.removeEventListener('scroll', handleScroll);
     // }, []);
 
+    const mainDiv = useRef(null);
     const refImg = useRef(null);
     const divRef = useRef(null);
     const typeRef = useRef(null);
     const textRef = useRef(null);
+    const list1 = useRef(null);
+    const list2 = useRef(null);
 
     useEffect( () => {
         gsap.registerPlugin(ScrollTrigger);
-
-        // gsap.to(refImg.current, {
-        //     scrollTrigger: {
-        //         trigger: refImg.current,
-        //         scrub: true,
-        //         // start: '0 top',
-        //         // end: '400 top',
-        //         start: 'top-=225px bottom',
-        //         end: 800,
-        //         markers: true
-        //     },
-        //     transform: 'transform: translate3d(0px, -60px, 0px);',
-        //     ease: "power1"
-        // })
 
         gsap.to(textRef.current, {
             scrollTrigger: {
@@ -228,32 +226,65 @@ const Popular = ({data}: {data: objProp}) => {
             },
         })
 
-        gsap.to(refImg.current, {
+        // gsap.to(refImg.current, {
+        //     scrollTrigger: {
+        //         trigger: refImg.current,
+        //         scrub: true,
+        //         // start: '0 top',
+        //         // end: '400 top',
+        //         start: 'top top',
+        //         end: 'top+=800 top',
+        //         // markers: true
+        //     },
+        //     y: -60
+        // })
+
+        gsap.to(list1.current, {
+            // duration: 0.5,
             scrollTrigger: {
-                trigger: refImg.current,
+                trigger: mainDiv.current,
                 scrub: true,
                 // start: '0 top',
                 // end: '400 top',
-                start: 'top top',
-                end: 'top+=800 top',
-                // markers: true
+                start: 'top+=400 top',
+                // end: 'top+=400 top',
+                markers: true
             },
-            y: -60
+            opacity: 0,
+            transform: `scale(0.5)`,
+            pointerEvents: 'none',
+        })
+
+        gsap.to(list2.current, {
+            // duration: 0.5,
+            // delay: 0.5,
+            scrollTrigger: {
+                trigger: mainDiv.current,
+                scrub: true,
+                // start: '0 top',
+                // end: '400 top',
+                start: 'top+=400 top',
+                // end: 'top+=700 top',
+                markers: true
+            },
+            opacity: 1,
+            transform: `scale(1)`,
+            pointerEvents: 'auto'
         })
 
     }, [])
 
     return (
-        <StyledPopular>
+        <StyledPopular ref={mainDiv}>
             {/*<StyledBackground />*/}
 
             {/*<StyledAlign/>*/}
-            
+
             <PopularContainer ref={divRef}>
 
                 <PopularInner>
-                    <div  style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px'}}>
-                        <h2 style={{transform: 'translateX(-160px)'}} ref={textRef}>Thịnh Hành</h2>
+                    <div  style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px'}}>
+                        <h2 style={{transform: 'translateX(-160px)', fontFamily: '"Bebas Neue", sans-serif', fontWeight: 500, fontSize: '55px'}} ref={textRef}>Thịnh Hành</h2>
 
                         <StyledType ref={typeRef}>
                             <div style={{width: '50%', height: '100%', background: 'white', position: 'absolute', top: '0', left: '0', transform: `translateX(${type === 'movie' ? 0 : 100}%)`, transition: '0.5s'}}></div>
@@ -280,12 +311,29 @@ const Popular = ({data}: {data: objProp}) => {
                             </Link>
                         </StyledLeft>
                         <StyledRight>
-                            <PopularList>
-                                <h2>{data[type][0].title?data[type][0].title:data[type][0].name}</h2>
-                                <h2>{data[type][1].title?data[type][1].title:data[type][1].name}</h2>
-                                <h2>{data[type][2].title?data[type][2].title:data[type][2].name}</h2>
-                                <h2>{data[type][3].title?data[type][3].title:data[type][3].name}</h2>
-                                <h2>{data[type][4].title?data[type][4].title:data[type][4].name}</h2>
+                            <PopularList ref={list1}>
+                                <Link href={`/${type}/${data[type][0].id}`}><h2 onMouseOver={()=>setIndex(0)}>{short(data[type][0].title?data[type][0].title:data[type][0].name)}</h2></Link>
+                                <hr/>
+                                <Link href={`/${type}/${data[type][1].id}`}><h2 onMouseOver={()=>setIndex(1)}>{short(data[type][1].title?data[type][1].title:data[type][1].name)}</h2></Link>
+                                <hr/>
+                                <Link href={`/${type}/${data[type][2].id}`}><h2 onMouseOver={()=>setIndex(2)}>{short(data[type][2].title?data[type][2].title:data[type][2].name)}</h2></Link>
+                                <hr/>
+                                <Link href={`/${type}/${data[type][3].id}`}><h2 onMouseOver={()=>setIndex(3)}>{short(data[type][3].title?data[type][3].title:data[type][3].name)}</h2></Link>
+                                <hr/>
+                                <Link href={`/${type}/${data[type][4].id}`}><h2 onMouseOver={()=>setIndex(4)}>{short(data[type][4].title?data[type][4].title:data[type][4].name)}</h2></Link>
+                                <hr/>
+                            </PopularList>
+                            <PopularList ref={list2} style={{opacity: 0, transform: `scale(0.5)`, pointerEvents: 'none'}}>
+                                <Link href={`/${type}/${data[type][5].id}`}><h2 onMouseOver={()=>setIndex(5)}>{short(data[type][5].title?data[type][5].title:data[type][5].name)}</h2></Link>
+                                <hr/>
+                                <Link href={`/${type}/${data[type][6].id}`}><h2 onMouseOver={()=>setIndex(6)}>{short(data[type][6].title?data[type][6].title:data[type][6].name)}</h2></Link>
+                                <hr/>
+                                <Link href={`/${type}/${data[type][7].id}`}><h2 onMouseOver={()=>setIndex(7)}>{short(data[type][7].title?data[type][7].title:data[type][7].name)}</h2></Link>
+                                <hr/>
+                                <Link href={`/${type}/${data[type][8].id}`}><h2 onMouseOver={()=>setIndex(8)}>{short(data[type][8].title?data[type][8].title:data[type][8].name)}</h2></Link>
+                                <hr/>
+                                <Link href={`/${type}/${data[type][9].id}`}><h2 onMouseOver={()=>setIndex(9)}>{short(data[type][9].title?data[type][9].title:data[type][9].name)}</h2></Link>
+                                <hr/>
                             </PopularList>
                         </StyledRight>
                     </div>

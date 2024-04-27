@@ -8,6 +8,8 @@ import useSWR from "swr";
 import {Spinner} from "react-bootstrap";
 import Popular from "@/components/Popular";
 import {nowPlayingMovie} from "@/components/type/typeSome";
+import Genre from "@/components/Genre";
+import PopularHome from "@/components/PopularHome";
 
 const NowPlaying = lazy(()=>import('@/components/NowPlaying'))
 const Trending = lazy(()=>import('@/components/Trending'))
@@ -62,19 +64,12 @@ export default function Home() {
     // }, []);
 
     useEffect( () => {
-
         (
-
             async () => {
-
                 const LocomotiveScroll = (await import('locomotive-scroll')).default
-
                 const locomotiveScroll = new LocomotiveScroll();
-
             }
-
         )()
-
     }, [])
 
     if(isLoading||movie.isLoading||tv.isLoading) return (<div className='__loading'><Spinner animation="grow"/></div>)
@@ -84,13 +79,18 @@ export default function Home() {
 
         {/*<div style={{height: '2000px', background: 'red'}}></div>*/}
         <NowPlaying data={data.results}/>
-        <Popular data={{
+        {/*<Popular data={{*/}
+        {/*    movie: movie.data.results,*/}
+        {/*    tv: tv.data.results*/}
+        {/*}}/>*/}
+        <PopularHome data={{
             movie: movie.data.results,
             tv: tv.data.results
         }}/>
-        <div className="category" style={{background: 'blue', zIndex: '100', position: 'relative', height: '2000px', width: '100vw'}}>
+        {/*<Genre />*/}
+        {/*<div className="__home" style={{height: '100vh', backgroundColor: 'red', marginTop: '3200px'}}>*/}
 
-        </div>
+        {/*</div>*/}
         <div className='__hide' style={{display: 'none'}}>
             {data.results.map((ele:nowPlayingMovie)=>(<img loading='eager' key={ele.id} src={`https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${ele.backdrop_path}`} style={{display: 'none'}}/>))}
         </div>

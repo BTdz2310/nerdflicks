@@ -28,7 +28,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
-        <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch&family=Dancing+Script:wght@600&family=Space+Grotesk:wght@600&family=Fjalla+One&family=Montserrat:wght@600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch&family=Dancing+Script:wght@600&family=Space+Grotesk:wght@600&family=Fjalla+One&family=Bebas+Neue&family=Montserrat:wght@600&display=swap" rel="stylesheet" />
       </head>
       <body className={inter.className}>
         <Providers>

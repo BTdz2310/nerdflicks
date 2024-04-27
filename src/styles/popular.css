@@ -1,0 +1,177 @@
+.__popular{
+    width: 100vw;
+    height: auto;
+    background-color: black;
+    position: relative;
+    padding: 40px 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-top: calc(100vh + 800px);
+}
+
+.__popular--head{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+
+}
+
+.__popular--switch{
+    border-radius: 20px;
+    width: fit-content;
+    border: 1px solid white;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+.__popular--switch div{
+    cursor: pointer;
+    padding: 8px 12px;
+    border: 0;
+    width: 120px;
+    text-align: center;
+}
+
+.__popular--switch div:last-child{
+    border-left: 1px solid white;
+}
+
+.__popular--container{
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+.__popular--line{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    z-index: 1;
+    width: 1px;
+    background-color: cornflowerblue;
+}
+
+.__popular--list{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    pointer-events: all;
+}
+
+.__popular--list .__popular--item:nth-child(odd){
+    justify-content: end;
+}
+
+.__popular--list .__popular--item:not(.__popular--list .__popular--item:first-child){
+    margin-top: -18vh;
+}
+
+.__popular--item{
+    height: 60vh;
+    width: 100%;
+    position: relative;
+    display: flex;
+}
+
+.__popular--content{
+    width: 40.5vw;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.__popular--content img{
+    width: 63vw;
+    height: 46vw;
+    object-fit: cover;
+}
+
+.__popular--info{
+    width: 20vw;
+    position: absolute;
+    padding: 20px 0;
+    top: calc((100% - 82px)/2);
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 32px;
+    z-index: 10;
+    cursor: pointer;
+}
+
+.__popular--hide{
+    content: '';
+    position: absolute;
+    z-index: 11;
+    bottom: 0;
+    width: 1px;
+    transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+    /*background-color: #D1D1D1;*/
+    /*top: calc(100% + 50px);*/
+    /*height: 56px;*/
+    /*transform: scaleY(0);*/
+    /*transform-origin: 0 0;*/
+    top: 0;
+    height: 0;
+    background-color: #000;
+    /*transform-origin: 50% 50%;*/
+    /*transform: scaleY(1);*/
+}
+
+.__popular--circle{
+    position: absolute;
+    opacity: 0;
+    background-color: white;
+    z-index: 20;
+    bottom: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    transition: opacity 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.__popular--text{
+    z-index: 11;
+    position: relative;
+    transform: translateY(17px);
+    transition: transform 0.8s cubic-bezier(0.215, 0.61, 0.355, 1), opacity 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+    opacity: 0;
+    line-height: 42px;
+}
+
+.__popular--info:hover .__popular--circle{
+    opacity: 1;
+}
+
+.__popular--item:nth-child(odd) .__popular--circle{
+    left: calc(0.8vw - 2px);
+}
+
+.__popular--item:nth-child(even) .__popular--circle{
+    right: calc(0.8vw - 3px);
+}
+
+.__popular--item:nth-child(odd) .__popular--hide{
+    left: 0.8vw;
+}
+
+.__popular--item:nth-child(even) .__popular--hide{
+    right: calc(0.8vw - 1px);
+}
+
+.__popular--item:nth-child(odd) .__popular--info{
+    text-align: left;
+    left: 50%;
+    margin-left: -0.8vw;
+}
+
+.__popular--item:nth-child(even) .__popular--info{
+    text-align: right;
+    right: 50%;
+    margin-right: -0.8vw;
+}
+

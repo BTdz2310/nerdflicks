@@ -80,7 +80,7 @@
 }
 
 *:not(.fa-solid){
-  font-family: "Space Grotesk", sans-serif!important;
+  font-family: "Space Grotesk", sans-serif;
 }
 
 html,
