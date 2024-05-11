@@ -6,7 +6,6 @@ import Check from "@/components/Check";
 import {options} from "@/utils/utils";
 import useSWR from "swr";
 import {Spinner} from "react-bootstrap";
-import Popular from "@/components/Popular";
 import {nowPlayingMovie} from "@/components/type/typeSome";
 import Genre from "@/components/Genre";
 import PopularHome from "@/components/PopularHome";
@@ -63,14 +62,14 @@ export default function Home() {
     //     fetchData();
     // }, []);
 
-    useEffect( () => {
-        (
-            async () => {
-                const LocomotiveScroll = (await import('locomotive-scroll')).default
-                const locomotiveScroll = new LocomotiveScroll();
-            }
-        )()
-    }, [])
+    // useEffect( () => {
+    //     (
+    //         async () => {
+    //             const LocomotiveScroll = (await import('locomotive-scroll')).default
+    //             const locomotiveScroll = new LocomotiveScroll();
+    //         }
+    //     )()
+    // }, [])
 
     if(isLoading||movie.isLoading||tv.isLoading) return (<div className='__loading'><Spinner animation="grow"/></div>)
 
@@ -87,10 +86,10 @@ export default function Home() {
             movie: movie.data.results,
             tv: tv.data.results
         }}/>
-        {/*<Genre />*/}
-        {/*<div className="__home" style={{height: '100vh', backgroundColor: 'red', marginTop: '3200px'}}>*/}
+        <Genre />
+        <div className="__home" style={{height: '100vh', backgroundColor: 'red', marginTop: '700vw'}}>
 
-        {/*</div>*/}
+        </div>
         <div className='__hide' style={{display: 'none'}}>
             {data.results.map((ele:nowPlayingMovie)=>(<img loading='eager' key={ele.id} src={`https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${ele.backdrop_path}`} style={{display: 'none'}}/>))}
         </div>

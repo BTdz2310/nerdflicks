@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning={true}>
       <head>
         <title>Nerdflicks</title>
         <link rel="icon" href="https://icons8.com/icon/XPEgm3Fx2rpW/netflix" sizes="any" />

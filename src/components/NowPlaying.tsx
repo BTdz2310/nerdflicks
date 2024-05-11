@@ -126,36 +126,39 @@ const NowPlaying = ({data}: {data: Array<nowPlayingMovie>}) => {
     useLayoutEffect( () => {
         gsap.registerPlugin(ScrollTrigger);
 
-        gsap.to(ref1.current, {
-            scrollTrigger: {
-                trigger: ref1.current,
-                scrub: true,
-                // start: '0 top',
-                // end: '400 top',
-                start: 0,
-                end: 400,
-                // markers: true
-            },
-            opacity: 0,
-            y: -40,
-            ease: "power1"
+        const ctx = gsap.context(()=>{
+            gsap.to(ref1.current, {
+                scrollTrigger: {
+                    trigger: ref1.current,
+                    scrub: true,
+                    // start: '0 top',
+                    // end: '400 top',
+                    start: 0,
+                    end: 400,
+                    // markers: true
+                },
+                opacity: 0,
+                y: -40,
+                ease: "power1"
+            })
+
+            gsap.to(ref2.current, {
+                scrollTrigger: {
+                    trigger: ref2.current,
+                    scrub: true,
+                    // start: '0 top',
+                    // end: '400 top',
+                    start: 400,
+                    end: 800,
+                    // markers: true
+                },
+                opacity: 1,
+                y: -40,
+                ease: "power1"
+            })
         })
 
-        gsap.to(ref2.current, {
-            scrollTrigger: {
-                trigger: ref2.current,
-                scrub: true,
-                // start: '0 top',
-                // end: '400 top',
-                start: 400,
-                end: 800,
-                // markers: true
-            },
-            opacity: 1,
-            y: -40,
-            ease: "power1"
-        })
-
+        return () => ctx.revert();
 
     }, [])
 
@@ -171,7 +174,7 @@ const NowPlaying = ({data}: {data: Array<nowPlayingMovie>}) => {
             <StyledBackground style={{backgroundImage: data[index].backdrop_path?`url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${data[index].backdrop_path})`:`url(${posterDefault})`}}></StyledBackground>
             <NowPlayingInfo>
                 {/*<div style={{opacity: (offsetY > 200 ? 1 - (offsetY - 200) / 200 : 1) < 0 ? 0 : offsetY > 200 ? 1 - (offsetY - 200) / 200 : 1, transform: `translateY(${0 - (offsetY - 200) / 10 < -20 ? -20 : 0 - (offsetY - 200) / 10}px)`}}>*/}
-                <div ref={ref1}>
+                <div ref={ref1} style={{zIndex: '1000'}}>
                     <SpanTitle>
                         <span style={{textTransform: 'none', fontSize: '24px', color: '#FD39C3', fontWeight: '300'}}>Đang Chiếu Rạp</span>
                         <Link href={`/movie/${data[index].id}`}>

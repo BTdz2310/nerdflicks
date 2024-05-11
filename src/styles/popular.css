@@ -44,6 +44,7 @@
     width: 100%;
     height: auto;
     position: relative;
+    padding-bottom: 40px;
 }
 
 .__popular--line{

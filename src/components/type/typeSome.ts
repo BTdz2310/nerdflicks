@@ -22,7 +22,9 @@ export interface nowPlayingMovie {
     title: string,
     name: string,
     overview: string,
-    vote_average: number
+    vote_average: number,
+    last_air_date: string,
+    first_air_date: string
 }
 
 export interface keyword {
