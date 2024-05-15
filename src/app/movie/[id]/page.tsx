@@ -9,6 +9,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {nowPlayingMovie} from "@/components/type/typeSome";
 import {list} from "postcss";
+import {fetcher} from "@/utils/utils";
 
 function generateRandomDarkColor() {
     const darkColors = [
@@ -52,6 +53,14 @@ const InfoContainer = styled.div`
   align-items: center;
   gap: 40px;
   
+  a{
+    color: #cacaca;
+    text-decoration: none;
+  }
+
+  p{
+    margin: 0;
+  }
 `
 
 const LeftInfo = styled.div`
@@ -196,7 +205,11 @@ export interface crew {
     profile_path: string,
     character: string,
     name: string,
-    id: number
+    id: number,
+    roles: [{
+        character: string
+    }],
+    total_episode_count: number
 }
 
 export interface videoRtn{
@@ -239,17 +252,7 @@ const MoviePage = ({ params }: { params: { id: number } }) => {
     //     }
     // }, [isReady]);
 
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4OWJiODExODczYTgwNjMwMGY1ZTE5NThhYjUzMzhhMiIsInN1YiI6IjYzZTRiNDJlMGU1OTdiMDBjZDdiYTQzOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.jj9_04xOHbR519EDCfhgf9jFAz6AtMGNECxGgeg-i2M",
-    },
-  };
 
-  const fetcher = (url: string) =>
-    fetch(url, options).then((res) => res.json());
   //
   const { data: dataA} = useSWR(
     `https://api.themoviedb.org/3/movie/${params.id}?language=vi-VN`,

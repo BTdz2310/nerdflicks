@@ -9,6 +9,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {nowPlayingMovie} from "@/components/type/typeSome";
 import {list} from "postcss";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import {crew, iGenre, imgRtn, reviewRtn, videoRtn} from "@/app/movie/[id]/page";
 
 function generateRandomDarkColor() {
@@ -53,6 +55,14 @@ const InfoContainer = styled.div`
   align-items: center;
   gap: 40px;
   
+  a{
+    color: #cacaca;
+    text-decoration: none;
+  }
+  
+  p{
+    margin: 0;
+  }
 `
 
 const LeftInfo = styled.div`
@@ -193,7 +203,20 @@ const InfoGroup = styled.div`
     }
 `
 
+interface season{
+  id: number,
+  name: string,
+  episode_count: number,
+  poster_path: string
+}
+
 const TVPage = ({ params }: { params: { id: number } }) => {
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
 
   let keyVideo = '';
 
@@ -235,7 +258,7 @@ const TVPage = ({ params }: { params: { id: number } }) => {
   );
 
   const { data: dataB} = useSWR(
-      `https://api.themoviedb.org/3/tv/${params.id}?append_to_response=credits%2Cimages%2Cvideos%2Creviews%2Crecommendations%2Csimilar%2Ckeywords`,
+      `https://api.themoviedb.org/3/tv/${params.id}?append_to_response=aggregate_credits%2Cimages%2Cvideos%2Creviews%2Crecommendations%2Csimilar%2Ckeywords`,
       fetcher,
       {
         revalidateIfStale: false,
@@ -265,14 +288,14 @@ const TVPage = ({ params }: { params: { id: number } }) => {
           <InfoBackground style={{backgroundImage: `url(https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces${dataA.backdrop_path})`}}></InfoBackground>
           <InfoContainer>
             <LeftInfo>
-              <h2>{dataA.name}</h2>
+              <h2 onClick={handleShow}>{dataA.name}</h2>
               <div className="info-line">
                 <div className="info-box"></div>
                 <p>thông tin</p>
               </div>
               <div className="info-out">
                 <p className='info-text'>
-                  <span>{`${dataA.first_air_date&&dataA.first_air_date.split('-')[0]} - ${dataA.status==='Ended'?dataA.last_air_date&&dataA.last_air_date.split('-')[0]:'nay'}`}</span>
+                  <span>{`${dataA.first_air_date&&dataA.first_air_date.split('-')[0]} - ${dataA.status==='Returning Series'?'nay':dataA.last_air_date&&dataA.last_air_date.split('-')[0]}`}</span>
                   {dataA.genres&&dataA.genres.map((genre: iGenre)=>(<span key={genre.id}><Link href={'#'}>{genre.name}</Link></span>))}
                   {(dataA.number_of_episodes&&dataA.number_of_seasons)&&(<span>{`${dataA.number_of_seasons} mùa - ${dataA.number_of_episodes} tập`}</span>)}
                 </p>
@@ -280,14 +303,18 @@ const TVPage = ({ params }: { params: { id: number } }) => {
               <p className='info-overview'>{dataA.overview?dataA.overview:dataB.overview}</p>
               <table>
                 <tbody>
-                <tr>
+                {dataB.created_by.length?(<tr>
                   <td style={{paddingRight: '20px'}}><p>Người khởi xướng</p></td>
-                  <td><p className='info-text'>{dataB.created_by&&dataB.created_by.map((act: iGenre, ind: number) => ind<3&&(<span key={act.id}><Link href={''}>{act.name}</Link></span>))}</p></td>
-                </tr>
-                <tr >
+                  <td><p
+                      className='info-text'>{dataB.created_by.map((act: iGenre, ind: number) => ind < 3 && (
+                      <span key={act.id}><Link href={''}>{act.name}</Link></span>))}</p></td>
+                </tr>):undefined}
+                {dataB.aggregate_credits.cast.length ? (<tr>
                   <td style={{paddingTop: '10px', paddingRight: '20px'}}><p>Diễn viên</p></td>
-                  <td style={{paddingTop: '10px'}}><p className='info-text'>{dataB.credits.cast&&dataB.credits.cast.map((act: iGenre, ind: number) => ind<3&&(<span key={act.id}><Link href={''}>{act.name}</Link></span>))}</p></td>
-                </tr>
+                  <td style={{paddingTop: '10px'}}><p
+                      className='info-text'>{dataB.aggregate_credits.cast.map((act: iGenre, ind: number) => ind < 3 && (
+                      <span key={act.id}><Link href={''}>{act.name}</Link></span>))}</p></td>
+                </tr>):undefined}
                 </tbody>
               </table>
             </LeftInfo>
@@ -299,12 +326,131 @@ const TVPage = ({ params }: { params: { id: number } }) => {
         </StyledInfo>
         <StyledBeside>
           <LeftBeside>
-
+            {/*{console.log(dataC.results.filter((vi: videoRtn)=>vi.site==='YouTube')[0].key)}*/}
+            {/*<iframe style={{height: '100vh', width: '100vw'}}*/}
+            <iframe style={{height: '100vh', width: '100vw'}}
+                    src={`https://www.youtube.com/embed/${keyVideo}?autoplay=1&mute=1&loop=1&playlist=${keyVideo}`} frameBorder="0"
+            ></iframe>
+            {/*<video autoPlay loop playsInline preload="auto" src="https://www.imdb.com/video/vi784910105/?playlistId=tt5537002" className="css-43qr9p eivus860" muted></video>*/}
+            {/*https://www.youtube.com/watch?v=*/}
+            {/*<iframe width="560" height="315" src="https://www.youtube.com/embed/EzFXDvC-EwM" autoPlay allowFullScreen></iframe>*/}
+            {/*<img src={`https://media.themoviedb.org/t/p/w600_and_h600_bestv2${dataA.poster_path}`} alt={dataA.title?dataA.title:dataA.name}/>*/}
           </LeftBeside>
           <RightBeside>
-
+            <InfoGroup>
+              <h2>Mùa</h2>
+              <div className='cast-list'>
+                {dataB.seasons.map((ss: season)=>(
+                    <Link href={`/tv/${ss.id}`} className="movie--movie-item" key={ss.id}>
+                      <img className='img-item' src={ss.poster_path?`https://image.tmdb.org/t/p/w454_and_h254_bestv2${ss.poster_path}`:'https://www.contentviewspro.com/wp-content/uploads/2017/07/default_image.png'} alt='image movie'/>
+                      <p>{`${ss.name} - ${ss.episode_count} tập`}</p>
+                    </Link>
+                ))}
+              </div>
+            </InfoGroup>
+            <InfoGroup>
+              <h2>Thông tin chi tiết</h2>
+              <p>
+                <span className='movie--group-title'>Slogan</span>
+                <span>{dataA.tagline?dataA.tagline:'Không'}</span>
+              </p>
+              <p>
+                <span className='movie--group-title'>Nước sản xuất</span>
+                <span>{dataA.production_countries.length?dataA.production_countries.map((cpn: iGenre, ind: number)=>(<span key={cpn.name}>{`${cpn.name}${ind!==dataA.production_countries.length-1?', ':''}`}</span>)):'Không'}</span>
+              </p>
+              <p>
+                <span className='movie--group-title'>Ngôn ngữ</span>
+                <span>{dataA.spoken_languages.length?dataA.spoken_languages.map((cpn: iGenre, ind: number)=>(<span key={cpn.english_name}>{`${cpn.english_name}${ind!==dataA.spoken_languages.length-1?', ':''}`}</span>)):'Không'}</span>
+              </p>
+              <p>
+                <span className='movie--group-title'>Công ty chịu trách nhiệm sản xuất</span>
+                <span>{dataA.production_companies.length?dataA.production_companies.map((cpn: iGenre, ind: number)=>(<span key={cpn.id}>{`${cpn.name}${ind!==dataA.production_companies.length-1?', ':''}`}</span>)):'Không'}</span>
+              </p>
+              <p>
+                <span className='movie--group-title'>Điểm trung bình</span>
+                <span>{dataA.vote_average}</span>
+              </p>
+              <p>
+                <span className='movie--group-title'>Lượt Đánh giá</span>
+                <span>{dataA.vote_count}</span>
+              </p>
+            </InfoGroup>
+            <InfoGroup>
+              <h2>diễn viên</h2>
+              <div className="cast-list">
+                {dataB.aggregate_credits.cast.slice(0,10).map((act: crew)=>(
+                    <div className="cast-item" key={act.id}>
+                      <img src={act.profile_path?`https://image.tmdb.org/t/p/w100_and_h100_face${act.profile_path}`:'https://cdn.create.vista.com/api/media/small/134255626/stock-vector-avatar-male-profile-gray-person-picture-isolated-on-white-background-good-unknown-user-avatar-for'} alt={act.name}/>
+                      <p>{act.name}</p>
+                      <p>{act.roles[0].character}</p>
+                      <p style={{color: 'grey'}}>{`${act.total_episode_count} tập`}</p>
+                    </div>
+                ))}
+              </div>
+            </InfoGroup>
+            <InfoGroup>
+              <h2>ảnh</h2>
+              <div className="cast-list">
+                {dataB.images.backdrops.slice(0,10).map((img: imgRtn)=>(
+                    <img key={img.file_path} src={`https://image.tmdb.org/t/p/w500_and_h282_bestv2${img.file_path}`} alt={`img`} className='img-item'/>
+                ))}
+              </div>
+            </InfoGroup>
+            <InfoGroup>
+              <h2>đánh giá</h2>
+              <div className="review-list">
+                {dataB.reviews.results.length?(
+                    dataB.reviews.results.map((review: reviewRtn)=>(
+                        <div className="review-item" key={review.id}>
+                          <div className="review-left">
+                            {/*<img src= alt=""/>*/}
+                            <div className="review-avatar">
+                              {review.author_details.avatar_path?(<img src={`https://media.themoviedb.org/t/p/w90_and_h90_face${review.author_details.avatar_path}`} alt="avatar"/>):(<div style={{backgroundColor: 'pink', color: 'white', textTransform: 'uppercase', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{review.author.charAt(0)}</div>)}
+                            </div>
+                            {/*<p>{review.author}</p>*/}
+                          </div>
+                          <div className="review-center">
+                            <p>{review.content}</p>
+                            <p>{review.created_at}</p>
+                          </div>
+                        </div>
+                    ))
+                ):(<p>Hiện chưa có bình luận nào</p>)}
+              </div>
+            </InfoGroup>
+            <InfoGroup>
+              <h2>Đề Xuất</h2>
+              <div className='cast-list'>
+                {dataB.recommendations.results.map((rec: nowPlayingMovie)=>(
+                    <Link href={`/tv/${rec.id}`} className="movie--movie-item" key={rec.id}>
+                      <img className='img-item' src={rec.backdrop_path?`https://media.themoviedb.org/t/p/w500_and_h282_face${rec.backdrop_path}`:'https://www.contentviewspro.com/wp-content/uploads/2017/07/default_image.png'} alt='image movie'/>
+                      <p>{rec.name}</p>
+                    </Link>
+                ))}
+              </div>
+            </InfoGroup>
+            <InfoGroup>
+              <h2>Cùng Thể Loại</h2>
+              <div className='cast-list'>
+                {dataB.similar.results.map((rec: nowPlayingMovie)=>(
+                    <Link href={`/tv/${rec.id}`} className="movie--movie-item" key={rec.id}>
+                      <img className='img-item' src={rec.backdrop_path?`https://media.themoviedb.org/t/p/w500_and_h282_face${rec.backdrop_path}`:'https://www.contentviewspro.com/wp-content/uploads/2017/07/default_image.png'} alt='image movie'/>
+                      <p>{rec.name}</p>
+                    </Link>
+                ))}
+              </div>
+            </InfoGroup>
+            <InfoGroup>
+              {/*<h2>Keywords</h2>*/}
+              {/*<div style={{width: '100%', display: 'flex', flexWrap: 'wrap', gap: '5px'}}>*/}
+              {/*  {dataB.keywords.keywords.map((kw: iGenre)=>(*/}
+              {/*      <p key={kw.id} style={{padding: '4px 8px', backgroundColor: '#222'}}>{kw.name}</p>*/}
+              {/*  ))}*/}
+              {/*</div>*/}
+            </InfoGroup>
           </RightBeside>
         </StyledBeside>
+
 
       </div>
   );

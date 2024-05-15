@@ -24,7 +24,15 @@ export interface nowPlayingMovie {
     overview: string,
     vote_average: number,
     last_air_date: string,
-    first_air_date: string
+    first_air_date: string,
+    media_type: 'tv'|'person'|'movie',
+    profile_path: string,
+    known_for_department: string,
+    known_for: [{
+        name: string,
+        title: string
+    }],
+    release_date: string
 }
 
 export interface keyword {

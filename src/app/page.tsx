@@ -9,6 +9,7 @@ import {Spinner} from "react-bootstrap";
 import {nowPlayingMovie} from "@/components/type/typeSome";
 import Genre from "@/components/Genre";
 import PopularHome from "@/components/PopularHome";
+import Header from "@/components/Header";
 
 const NowPlaying = lazy(()=>import('@/components/NowPlaying'))
 const Trending = lazy(()=>import('@/components/Trending'))
@@ -74,6 +75,7 @@ export default function Home() {
     if(isLoading||movie.isLoading||tv.isLoading) return (<div className='__loading'><Spinner animation="grow"/></div>)
 
   return (
+      <>
     <main>
 
         {/*<div style={{height: '2000px', background: 'red'}}></div>*/}
@@ -100,5 +102,6 @@ export default function Home() {
       {/*  <Trending />*/}
       {/*</div>*/}
     </main>
+      </>
   )
 }

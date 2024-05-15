@@ -20,8 +20,15 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning={true}>
       <head>
         <title>Nerdflicks</title>
+        {/*<link*/}
+        {/*    rel="stylesheet"*/}
+        {/*    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"*/}
+        {/*    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"*/}
+        {/*    crossOrigin="anonymous"*/}
+        {/*/>*/}
         <link rel="icon" href="https://icons8.com/icon/XPEgm3Fx2rpW/netflix" sizes="any" />
         <link rel="preconnect" href="https://api.themoviedb.org" />
+        {/*<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">*/}
         <link rel="dns-prefetch" href="https://api.themoviedb.org" />
         <link rel="preconnect" href="https://image.tmdb.org" />
         <link rel="dns-prefetch" href="https://image.tmdb.org" />
@@ -31,9 +38,8 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch&family=Dancing+Script:wght@600&family=Space+Grotesk:wght@600&family=Fjalla+One&family=Bebas+Neue&family=Montserrat:wght@600&display=swap" rel="stylesheet" />
       </head>
       <body className={inter.className}>
+        <Header></Header>
         <Providers>
-          {/*<header>keke</header>*/}
-        <Header />
           {children}
         </Providers>
       </body>

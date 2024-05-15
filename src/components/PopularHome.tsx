@@ -35,6 +35,9 @@ const PopularHome = ({data}: {data: objProp}) => {
                     <PopularItem type={type} data={data[type][2]}/>
                     <PopularItem type={type} data={data[type][3]}/>
                     <PopularItem type={type} data={data[type][4]}/>
+                    <PopularItem type={type} data={data[type][5]}/>
+                    <PopularItem type={type} data={data[type][6]}/>
+                    <PopularItem type={type} data={data[type][7]}/>
                 </div>
             </div>
         </div>

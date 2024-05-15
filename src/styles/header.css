@@ -1,0 +1,205 @@
+.styled-header{
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    height: 80px;
+    background:linear-gradient(to bottom, rgba(34, 34, 34, 0.4), rgba(34, 34, 34, 0));
+}
+
+.styled-header header{
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 80px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left-header{
+    display: flex;
+    align-items: end;
+    cursor: pointer;
+}
+
+.header--logo{
+    z-index: 50;
+}
+
+@keyframes animate{
+    100%{
+        height: 100%;
+    }
+}
+
+.logo_container{
+    height: 36px;
+    width: 21px;
+    background: inherit;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo__left{
+    position: absolute;
+    height: 0;
+    width: 7px;
+    background-color: red;
+    left: 0;
+    bottom: 0;
+    animation: animate 0.5s linear forwards;
+    animation-delay: 0s;
+}
+
+.logo__center{
+    position: absolute;
+    height: 0;
+    width: 7px;
+    transform: skew(20deg);
+    background-color: red;
+    box-shadow: -10px -10px 30px black;
+    top: 0;
+    left: 0;
+    transform-origin: left top;
+    z-index: 10;
+    animation: animate 0.5s linear forwards;
+    animation-delay: 0.5s;
+}
+
+.logo__right{
+    position: absolute;
+    height: 0;
+    width: 7px;
+    background-color: red;
+    bottom: 0;
+    right: 0;
+    animation: animate 0.5s linear forwards;
+    animation-delay: 1s;
+}
+
+.left-header h2{
+    font-family: 'Fjalla One', sans-serif !important;
+    font-size: 24px;
+    font-weight: bold;
+    position: relative;
+    overflow: hidden;
+    left: 2px;
+    bottom: -5px;
+    margin: 0;
+}
+
+.right-header{
+    position: relative;
+    display: flex;
+    gap: 20px;
+}
+
+.header--searchBar{
+    width: 260px;
+    position: relative;
+}
+
+.header--searchBar input{
+    background: inherit;
+    border: 1px solid rgb(235, 245, 255);
+    height: 36px;
+    width: 100%;
+    border-radius: 18px;
+    padding-left: 16px;
+}
+
+.header--searchBar input:focus{
+    outline: none;
+}
+
+.header--searchBar svg{
+    position: absolute;
+    cursor: pointer;
+    top: 5.5px;
+    right: 16px;
+    fill: white;
+}
+
+.header--collapse-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: inherit;
+    color: white;
+}
+
+.header--collapse-background{
+    background-color: #0B0B0B;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 400px;
+    height: 100vh;
+}
+
+.header--collapse-button{
+    cursor: pointer;
+    background: inherit;
+    border: none;
+    border-radius: 50%;
+    z-index: 1000;
+    height: 25px;
+    width: 25px;
+}
+
+.header--collapse-links{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.header--collapse-links a, .header--collapse-links p{
+    color: white;
+    font-size: 28px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.header--searchBox{
+    width: 100%;
+    position: absolute;
+    top: 44px;
+    border-radius: 20px;
+    min-height: 200px;
+    max-height: 400px;
+    overflow: scroll;
+    visibility: hidden;
+    background-color: rgba(11, 11, 11, 0.8);
+}
+
+.header--keyword{
+    margin-top: 10px;
+}
+
+.header--keyword a{
+    color: white;
+    text-decoration: none;
+    display: flex;
+    padding: 8px 10px;
+    cursor: pointer;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+}
+
+.header--keyword a:nth-child(even){
+    background-color: rgba(44, 44, 44, 0.6);
+}

@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import { JsxChild } from "typescript";
 import {useEffect} from "react";
+import Header from "@/components/Header";
 
 export const Providers = ({children}:{children: any}) => {
 
