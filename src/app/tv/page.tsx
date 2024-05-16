@@ -9,7 +9,7 @@ const StyledComponent = styled.div`
   min-height: 100vh;
   padding-top: 100px;
   background-color: #050c0f;
-  
+
   p{
     margin: 0;
   }
@@ -22,7 +22,7 @@ const StyledContainer = styled.div`
   .type-check{
     margin-top: 40px;
   }
-  
+
   .type-check p{
     padding: 10px 20px;
     border-radius: 12px;
@@ -47,16 +47,16 @@ const StyledContainer = styled.div`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  
+
   h1{
     margin-top: 40px;
     font-size: 72px;
   }
-  
+
   .search-text{
     position: relative;
   }
-  
+
   .search-text input{
     background-color: #171717;
     border: 1px solid #acacac;
@@ -70,7 +70,7 @@ const StyledContainer = styled.div`
   .search-text input:focus{
     outline: none;
   }
-  
+
   .search-text svg{
     position: absolute;
     bottom: 5.5px;
@@ -83,8 +83,8 @@ const Page = () => {
     return (
         <StyledComponent>
             <StyledContainer>
-                <FilterForm check='movie'></FilterForm>
-                <FilterDisplay type='movie'></FilterDisplay>
+                <FilterForm check='tv'></FilterForm>
+                <FilterDisplay type='tv'></FilterDisplay>
             </StyledContainer>
         </StyledComponent>
     );

@@ -5,6 +5,11 @@ import { JsxChild } from "typescript";
 import {useEffect} from "react";
 import Header from "@/components/Header";
 
+store.subscribe(()=>{
+    console.log('update')
+    console.log(store.getState())
+})
+
 export const Providers = ({children}:{children: any}) => {
 
     useEffect( () => {

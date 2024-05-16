@@ -34,6 +34,10 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://image.tmdb.org" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"
+        />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
         <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch&family=Dancing+Script:wght@600&family=Space+Grotesk:wght@600&family=Fjalla+One&family=Bebas+Neue&family=Montserrat:wght@600&display=swap" rel="stylesheet" />
       </head>
