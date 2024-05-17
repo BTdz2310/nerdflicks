@@ -2,25 +2,32 @@
 import { RootState } from "@/store/store";
 import { createSlice } from "@reduxjs/toolkit";
 
+interface StringObject {
+    [key: string]: string;
+}
+
 interface FilterState {
     movie: {
-        type: 'all' | 'now_playing' | 'popular' | 'top_rated' | 'upcoming',
+        // type: 'all' | 'now_playing' | 'popular' | 'top_rated' | 'upcoming',
+        type: string,
         certification: string,
         release_date1: string,
         release_date2: string,
         vote_average: string,
         vote_count: string,
         with_origin_country: string,
-        with_companies: Object,
-        with_people: Object,
+        with_companies: StringObject,
+        with_people: StringObject,
         with_runtime1: string,
         with_runtime2: string,
-        with_genres: Object,
-        with_keywords: Object,
+        with_status: Array<string>,
+        with_genres: StringObject,
+        with_keywords: StringObject,
         sorting: 'popularity.asc' | 'popularity.desc' | 'title.asc' | 'title.desc' | 'vote_average.asc' | 'vote_average.desc' | 'vote_count.asc' | 'vote_count.desc'
     },
     tv:{
-        type: 'all' | 'airing_today' | 'on_the_air' | 'popular' | 'top_rated',
+        // type: 'all' | 'airing_today' | 'on_the_air' | 'popular' | 'top_rated',
+        type: string,
         certification: string,
         with_status: Array<string>,
         release_date1: string,
@@ -28,11 +35,12 @@ interface FilterState {
         vote_average: string,
         vote_count: string,
         with_origin_country: string,
-        with_companies: Object,
+        with_people: StringObject,
+        with_companies: StringObject,
         with_runtime1: string,
         with_runtime2: string,
-        with_genres: Object,
-        with_keywords: Object,
+        with_genres: StringObject,
+        with_keywords: StringObject,
         sorting: 'popularity.asc' | 'popularity.desc' | 'title.asc' | 'title.desc' | 'vote_average.asc' | 'vote_average.desc' | 'vote_count.asc' | 'vote_count.desc'
     }
 }
@@ -46,37 +54,58 @@ const initialState: FilterState = {
         vote_average: '',
         vote_count: '',
         with_origin_country: '',
-        with_companies: [],
-        with_people: [],
+        with_companies: {},
+        with_people: {},
         with_runtime1: '',
         with_runtime2: '',
-        with_genres: [],
-        with_keywords: [],
+        with_genres: {},
+        with_status: [],
+        with_keywords: {},
         sorting: 'popularity.desc'
     },
     tv: {
         type: 'all',
         certification: '',
         with_status: [],
+        with_people: {},
         release_date1: '',
         release_date2: '',
         vote_average: '',
         vote_count: '',
         with_origin_country: '',
-        with_companies: [],
+        with_companies: {},
         with_runtime1: '',
         with_runtime2: '',
-        with_genres: [],
-        with_keywords: [],
+        with_genres: {},
+        with_keywords: {},
         sorting: 'popularity.desc'
     }
 }
 
-interface pickI{
+interface pickIOne{
     type: string,
     payload: {
         head: 'tv' | 'movie',
-        body: |'with_people' | 'certification' | 'with_status' | 'release_date' | 'vote_average' | 'vote_count' | 'with_origin_country' | 'with_companies' | 'with_runtime' | 'with_genres' | 'with_keywords',
+        body: 'type' | 'certification' | 'release_date1' | 'release_date2' | 'vote_average' | 'vote_count' | 'with_origin_country' | 'with_runtime1' | 'with_runtime2',
+        value: string
+    }
+}
+
+interface pickIArray{
+    type: string,
+    payload: {
+        head: 'tv' | 'movie',
+        body: 'with_status',
+        value: string
+    }
+}
+
+interface pickIObject{
+    type: string,
+    payload: {
+        head: 'tv' | 'movie',
+        body: 'with_people' | 'with_companies' | 'with_genres' | 'with_keywords',
+        key: string,
         value: string
     }
 }
@@ -85,19 +114,28 @@ export const filterSlice = createSlice({
     name: 'searchSlice',
     initialState,
     reducers: {
-        pickOne: (state, action) =>{
+        pickOne: (state, action: pickIOne) =>{
             state[action.payload.head][action.payload.body] = action.payload.value;
         },
-        pickArray: (state, action) => {
+        pickArray: (state, action: pickIArray) => {
             if(state[action.payload.head][action.payload.body].includes(action.payload.value)){
                 state[action.payload.head][action.payload.body] = state[action.payload.head][action.payload.body].filter((str: string)=>str!==action.payload.value);
             }else{
                 state[action.payload.head][action.payload.body].push(action.payload.value);
             }
         },
-        pickObject: (state, action) => {
-            if(state[action.payload.head][action.payload.body][action.payload.key]){
-                delete state[action.payload.head][action.payload.body][action.payload.key];
+        pickObject: (state, action: pickIObject) => {
+            if(Object.keys(state[action.payload.head][action.payload.body]).includes(action.payload.key)){
+                // delete state[action.payload.head][action.payload.body][action.payload.key];
+
+                state[action.payload.head][action.payload.body] = Object.keys(state[action.payload.head][action.payload.body]).filter(key =>
+                    key !== action.payload.key).reduce((obj: StringObject, key) =>
+                {
+                    obj[key] = state[action.payload.head][action.payload.body][key];
+                    console.log(obj)
+                    return obj;
+                }, {});
+
             }else{
                 state[action.payload.head][action.payload.body][action.payload.key] = action.payload.value;
             }

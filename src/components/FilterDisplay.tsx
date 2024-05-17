@@ -6,20 +6,18 @@ import {useSelector} from "react-redux";
 import {selectFilter} from "@/store/features/filterSlice/filterSlice";
 import styled from "styled-components";
 import {nowPlayingMovie} from "@/components/type/typeSome";
-import {Simulate} from "react-dom/test-utils";
-import change = Simulate.change;
 
 const queryArray = (arr: Array<string>) => {
-    return arr.join('-');
+    return arr.join('|');
 }
 
 const queryObject = (obj: Object, str: string) => {
     const arr: Array<string> = [];
     Object.keys(obj).forEach((key: string)=>{
-        if(obj[key]) arr.push(key)
+        arr.push(key)
     })
     if(arr.length===0) return '';
-    return `${str}${arr.join('-')}`;
+    return `${str}${arr.join('|')}`;
 }
 
 const ListItem = styled.div`
@@ -75,7 +73,7 @@ const FilterDisplay = ({type}: {type: 'tv'|'movie'}) => {
     const queryTV = () => {
         switch (selectedFilter[type].type){
             case 'all':
-                return `https://api.themoviedb.org/3/discover/tv?${selectedFilter.tv.certification?`certification=${selectedFilter.tv.certification}&`:''}certification_country=US&include_adult=false&include_video=false&language=vi-VN&page=1&region=US${selectedFilter.tv.release_date1?`&release_date.gte=${selectedFilter.tv.release_date1}`:''}${selectedFilter.tv.release_date2?`&release_date.lte=${selectedFilter.tv.release_date2}`:''}&sort_by=${selectedFilter.tv.sorting}${selectedFilter.tv.vote_average?`&vote_average.gte=${selectedFilter.tv.vote_average}`:''}${selectedFilter.tv.vote_count?`&vote_average.gte=${selectedFilter.tv.vote_count}`:''}${queryObject(selectedFilter.tv.with_companies, '&with_companies=')}${queryObject(selectedFilter.tv.with_genres, '&with_genres=')}${queryObject(selectedFilter.tv.with_keywords, '&with_keywords=')}${selectedFilter.tv.with_origin_country?`&with_origin_country=${selectedFilter.tv.with_origin_country.toUpperCase()}`:''}${selectedFilter.tv.with_runtime1?`&with_runtime.gte=${selectedFilter.tv.with_runtime2}`:''}${selectedFilter.tv.with_runtime2?`&with_runtime.lte=${selectedFilter.tv.with_runtime2}`:''}${selectedFilter.tv.with_status.length?`&with_status=${queryArray(selectedFilter.tv.with_status)}`:''}`;
+                return `https://api.themoviedb.org/3/discover/tv?${selectedFilter.tv.certification?`certification=${selectedFilter.tv.certification}&`:''}certification_country=US&include_adult=false&include_null_first_air_dates=false&language=vi-VN&page=1&region=US${selectedFilter.tv.release_date1?`&first_air_date.gte=${selectedFilter.tv.release_date1}`:''}${selectedFilter.tv.release_date2?`&first_air_date.lte=${selectedFilter.tv.release_date2}`:''}&sort_by=${selectedFilter.tv.sorting}${selectedFilter.tv.vote_average?`&vote_average.gte=${selectedFilter.tv.vote_average}`:''}${selectedFilter.tv.vote_count?`&vote_average.gte=${selectedFilter.tv.vote_count}`:''}${queryObject(selectedFilter.tv.with_companies, '&with_companies=')}${queryObject(selectedFilter.tv.with_genres, '&with_genres=')}${queryObject(selectedFilter.tv.with_keywords, '&with_keywords=')}${selectedFilter.tv.with_origin_country?`&with_origin_country=${selectedFilter.tv.with_origin_country.toUpperCase()}`:''}${selectedFilter.tv.with_runtime1?`&with_runtime.gte=${selectedFilter.tv.with_runtime2}`:''}${selectedFilter.tv.with_runtime2?`&with_runtime.lte=${selectedFilter.tv.with_runtime2}`:''}${selectedFilter.tv.with_status.length?`&with_status=${queryArray(selectedFilter.tv.with_status)}`:''}`;
             case 'airing_today':
                 return 'https://api.themoviedb.org/3/tv/airing_today?language=vi-VN&page=1';
             case 'on_the_air':
@@ -99,7 +97,8 @@ const FilterDisplay = ({type}: {type: 'tv'|'movie'}) => {
 
     if (!dataA) return <Spinner animation="grow" />;
 
-    console.log(queryMovie('all'))
+    console.log(queryMovie())
+    console.log(queryTV())
     console.log(dataA)
 
     return (

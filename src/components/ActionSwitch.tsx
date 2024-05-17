@@ -227,7 +227,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                             {data.map((ele: fetchFilter)=>(
                                 <div key={ele.id} className="button-item">
                                     <label><span>{`• ${ele.name}`}</span>
-                                        <input type="checkbox" checked={Object.keys(selectedFilter[content].with_companies).includes(ele.id.toString())&&selectedFilter[content].with_companies[ele.id]} onChange={()=>dispatch(pickObject({
+                                        <input type="checkbox" checked={Object.keys(selectedFilter[content].with_companies).includes(ele.id.toString())} onChange={()=>dispatch(pickObject({
                                             head: content,
                                             body: type,
                                             value: ele.name,
@@ -250,7 +250,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                             {data.map((ele: fetchFilter)=>(
                                 <div key={ele.id} className="button-item">
                                     <label><span>{`• ${ele.name}`}</span>
-                                        <input type="checkbox" checked={Object.keys(selectedFilter['movie'].with_people).includes(ele.id.toString())&&selectedFilter[content].with_companies[ele.id]} onChange={()=>dispatch(pickObject({
+                                        <input type="checkbox" checked={Object.keys(selectedFilter['movie'].with_people).includes(ele.id.toString())} onChange={()=>dispatch(pickObject({
                                             head: content,
                                             body: type,
                                             value: ele.name,
@@ -300,7 +300,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                             {data.map((ele: fetchFilter)=>(
                                 <div key={ele.id} className="button-item">
                                     <label><span>{`• ${ele.name}`}</span>
-                                        <input type="checkbox" checked={Object.keys(selectedFilter[content].with_keywords).includes(ele.id.toString())&&selectedFilter[content].with_keywords[ele.id]} onChange={()=>dispatch(pickObject({
+                                        <input type="checkbox" checked={Object.keys(selectedFilter[content].with_keywords).includes(ele.id.toString())} onChange={()=>dispatch(pickObject({
                                             head: content,
                                             body: type,
                                             value: ele.name,
@@ -383,7 +383,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                         {movieGenre.map((mv)=>(
                             <div key={mv.id} className="button-item">
                                 <label><span>{mv.name}</span>
-                                    <input type="checkbox" checked={Object.keys(selectedFilter[content].with_genres).includes(mv.id.toString())&&selectedFilter[content].with_genres[mv.id]} onChange={()=>dispatch(pickObject({
+                                    <input type="checkbox" checked={Object.keys(selectedFilter[content].with_genres).includes(mv.id.toString())} onChange={()=>dispatch(pickObject({
                                         head: content,
                                         body: type,
                                         value: mv.name,
