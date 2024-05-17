@@ -23,7 +23,7 @@ interface FilterState {
         with_status: Array<string>,
         with_genres: StringObject,
         with_keywords: StringObject,
-        sorting: 'popularity.asc' | 'popularity.desc' | 'title.asc' | 'title.desc' | 'vote_average.asc' | 'vote_average.desc' | 'vote_count.asc' | 'vote_count.desc'
+        sorting: string
     },
     tv:{
         // type: 'all' | 'airing_today' | 'on_the_air' | 'popular' | 'top_rated',
@@ -41,7 +41,7 @@ interface FilterState {
         with_runtime2: string,
         with_genres: StringObject,
         with_keywords: StringObject,
-        sorting: 'popularity.asc' | 'popularity.desc' | 'title.asc' | 'title.desc' | 'vote_average.asc' | 'vote_average.desc' | 'vote_count.asc' | 'vote_count.desc'
+        sorting: string
     }
 }
 
@@ -86,7 +86,7 @@ interface pickIOne{
     type: string,
     payload: {
         head: 'tv' | 'movie',
-        body: 'type' | 'certification' | 'release_date1' | 'release_date2' | 'vote_average' | 'vote_count' | 'with_origin_country' | 'with_runtime1' | 'with_runtime2',
+        body: 'type' | 'certification' | 'release_date1' | 'release_date2' | 'vote_average' | 'vote_count' | 'with_origin_country' | 'with_runtime1' | 'with_runtime2' | 'sorting',
         value: string
     }
 }
