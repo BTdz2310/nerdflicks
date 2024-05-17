@@ -4,6 +4,7 @@ import { store } from "./store";
 import { JsxChild } from "typescript";
 import {useEffect} from "react";
 import Header from "@/components/Header";
+import Spinner from "react-bootstrap/Spinner";
 
 store.subscribe(()=>{
     console.log('update')
