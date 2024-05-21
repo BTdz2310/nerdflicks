@@ -2,7 +2,7 @@
 import React from 'react'
 import { rtnList } from './type/typeSome'
 import RatingIcon from './RatingIcon'
-import Link from 'next/link'
+import { Link } from 'next-view-transitions'
 import GenreIcon from './GenreIcon'
 
 const MovieCard = ({obj}: {obj: rtnList}) => {

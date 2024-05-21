@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import {nowPlayingMovie} from "@/components/type/typeSome";
-import Link from "next/link";
+import { Link } from 'next-view-transitions'
 import {genreById} from "@/components/GenreIcon";
 import styled from "styled-components";
 import {useSearchParams} from "next/navigation";

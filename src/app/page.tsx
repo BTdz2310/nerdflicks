@@ -3,18 +3,41 @@ import '../styles/home.css'
 // import NowPlaying from '@/components/NowPlaying'
 import {lazy, useEffect, useRef, useState} from 'react'
 import Check from "@/components/Check";
-import {options} from "@/utils/utils";
+import {getAccessTokenGithub, options} from "@/utils/utils";
 import useSWR from "swr";
 import {Spinner} from "react-bootstrap";
 import {nowPlayingMovie} from "@/components/type/typeSome";
 import Genre from "@/components/Genre";
 import PopularHome from "@/components/PopularHome";
 import Header from "@/components/Header";
+import {useSearchParams} from "next/navigation";
+import {toast} from "react-toastify";
+import { useCookies } from 'next-client-cookies';
 
 const NowPlaying = lazy(()=>import('@/components/NowPlaying'))
 const Trending = lazy(()=>import('@/components/Trending'))
 
 export default function Home() {
+
+    const searchParams = useSearchParams()
+
+    const codeParam = searchParams.get('code');
+    const cookies = useCookies();
+
+    useEffect(() => {
+        if(codeParam){
+            getAccessTokenGithub(codeParam).then(async (resp) => {
+                const response = await fetch(`http://localhost:5001/api/github/login?accessToken=${resp.access_token}`);
+                const json = await response.json();
+                if(response.status===200){
+                    cookies.set('token', json);
+                    toast.success(json.msg);
+                }else{
+                    toast.error(json.msg);
+                }
+            })
+        }
+    }, [codeParam]);
 
     // const refScrollContainer = useRef(null);
 

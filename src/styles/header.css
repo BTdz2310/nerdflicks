@@ -20,7 +20,7 @@
     align-items: center;
 }
 
-.left-header{
+.left-header a{
     display: flex;
     align-items: end;
     cursor: pointer;
@@ -173,6 +173,12 @@
     cursor: pointer;
 }
 
+.header--collapse-links p a{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
 .header--searchBox{
     width: 100%;
     position: absolute;
@@ -202,4 +208,9 @@
 
 .header--keyword a:nth-child(even){
     background-color: rgba(44, 44, 44, 0.6);
+}
+
+.header--collapse-links p:hover{
+    transform: scale(1.1)!important;
+    transition: 0.1s;
 }

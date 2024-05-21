@@ -140,6 +140,9 @@ export const filterSlice = createSlice({
                 state[action.payload.head][action.payload.body][action.payload.key] = action.payload.value;
             }
         },
+        clearFilter: (state, action) => {
+            state = initialState;
+        }
     }
 })
 
@@ -148,5 +151,5 @@ export const selectFilter = (state: RootState) => state.filterSlice;
 export const selectMovieFilter = (state: RootState) => state.filterSlice.movie;
 export const selectTVFilter = (state: RootState) => state.filterSlice.tv;
 
-export const {pickOne, pickArray, pickObject} = filterSlice.actions;
+export const {pickOne, pickArray, pickObject, clearFilter} = filterSlice.actions;
 export default filterSlice.reducer;

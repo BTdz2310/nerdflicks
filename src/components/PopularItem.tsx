@@ -1,7 +1,7 @@
 'use client';
 import React, {useLayoutEffect, useRef} from 'react';
 import {nowPlayingMovie} from "@/components/type/typeSome";
-import Link from "next/link";
+import { Link } from 'next-view-transitions'
 import gsap from "gsap";
 import {ScrollTrigger} from "gsap/ScrollTrigger";
 

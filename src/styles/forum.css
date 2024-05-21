@@ -1,0 +1,40 @@
+.forum__container{
+    width: 100%;
+    min-height: 100vh;
+    background-color: #171717;
+    padding-top: 100px;
+}
+
+.forum__content{
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 40px;
+    display: flex;
+}
+
+.forum__left{
+    width: 75%;
+}
+
+.forum__head{
+    display: flex;
+    align-items: center;
+    margin: 40px 0;
+    /*gap: 40px;*/
+    justify-content: space-between;
+}
+
+.forum__head h1{
+    font-size: 72px;
+}
+
+.forum__head p{
+    border: 1px solid #acacac;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.forum__head p i{
+    padding-right: 16px;
+}

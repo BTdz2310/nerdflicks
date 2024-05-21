@@ -1,7 +1,7 @@
 'use client'
 import React, {useEffect, useState, lazy, useRef, useLayoutEffect} from 'react'
 import useSWR from 'swr'
-import Link from 'next/link';
+import { Link } from 'next-view-transitions'
 import { useRouter } from 'next/navigation';
 import {nowPlayingMovie} from './type/typeSome';
 import styled from "styled-components";

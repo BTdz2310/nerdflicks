@@ -1448,3 +1448,10 @@ export const movieGenre = [
         "name": "Phim Miền Tây"
     }
 ]
+
+
+export const getAccessTokenGithub = async (code: string) => {
+    const response = await fetch(`http://localhost:5001/api/github/accessToken?code=${code}`);
+    const json = await response.json();
+    return json;
+}

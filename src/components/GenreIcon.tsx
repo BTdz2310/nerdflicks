@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import '../styles/genre-icon.css'
-import Link from 'next/link'
+import { Link } from 'next-view-transitions'
 import {getColorHex} from "@/utils/utils";
 
 const genreColor = {

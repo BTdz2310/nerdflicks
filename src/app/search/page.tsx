@@ -6,7 +6,7 @@ import useSWR from "swr";
 import {fetcher} from "@/utils/utils";
 import Spinner from "react-bootstrap/Spinner";
 import {nowPlayingMovie} from "@/components/type/typeSome";
-import Link from "next/link";
+import { Link } from 'next-view-transitions'
 import {iGenre} from "@/app/movie/[id]/page";
 import "@/styles/movie-page.css";
 import {genreById} from "@/components/GenreIcon";
