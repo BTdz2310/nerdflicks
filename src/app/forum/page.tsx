@@ -4,10 +4,9 @@ import "@/styles/forum.css";
 import {Link} from "next-view-transitions";
 import {Spinner} from "react-bootstrap";
 import useSWR from "swr";
-import {fetcher} from "@/utils/utils";
+import {fetcher, shortenString} from "@/utils/utils";
 import {nowPlayingMovie} from "@/components/type/typeSome";
 import {useCookies} from "next-client-cookies";
-import {shortenString} from "@/app/forum/new/page";
 import ReactLoading from "react-loading";
 
 interface postI{
@@ -59,7 +58,7 @@ const Page = () => {
                                     </div>
                                     <div className="post__card--left-overview">
                                         <h3>{post.title}</h3>
-                                        <p className='post__card--content'>{shortenString(post.content)}</p>
+                                        <p className='post__card--content'>{shortenString(post.content, 200)}</p>
                                         <div className='post__card--tags'>{post.tags.map((tag: string)=>(
                                             <p key={tag}>{tag}</p>
                                         ))}</div>

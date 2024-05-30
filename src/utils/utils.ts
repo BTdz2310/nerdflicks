@@ -44,6 +44,24 @@ export const getAverageColor = (imgElement:any, ratio:number) => {
     }
 }
 
+export function shortenString(str: string, maxLength: number) {
+    // const maxLength = 200;
+
+    if (!str) {
+        return "";
+    }
+
+    str = str.trim();
+
+    if (str.length > maxLength) {
+        const cutIndex = str.lastIndexOf(" ", maxLength);
+
+        str = str.substring(0, cutIndex) + "...";
+    }
+
+    return str;
+}
+
 export const formatCreatedUtc = (createdUtc: number) => {
     const now = Date.now();
     const diff = (now - createdUtc)/1000;

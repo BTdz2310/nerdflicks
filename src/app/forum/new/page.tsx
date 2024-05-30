@@ -3,7 +3,7 @@ import React, {Fragment, useEffect, useState} from 'react';
 import {CustomLink} from "@/components/CustomLink";
 import useSWR from "swr";
 import "@/styles/forum.css";
-import {fetcher, options} from "@/utils/utils";
+import {fetcher, options, shortenString} from "@/utils/utils";
 import {Spinner} from "react-bootstrap";
 import useDebounce from "@/utils/useDebounce";
 import {nowPlayingMovie} from "@/components/type/typeSome";
@@ -16,23 +16,7 @@ import {toast} from "react-toastify";
 import {useCookies} from "next-client-cookies";
 import {Link} from "next-view-transitions";
 
-export function shortenString(str: string, maxLength: number) {
-    // const maxLength = 200;
 
-    if (!str) {
-        return "";
-    }
-
-    str = str.trim();
-
-    if (str.length > maxLength) {
-        const cutIndex = str.lastIndexOf(" ", maxLength);
-
-        str = str.substring(0, cutIndex) + "...";
-    }
-
-    return str;
-}
 
 
 const Item = ({data, action, check, big}: {data: nowPlayingMovie, action: Function, check: boolean, big: boolean}) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import "@/styles/forum.css";
 import {nowPlayingMovie} from "@/components/type/typeSome";
 import {genreById} from "@/components/GenreIcon";
-import {shortenString} from "@/app/forum/new/page";
+import {shortenString} from "@/utils/utils";
 import AddTo from "@/components/AddTo";
 import {Link} from "next-view-transitions";
 
