@@ -111,7 +111,7 @@ interface pickIObject{
 }
 
 export const filterSlice = createSlice({
-    name: 'searchSlice',
+    name: 'filterSlice',
     initialState,
     reducers: {
         pickOne: (state, action: pickIOne) =>{
@@ -140,11 +140,51 @@ export const filterSlice = createSlice({
                 state[action.payload.head][action.payload.body][action.payload.key] = action.payload.value;
             }
         },
-        clearFilter: (state, action) => {
-            state = initialState;
+        clearFilter: (state) => {
+            state.movie = {
+                type: 'all',
+                certification: '',
+                release_date1: '',
+                release_date2: '',
+                vote_average: '',
+                vote_count: '',
+                with_origin_country: '',
+                with_companies: {},
+                with_people: {},
+                with_runtime1: '',
+                with_runtime2: '',
+                with_genres: {},
+                with_status: [],
+                with_keywords: {},
+                sorting: 'popularity.desc'
+            };
+            state.tv = {
+                type: 'all',
+                certification: '',
+                with_status: [],
+                with_people: {},
+                release_date1: '',
+                release_date2: '',
+                vote_average: '',
+                vote_count: '',
+                with_origin_country: '',
+                with_companies: {},
+                with_runtime1: '',
+                with_runtime2: '',
+                with_genres: {},
+                with_keywords: {},
+                sorting: 'popularity.desc'
+            }
         }
     }
 })
+
+export const selectType = (state: RootState) => {
+    return {
+        tv: state.filterSlice.tv.type,
+        movie: state.filterSlice.movie.type
+    }
+}
 
 export const selectFilter = (state: RootState) => state.filterSlice;
 

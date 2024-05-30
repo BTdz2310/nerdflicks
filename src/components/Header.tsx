@@ -1,6 +1,6 @@
 "use client";
 import React, {lazy, useCallback, useState, useEffect, useRef} from "react";
-import { useRouter } from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import "@/styles/header.css";
 import { motion } from "framer-motion"
 import {Spinner} from "react-bootstrap";
@@ -9,6 +9,9 @@ import { useCookies } from 'next-client-cookies';
 import useDebounce from "@/utils/useDebounce";
 import {keyword} from "@/components/type/typeSome";
 import { Link } from 'next-view-transitions'
+import {useDispatch, useSelector} from "react-redux";
+import {logout, selectAvatar, selectId} from "@/store/features/userSlice/userSlice";
+import ReactLoading from "react-loading";
 
 
 const Header = () => {
@@ -22,8 +25,15 @@ const Header = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const debounce = useDebounce(searchText, 200);
+  const selectedAvatar = useSelector(selectAvatar);
+  const selectedId = useSelector(selectId);
+
+  const dispatch = useDispatch();
+
   const cookies = useCookies();
+  const debounce = useDebounce(searchText, 200);
+
+  const pathname = usePathname();
 
   useEffect(()=>{
     const loadKeyword = async () => {
@@ -67,7 +77,8 @@ const Header = () => {
     closed: {
       clipPath: 'circle(0px at 400px 0px)',
       transition: {
-        delay: 0.5,
+        delay: 0.25,
+        // duration: 0.5,
         type: 'spring',
         stiffness: 400,
         damping: 40,
@@ -122,14 +133,16 @@ const Header = () => {
     router.push(`/search?search=${searchText}`, {scroll : false})
   }
 
-  const handleGo = (link: string) => {
+  const handleGo = () => {
     setOpen(false);
     // router.push(`${link}`, {scroll : false})
   }
 
   const handleLogout = () => {
+    dispatch(logout());
     setOpen(false);
     cookies.remove('token');
+
     // router.push(`/`, {scroll : false})
   }
 
@@ -138,7 +151,7 @@ const Header = () => {
     <div className='styled-header'>
       <header>
 
-          <div className='left-header' onClick={()=>handleHome()}>
+          <div className='left-header'>
               <Link href='/'>
                 <div className="header--logo">
                   <div className="logo_container">
@@ -161,9 +174,9 @@ const Header = () => {
                   </svg>
                 </button>
               </form>
-              {(searchText&&data.length>0)&&<div className='header--searchBox' style={{visibility: isFocused ? 'visible' : 'hidden', transform: isFocused ? 'none' : 'translateY(-8px)', opacity: isFocused ? '1' : '0', transition: '0.2s'}}>
+              {(searchText&&data.length>0)&&<div className='header--searchBox' style={{visibility: isFocused ? 'visible' : 'hidden', transform: isFocused ? 'none' : 'translateY(-8px)', opacity: isFocused ? '1' : '0', transition: '0.2s'}} onWheel={(e)=>e.stopPropagation()}>
                 <>
-                  {loading?(<div className='__loading'><Spinner animation="grow"/></div>):(<div className='header--keyword'>
+                  {loading?(<div className='__loading-container'><ReactLoading type={'spinningBubbles'} color={'white'} height={50} width={50}/></div>):(<div className='header--keyword'>
                     {data.map((keyword: keyword)=>(
                       <Link onClick={()=>setIsFocused(false)} href={`/search?search=${keyword.media_type==='movie'?keyword.title:keyword.name}&type=${keyword.media_type}`} key={keyword.id}>
                         <p>{keyword.media_type==='movie'?(keyword.title.length>25?`${keyword.title.slice(0, 25)} ...`: keyword.title):(keyword.name.length>25?`${keyword.name.slice(0, 25)} ...`: keyword.name)}</p>
@@ -181,7 +194,15 @@ const Header = () => {
                       variants={itemVariants}
                       // whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={()=>handleGo('/movie')}
+                      onClick={()=>handleGo()}
+                  >
+                    <Link href={'/'}><i className="fa-solid fa-house"></i>Trang Chủ</Link>
+                  </motion.p>
+                  <motion.p
+                      variants={itemVariants}
+                      // whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={()=>handleGo()}
                   >
                     <Link href={'/movie'}><i className="fa-solid fa-clapperboard"></i>Điện Ảnh</Link>
                   </motion.p>
@@ -189,7 +210,7 @@ const Header = () => {
                       variants={itemVariants}
                       // whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={()=>handleGo('/tv')}
+                      onClick={()=>handleGo()}
                   >
                     <Link href={'/tv'}><i className="fa-solid fa-film"></i>Truyền Hình</Link>
                   </motion.p>
@@ -197,7 +218,7 @@ const Header = () => {
                       variants={itemVariants}
                       // whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={()=>handleGo('/forum')}
+                      onClick={()=>handleGo()}
                   >
                     <Link href={'/forum'}><i className="fa-solid fa-people-line"></i>Diễn Đàn</Link>
                   </motion.p>
@@ -206,9 +227,10 @@ const Header = () => {
                           variants={itemVariants}
                           // whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.95 }}
-                          onClick={()=>handleGo('/user')}
+                          onClick={()=>handleGo()}
                       >
-                        <Link href={'/user'}><i className="fa-solid fa-user"></i>Hồ Sơ</Link>
+                        {/*<i className="fa-solid fa-user"></i>*/}
+                        <Link href={`/user/profile/${selectedId}`}><img src={selectedAvatar} alt="avatar" style={{width: '28px', height: '28px', borderRadius: '50%'}}/>Hồ Sơ</Link>
                       </motion.p>
                   )}
                   {cookies.get('token')?(
@@ -217,17 +239,22 @@ const Header = () => {
                           // whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={()=>handleLogout()}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '20px'
+                          }}
                       >
-                        <Link href={'/'}><i className="fa-solid fa-arrow-up-from-bracket" style={{transform: 'rotate(-90deg)'}}></i>Đăng Xuất</Link>
+                        <i className="fa-solid fa-arrow-up-from-bracket" style={{transform: 'rotate(-90deg)'}}></i>Đăng Xuất
                       </motion.p>
                   ):(
                       <motion.p
                           variants={itemVariants}
                           // whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.95 }}
-                          onClick={()=>handleGo('/login')}
+                          onClick={()=>handleGo()}
                       >
-                        <Link href={'/login'}><i className="fa-solid fa-right-to-bracket"></i>Đăng Nhập</Link>
+                        <Link href={`/login?from=${encodeURIComponent(pathname)}`}><i className="fa-solid fa-right-to-bracket"></i>Đăng Nhập</Link>
                       </motion.p>
                   )}
                 </motion.div>

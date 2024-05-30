@@ -2,7 +2,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
-import {pickOne, selectFilter, selectMovieFilter} from "@/store/features/filterSlice/filterSlice";
+import {pickOne, selectFilter, selectMovieFilter, selectType} from "@/store/features/filterSlice/filterSlice";
 import ActionSwitch from "@/components/ActionSwitch";
 
 const FilterList = styled.div`
@@ -156,6 +156,7 @@ const FilterForm = ({check}: {check: 'tv'|'movie'}) => {
     const [action, setAction] = useState<'certification' | 'release_date' | 'vote_average' | 'vote_count' | 'with_origin_country' | 'with_companies' | 'with_people' | 'with_runtime' | 'with_genres' | 'with_keywords' | 'with_status' | ''>('');
     const dispatch = useDispatch();
     const selectedFilter = useSelector(selectFilter);
+    const selectedType = useSelector(selectType);
 
     useEffect(() => {
         window.addEventListener('click', () => {
@@ -191,27 +192,27 @@ const FilterForm = ({check}: {check: 'tv'|'movie'}) => {
                 </div>
                 {check==='movie'?(
                     <div className='type-check' style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
-                        <p onClick={()=>dispatch(pickOne({
+                        <p style={{backgroundColor: selectedType.movie==='all'?'#FAFAEB':'inherit', color: selectedType.movie==='all'?'black':'white'}} onClick={()=>dispatch(pickOne({
                             head: 'movie',
                             body: 'type',
                             value: 'all'
                         }))}>Tất Cả</p>
-                        <p onClick={()=>dispatch(pickOne({
+                        <p style={{backgroundColor: selectedType.movie==='now_playing'?'#FAFAEB':'inherit', color: selectedType.movie==='now_playing'?'black':'white'}} onClick={()=>dispatch(pickOne({
                             head: 'movie',
                             body: 'type',
                             value: 'now_playing'
                         }))}>Đang Chiếu Rạp</p>
-                        <p onClick={()=>dispatch(pickOne({
+                        <p style={{backgroundColor: selectedType.movie==='popular'?'#FAFAEB':'inherit', color: selectedType.movie==='popular'?'black':'white'}} onClick={()=>dispatch(pickOne({
                             head: 'movie',
                             body: 'type',
                             value: 'popular'
                         }))}>Phổ Biến</p>
-                        <p onClick={()=>dispatch(pickOne({
+                        <p style={{backgroundColor: selectedType.movie==='top_rated'?'#FAFAEB':'inherit', color: selectedType.movie==='top_rated'?'black':'white'}} onClick={()=>dispatch(pickOne({
                             head: 'movie',
                             body: 'type',
                             value: 'top_rated'
                         }))}>Được Đánh Giá Cao</p>
-                        <p onClick={()=>dispatch(pickOne({
+                        <p style={{backgroundColor: selectedType.movie==='upcoming'?'#FAFAEB':'inherit', color: selectedType.movie==='upcoming'?'black':'white'}} onClick={()=>dispatch(pickOne({
                             head: 'movie',
                             body: 'type',
                             value: 'upcoming'
@@ -219,27 +220,27 @@ const FilterForm = ({check}: {check: 'tv'|'movie'}) => {
                     </div>
                 ):(
                     <div className='type-check' style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
-                        <p onClick={()=>dispatch(pickOne({
+                        <p style={{backgroundColor: selectedType.tv==='all'?'#FAFAEB':'inherit', color: selectedType.tv==='all'?'black':'white'}} onClick={()=>dispatch(pickOne({
                             head: 'tv',
                             body: 'type',
                             value: 'all'
                         }))}>Tất Cả</p>
-                        <p onClick={()=>dispatch(pickOne({
+                        <p style={{backgroundColor: selectedType.tv==='airing_today'?'#FAFAEB':'inherit', color: selectedType.tv==='airing_today'?'black':'white'}} onClick={()=>dispatch(pickOne({
                             head: 'tv',
                             body: 'type',
                             value: 'airing_today'
                         }))}>Tập Mới Hôm Nay</p>
-                        <p onClick={()=>dispatch(pickOne({
+                        <p style={{backgroundColor: selectedType.tv==='on_the_air'?'#FAFAEB':'inherit', color: selectedType.tv==='on_the_air'?'black':'white'}} onClick={()=>dispatch(pickOne({
                             head: 'tv',
                             body: 'type',
                             value: 'on_the_air'
                         }))}>Đang Phát Sóng</p>
-                        <p onClick={()=>dispatch(pickOne({
+                        <p style={{backgroundColor: selectedType.tv==='popular'?'#FAFAEB':'inherit', color: selectedType.tv==='popular'?'black':'white'}} onClick={()=>dispatch(pickOne({
                             head: 'tv',
                             body: 'type',
                             value: 'popular'
                         }))}>Phổ Biến</p>
-                        <p onClick={()=>dispatch(pickOne({
+                        <p style={{backgroundColor: selectedType.tv==='top_rated'?'#FAFAEB':'inherit', color: selectedType.tv==='top_rated'?'black':'white'}} onClick={()=>dispatch(pickOne({
                             head: 'tv',
                             body: 'type',
                             value: 'top_rated'

@@ -44,6 +44,25 @@ export const getAverageColor = (imgElement:any, ratio:number) => {
     }
 }
 
+export const formatCreatedUtc = (createdUtc: number) => {
+    const now = Date.now();
+    const diff = (now - createdUtc)/1000;
+
+    if (diff < 60) {
+        return "mới đây";
+    } else if (diff < 3600) {
+        return `${Math.floor(diff / 60)} phút trước`;
+    } else if (diff < 86400) {
+        return `${Math.floor(diff / 3600)} giờ trước`;
+    } else if (diff < 2592000) {
+        return `${Math.floor(diff / 86400)} ngày trước`;
+    } else if (diff < 31104000) {
+        return `${Math.floor(diff / 2592000)} tháng trước`;
+    } else {
+        return `${Math.floor(diff / 31104000)} năm trước`;
+    }
+};
+
 export function getColorHex(rgb:string) {
     const hex = rgb.slice(1);
     const r = parseInt(hex.slice(0, 2), 16);

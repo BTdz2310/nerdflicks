@@ -1,0 +1,63 @@
+.addTo__container{
+    display: flex;
+    gap: 10px;
+}
+
+.addTo__container button{
+    border-radius: 50%;
+    box-sizing: content-box;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 20px;
+    position: relative;
+}
+
+.addTo__table{
+    z-index: 10000;
+    width: 240px;
+    height: 200px;
+    background-color: #171717;
+    border-radius: 12px;
+    position: absolute;
+    left: 0;
+    padding: 10px;
+    top: 50px;
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+}
+
+.addTo__table h2{
+    font-size: 16px!important;
+    color: white!important;
+    padding-bottom: 10px;
+}
+
+.addTo__table input{
+    width: 100px;
+}
+
+.addTo__list{
+    flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 6px;
+    overflow: scroll;
+}
+
+.addTo__list label{
+    display: flex;
+    font-size: 16px;
+    justify-content: space-between;
+}
+
+.addTo__list label input{
+    width: unset;
+}
+
+.addTo__button{
+    display: flex;
+    justify-content: right;
+}

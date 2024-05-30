@@ -10,6 +10,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {nowPlayingMovie} from "@/components/type/typeSome";
 import {list} from "postcss";
 import {fetcher} from "@/utils/utils";
+import {useDispatch} from "react-redux";
+import {clearFilter, pickObject} from "@/store/features/filterSlice/filterSlice";
+import AddTo from "@/components/AddTo";
 
 function generateRandomDarkColor() {
     const darkColors = [
@@ -237,6 +240,19 @@ const MoviePage = ({ params }: { params: { id: number } }) => {
 
     let keyVideo = '';
 
+    const dispatch = useDispatch();
+
+    const handleKeyword = (id: number, name: string) => {
+        dispatch(clearFilter());
+        console.log('clear')
+        dispatch(pickObject({
+            head: 'movie',
+            body: 'with_keywords',
+            value: name,
+            key: id.toString()
+        }))
+    }
+
     // useLayoutEffect(() => {
     //     if(isReady){
     //         gsap.registerPlugin(ScrollTrigger);
@@ -297,9 +313,12 @@ console.log(dataC)
             <InfoContainer>
                 <LeftInfo>
                     <h2>{dataA.title}</h2>
-                    <div className="info-line">
-                        <div className="info-box"></div>
-                        <p>thông tin</p>
+                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                        <div className="info-line">
+                            <div className="info-box"></div>
+                            <p>thông tin</p>
+                        </div>
+                        <AddTo media='movie' id={params.id} data={dataA}/>
                     </div>
                     <div className="info-out">
                         <p className='info-text'>
@@ -451,7 +470,7 @@ console.log(dataC)
                     <h2>Keywords</h2>
                     <div style={{width: '100%', display: 'flex', flexWrap: 'wrap', gap: '5px'}}>
                         {dataB.keywords.keywords.map((kw: iGenre)=>(
-                            <p key={kw.id} style={{padding: '4px 8px', backgroundColor: '#222'}}>{kw.name}</p>
+                            <Link href={'/movie'} onClick={()=>handleKeyword(kw.id, kw.name)} key={kw.id} style={{padding: '4px 8px', backgroundColor: '#222'}}>{kw.name}</Link>
                         ))}
                     </div>
                 </InfoGroup>

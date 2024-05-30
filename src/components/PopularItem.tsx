@@ -83,9 +83,11 @@ const PopularItem = ({data, type}: {data: nowPlayingMovie, type: string}) => {
             <div className="__popular--info" ref={textRef} style={{transform: `translate3d(0px, 3vh, 0px)`}}>
                 <div className="__popular--circle"></div>
                 <div className="__popular--hide" ref={hideRef}></div>
-                <Link href={`/${type}/${data.id}`} className="__popular--text" ref={linkRef}>
-                    {data.title?data.title:data.name}
-                </Link>
+                <p ref={linkRef} className="__popular--text">
+                    <Link href={`/${type}/${data.id}`}>
+                        {data.title?data.title:data.name}
+                    </Link>
+                </p>
             </div>
         </div>
     );

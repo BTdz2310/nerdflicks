@@ -70,8 +70,8 @@ input[type=number] {
     font-weight: 500
 }
 
-.login__form .box input[type="text"]:not(.notW):focus,
-.login__form .box input[type="password"]:not(.notW):focus,
+.login__form .box input[type="text"]:focus,
+.login__form .box input[type="password"]:focus,
 .login__form .box input[type="number"]:focus {
     width: 300px!important;
     border-color: #6610f2;

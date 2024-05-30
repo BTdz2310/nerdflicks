@@ -1,9 +1,12 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from 'next-view-transitions'
 import "@/styles/auth.css";
 import {toast} from "react-toastify";
-import {useRouter} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
+import {useDispatch} from "react-redux";
+import {setUser} from "@/store/features/userSlice/userSlice";
+import {useCookies} from "next-client-cookies";
 
 const Page = () => {
 
@@ -11,6 +14,18 @@ const Page = () => {
     const [password, setPassword] = useState('');
     const [pass2, setPass2] = useState('');
     const router = useRouter();
+    const dispatch = useDispatch();
+
+    const searchParams = useSearchParams()
+
+    const backFrom = searchParams.get('from')
+    const cookies = useCookies();
+
+    useEffect(() => {
+        if(cookies.get('token')){
+            router.push('/')
+        }
+    }, []);
 
     const reset = () => {
         setUsername('');
@@ -29,7 +44,7 @@ const Page = () => {
 
         reset();
 
-        const response = await fetch('https://localhost:5001/api/register', {
+        const response = await fetch('http://localhost:5001/api/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
@@ -40,7 +55,7 @@ const Page = () => {
 
         if(response.status === 200){
             toast.success(json);
-            router.push('/login', {scroll : false});
+            router.push(`/login?from=${encodeURIComponent(backFrom||'/')}`, {scroll : false});
         }else{
             toast.error(json);
         }
@@ -53,7 +68,7 @@ const Page = () => {
                 <input id={username.length>=6?'validTxt':(username===''?undefined:'nvalidTxt')} type="text" name="" placeholder="Tên Đăng Nhập" value={username} onChange={(e)=>setUsername(e.target.value)}/>
                 <input id={password.length>=8?'validTxt':(password===''?undefined:'nvalidTxt')} type="password" name="" placeholder="Mật Khẩu" value={password} onChange={(e)=>setPassword(e.target.value)} />
                 <input id={password===pass2&&password!==''?'validTxt':(pass2===''?undefined:'nvalidTxt')} type="password" name="" placeholder="Xác Nhận Mật Khẩu" value={pass2} onChange={(e)=>setPass2(e.target.value)}/>
-                <Link className="signup text-muted" href="../login">Quay Lại Đăng Nhập</Link>
+                <Link className="signup text-muted" href={`/login?from=${encodeURIComponent(backFrom||'/')}`}>Quay Lại Đăng Nhập</Link>
                 <input type="submit" name="" value="Đăng Ký" />
             </form>
         </div>

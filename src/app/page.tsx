@@ -1,7 +1,7 @@
 'use client'
 import '../styles/home.css'
 // import NowPlaying from '@/components/NowPlaying'
-import {lazy, useEffect, useRef, useState} from 'react'
+import React, {lazy, useEffect, useRef, useState} from 'react'
 import Check from "@/components/Check";
 import {getAccessTokenGithub, options} from "@/utils/utils";
 import useSWR from "swr";
@@ -10,9 +10,12 @@ import {nowPlayingMovie} from "@/components/type/typeSome";
 import Genre from "@/components/Genre";
 import PopularHome from "@/components/PopularHome";
 import Header from "@/components/Header";
-import {useSearchParams} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
 import {toast} from "react-toastify";
 import { useCookies } from 'next-client-cookies';
+import {useDispatch} from "react-redux";
+import {setUser} from "@/store/features/userSlice/userSlice";
+import ReactLoading from "react-loading";
 
 const NowPlaying = lazy(()=>import('@/components/NowPlaying'))
 const Trending = lazy(()=>import('@/components/Trending'))
@@ -23,6 +26,9 @@ export default function Home() {
 
     const codeParam = searchParams.get('code');
     const cookies = useCookies();
+    const dispatch = useDispatch();
+
+    const router = useRouter();
 
     useEffect(() => {
         if(codeParam){
@@ -30,7 +36,9 @@ export default function Home() {
                 const response = await fetch(`http://localhost:5001/api/github/login?accessToken=${resp.access_token}`);
                 const json = await response.json();
                 if(response.status===200){
-                    cookies.set('token', json);
+                    cookies.set('token', json.access_token);
+                    dispatch(setUser(json))
+                    router.push(`${localStorage.getItem('redirectGithub')}`, {scroll : false});
                     toast.success(json.msg);
                 }else{
                     toast.error(json.msg);
@@ -95,7 +103,7 @@ export default function Home() {
     //     )()
     // }, [])
 
-    if(isLoading||movie.isLoading||tv.isLoading) return (<div className='__loading'><Spinner animation="grow"/></div>)
+    if(isLoading||movie.isLoading||tv.isLoading) return (<div className='__loading-container'><ReactLoading type={'spinningBubbles'} color={'white'} height={50} width={50}/></div>)
 
   return (
       <>

@@ -5,7 +5,8 @@ import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
 // import {socialLogin} from "../../features/auth/authSlice";
 import { useCookies } from 'next-client-cookies';
-import {useRouter} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
+import {setUser} from "@/store/features/userSlice/userSlice";
 
 const SocialLogin = () => {
 
@@ -13,22 +14,27 @@ const SocialLogin = () => {
     const router = useRouter();
     const cookies = useCookies();
 
+    const searchParams = useSearchParams()
+
+    const backFrom = searchParams.get('from')
+
     const loginToGoogle = useGoogleLogin({
         onSuccess:  async (tokenResponse: any) => {
             const response = await fetch(`http://localhost:5001/api/google/login?accessToken=${tokenResponse.access_token}`);
             const json = await response.json();
             if(response.status===200){
                 cookies.set('token', json.access_token)
+                dispatch(setUser(json))
                 toast.success(json.msg);
-                router.push('/', {scroll : false});
+                router.push(`${backFrom ? backFrom : '/'}`, {scroll : false});
             }else{
                 toast.error(json.msg);
             }
         },
     })
 
-
     const loginToGithub = () => {
+        localStorage.setItem('redirectGithub', backFrom ? backFrom : '/');
         window.location.assign(`https://github.com/login/oauth/authorize?client_id=Ov23liFyaFHHCEnUXAUo`)
     }
 

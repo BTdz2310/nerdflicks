@@ -16,8 +16,6 @@ const StyledComponent = styled.div`
 `
 
 const StyledContainer = styled.div`
-  max-width: 1200px;
-  margin: auto;
 
   .type-check{
     margin-top: 40px;
@@ -82,7 +80,7 @@ const Page = () => {
 
     return (
         <StyledComponent>
-            <StyledContainer>
+            <StyledContainer className='main__content'>
                 <FilterForm check='movie'></FilterForm>
                 <FilterDisplay type='movie'></FilterDisplay>
             </StyledContainer>
