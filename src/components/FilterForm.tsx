@@ -2,12 +2,21 @@
 import React, {useEffect, useRef, useState} from 'react';
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
-import {pickOne, selectFilter, selectMovieFilter, selectType} from "@/store/features/filterSlice/filterSlice";
+import {
+    filterMovieArr, filterTVArr,
+    pickOne, removeButton,
+    selectFilter,
+    selectMovieFilter,
+    selectType
+} from "@/store/features/filterSlice/filterSlice";
 import ActionSwitch from "@/components/ActionSwitch";
 
 const FilterList = styled.div`
     flex-grow: 2;
   z-index: 100;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
   
     button{
       background-color: inherit;
@@ -31,10 +40,32 @@ const FilterList = styled.div`
     button i{
       padding-right: 10px;
     }
+
+  .__filter-button{
+    padding: 8px 12px 8px 8px;
+    cursor: default;
+    border-radius: 16px;
+    color: white;
+  }
+  
+  .__filter-button b{
+    color: rgb(253, 57, 195);
+  }
+
+  .__filter-button i{
+    padding: 0;
+    padding-left: 10px;
+    cursor: pointer;
+  }
+
+  .__filter-button i:hover{
+    color: red;
+  }
   
 `
 
 const FilterTable = styled.div`
+  z-index: 100;
   position: absolute;
   display: flex;
   top: 40px;
@@ -115,6 +146,14 @@ const ActionTable = styled.div`
     gap: 10px;
   }
   
+  input{
+    padding-left: 10px;
+  }
+
+  input:focus{
+    outline: none;
+  }
+  
   .input-item{
     padding: 0 10px;
     display: flex;
@@ -148,15 +187,25 @@ const FilterDiv = styled.div`
   }
 `
 
-const FilterForm = ({check}: {check: 'tv'|'movie'}) => {
+const FilterSelected = styled.div`
+  
+`
 
-    const [searchText, setSearchText] = useState('');
+const FilterForm = ({check, searchText, setSearchText}: {check: 'tv'|'movie', searchText: string, setSearchText: Function}) => {
+
+    // const [searchText, setSearchText] = useState('');
     const [show, setShow] = useState(false);
     const tableRef = useRef(null);
     const [action, setAction] = useState<'certification' | 'release_date' | 'vote_average' | 'vote_count' | 'with_origin_country' | 'with_companies' | 'with_people' | 'with_runtime' | 'with_genres' | 'with_keywords' | 'with_status' | ''>('');
     const dispatch = useDispatch();
     const selectedFilter = useSelector(selectFilter);
     const selectedType = useSelector(selectType);
+
+    const selectedArrMovie = useSelector(filterMovieArr);
+    const selectedArrTV = useSelector(filterTVArr);
+
+    console.log('><',selectedArrMovie)
+    console.log('><',selectedArrTV)
 
     useEffect(() => {
         window.addEventListener('click', () => {
@@ -263,7 +312,9 @@ const FilterForm = ({check}: {check: 'tv'|'movie'}) => {
                                 }}><i className="fa-solid fa-sliders"></i>
                                     Tuỳ chọn</p>
                                 <FilterTable onWheel={(e)=>e.stopPropagation()} ref={tableRef} onClick={(e)=>e.stopPropagation()} style={{visibility: show?'visible':'hidden', maxHeight: show?'220px':'0', opacity: show?'1':'0'}}>
-                                    <p onClick={()=>setAction('certification')}>Phân Loại<i className="fa-solid fa-chevron-right"></i></p>
+                                    {check==='movie'&&(
+                                        <p onClick={()=>setAction('certification')}>Phân Loại<i className="fa-solid fa-chevron-right"></i></p>
+                                    )}
                                     {check==='tv'&&(
                                         <p onClick={()=>setAction('with_status')}>Trạng Thái<i className="fa-solid fa-chevron-right"></i></p>
                                     )}
@@ -283,7 +334,20 @@ const FilterForm = ({check}: {check: 'tv'|'movie'}) => {
                                     <ActionSwitch type={action} content={check}></ActionSwitch>
                                 </ActionTable>
                             </button>
+                            {(check==='movie'?selectedArrMovie:selectedArrTV).map((item: {
+                                key: string,
+                                display: string,
+                                front: string,
+                                back: string
+                            })=>(
+                                <button className='__filter-button' key={`${check}-${item.key}`}>{item.display}:&nbsp;&nbsp;&nbsp;<b>{item.front}</b><i className="fa-solid fa-x" onClick={()=>dispatch(removeButton({
+                                    type: check,
+                                    key: item.key,
+                                    value: item.back
+                                }))}></i></button>
+                            ))}
                         </FilterList>
+
                         <div className="sort-div">
                             <select name="sort" value={selectedFilter[check].sorting} onChange={(e)=>dispatch(pickOne({
                                 head: check,

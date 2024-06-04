@@ -12,20 +12,11 @@ import {list} from "postcss";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {crew, iGenre, imgRtn, reviewRtn, videoRtn} from "@/app/movie/[id]/page";
+import {clearFilter, pickObject} from "@/store/features/filterSlice/filterSlice";
+import {useDispatch} from "react-redux";
+import {useRouter} from "next/navigation";
+import {shortenString} from "@/utils/utils";
 
-function generateRandomDarkColor() {
-  const darkColors = [
-    "#000000", "#111111", "#222222", "#333333", "#444444",
-    "#555555", "#666666", "#777777", "#888888", "#999999",
-    "#AA0000", "#BB0000", "#CC0000", "#DD0000", "#EE0000",
-    "#FF0000", "#00AA00", "#00BB00", "#00CC00", "#00DD00",
-    "#00EE00", "#00FF00", "#0000AA", "#0000BB", "#0000CC",
-    "#0000DD", "#0000EE", "#0000FF"
-  ];
-
-  const randomColorIndex = Math.floor(Math.random() * darkColors.length);
-  return darkColors[randomColorIndex];
-}
 
 const StyledInfo = styled.div`
   height: 100vh;
@@ -156,51 +147,106 @@ const RightBeside = styled.div`
   padding: 40px 80px 100px 80px;
   background-color: #050c0f;
   color: #FCF1E6;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
 `
 
 const InfoGroup = styled.div`
-    position: relative;
-  
-    h2{
-      text-transform: uppercase;
-      color: rgb(253, 57, 195);
-    }
-  
-    .cast-item img{
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-    }
-  
-    .cast-list{
-      display: flex;
-      gap: 10px;
-      width: 100%;
-      overflow: scroll;
-    }
-  
-    .cast-item{
-      display: flex;
-      flex-direction: column;
-    }
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  h2{
+    text-transform: uppercase;
+    color: rgb(253, 57, 195);
+    font-size: 32px;
+
+  }
+
+  .movie--group-title{
+    color: gray;
+    padding-right: 10px;
+  }
+
+  .movie--group-title::after{
+    content: ':';
+  }
+
+  .cast-item img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+  }
+
+  .cast-list{
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    overflow: scroll;
+  }
+
+  .cast-item{
+    display: flex;
+    flex-direction: column;
+    width: 80px;
+    align-items: center;
+    flex-shrink: 0;
+    justify-content: space-between;
+  }
+
+  .cast-item p{
+    text-align: center;
+  }
+
+  .cast-name{
+    //padding-bottom: 5px;
+    color: #00FFFF;
+  }
   
     .img-item{
       width: 250px;
       height: 141px;
       border-radius: 12px;
     }
-  
-    .review-avatar{
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      overflow: hidden;
-    }
-  
-    .review-avatar img, .review-avatar div{
-        height: 100%;
-      width: 100%;
-    }
+
+  .review-avatar{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .review-avatar img, .review-avatar div{
+    height: 100%;
+    width: 100%;
+  }
+
+  .review-center p span{
+    cursor: pointer;
+    color: #00FFFF;
+  }
+
+  .review-center p span:hover{
+    text-decoration: underline;
+  }
+
+  .review-list{
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .review-item{
+    display: flex;
+    gap: 10px;
+  }
+
+  .review-center p:nth-child(2){
+    text-align: right;
+    color: #395B64;
+  }
 `
 
 interface season{
@@ -210,6 +256,27 @@ interface season{
   poster_path: string
 }
 
+const ReviewItem = ({review}: {review: reviewRtn}) => {
+
+  const [full, setFull] = useState(false);
+
+  return (
+      <div className="review-item" key={review.id}>
+        <div className="review-left">
+          {/*<img src= alt=""/>*/}
+          <div className="review-avatar">
+            {review.author_details.avatar_path?(<img src={`https://media.themoviedb.org/t/p/w90_and_h90_face${review.author_details.avatar_path}`} alt="avatar"/>):(<div style={{backgroundColor: 'pink', color: 'white', textTransform: 'uppercase', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{review.author.charAt(0)}</div>)}
+          </div>
+          {/*<p>{review.author}</p>*/}
+        </div>
+        <div className="review-center">
+          {review.content.length<320?<p>{review.content}</p>:<p>{full?review.content:shortenString(review.content, 320)} {full?(<span onClick={()=>setFull(false)}>Ẩn bớt</span>):(<span onClick={()=>setFull(true)}>Hiển thị</span>)}</p>}
+          <p>{review.created_at}</p>
+        </div>
+      </div>
+  )
+}
+
 const TVPage = ({ params }: { params: { id: number } }) => {
 
   const [show, setShow] = useState(false);
@@ -217,23 +284,11 @@ const TVPage = ({ params }: { params: { id: number } }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const dispatch = useDispatch();
+  const router = useRouter();
+
 
   let keyVideo = '';
-
-  // useLayoutEffect(() => {
-  //     if(isReady){
-  //         gsap.registerPlugin(ScrollTrigger);
-  //         gsap.to(videoRef.current, {
-  //             scrollTrigger:{
-  //                 trigger: videoRef.current,
-  //                 pin: true,
-  //                 start: 'top top',
-  //                 end: 'top bottom',
-  //                 markers: true
-  //             }
-  //         })
-  //     }
-  // }, [isReady]);
 
   const options = {
     method: "GET",
@@ -277,6 +332,30 @@ const TVPage = ({ params }: { params: { id: number } }) => {
   //     }
   // );
 
+
+  const handleActor = (id: number, name: string) => {
+    dispatch(clearFilter());
+    dispatch(pickObject({
+      head: "movie",
+      body: 'with_people',
+      key: id.toString(),
+      value: name
+    }))
+    router.push('/movie')
+  }
+
+  const handleGenre = (id: number, name: string) => {
+    dispatch(clearFilter());
+    dispatch(pickObject({
+      head: "tv",
+      body: 'with_genres',
+      key: id.toString(),
+      value: name
+    }))
+    router.push('/tv')
+  }
+
+
   if (!dataB || !dataA) return <Spinner animation="grow" />;
   if(dataB) keyVideo = dataB.videos.results.filter((vi: videoRtn)=>vi.site==='YouTube'&&vi.type==='Trailer').length?dataB.videos.results.filter((vi: videoRtn)=>vi.site==='YouTube'&&vi.type==='Trailer')[0].key:'';
   console.log(dataA)
@@ -296,8 +375,8 @@ const TVPage = ({ params }: { params: { id: number } }) => {
               <div className="info-out">
                 <p className='info-text'>
                   <span>{`${dataA.first_air_date&&dataA.first_air_date.split('-')[0]} - ${dataA.status==='Returning Series'?'nay':dataA.last_air_date&&dataA.last_air_date.split('-')[0]}`}</span>
-                  {dataA.genres&&dataA.genres.map((genre: iGenre)=>(<span key={genre.id}><Link href={'#'}>{genre.name}</Link></span>))}
-                  {(dataA.number_of_episodes&&dataA.number_of_seasons)&&(<span>{`${dataA.number_of_seasons} mùa - ${dataA.number_of_episodes} tập`}</span>)}
+                  {dataA.genres&&dataA.genres.map((genre: iGenre)=>(<span key={genre.id} onClick={()=>handleGenre(genre.id, genre.name)}>{genre.name}</span>))}
+                  {(dataA.number_of_episodes&&dataA.number_of_seasons)&&(<p>{`${dataA.number_of_seasons} mùa - ${dataA.number_of_episodes} tập`}</p>)}
                 </p>
               </div>
               <p className='info-overview'>{dataA.overview?dataA.overview:dataB.overview}</p>
@@ -307,13 +386,13 @@ const TVPage = ({ params }: { params: { id: number } }) => {
                   <td style={{paddingRight: '20px'}}><p>Người khởi xướng</p></td>
                   <td><p
                       className='info-text'>{dataB.created_by.map((act: iGenre, ind: number) => ind < 3 && (
-                      <span key={act.id}><Link href={''}>{act.name}</Link></span>))}</p></td>
+                      <span key={act.id} onClick={()=>handleActor(act.id, act.name)}>{act.name}</span>))}</p></td>
                 </tr>):undefined}
                 {dataB.aggregate_credits.cast.length ? (<tr>
                   <td style={{paddingTop: '10px', paddingRight: '20px'}}><p>Diễn viên</p></td>
                   <td style={{paddingTop: '10px'}}><p
                       className='info-text'>{dataB.aggregate_credits.cast.map((act: iGenre, ind: number) => ind < 3 && (
-                      <span key={act.id}><Link href={''}>{act.name}</Link></span>))}</p></td>
+                      <span key={act.id} onClick={()=>handleActor(act.id, act.name)}>{act.name}</span>))}</p></td>
                 </tr>):undefined}
                 </tbody>
               </table>
@@ -341,7 +420,7 @@ const TVPage = ({ params }: { params: { id: number } }) => {
               <h2>Mùa</h2>
               <div className='cast-list'>
                 {dataB.seasons.map((ss: season)=>(
-                    <Link href={`/tv/${ss.id}`} className="movie--movie-item" key={ss.id}>
+                    <Link href={``} className="movie--movie-item" key={ss.id}>
                       <img className='img-item' src={ss.poster_path?`https://image.tmdb.org/t/p/w454_and_h254_bestv2${ss.poster_path}`:'https://www.contentviewspro.com/wp-content/uploads/2017/07/default_image.png'} alt='image movie'/>
                       <p>{`${ss.name} - ${ss.episode_count} tập`}</p>
                     </Link>
@@ -401,19 +480,7 @@ const TVPage = ({ params }: { params: { id: number } }) => {
               <div className="review-list">
                 {dataB.reviews.results.length?(
                     dataB.reviews.results.map((review: reviewRtn)=>(
-                        <div className="review-item" key={review.id}>
-                          <div className="review-left">
-                            {/*<img src= alt=""/>*/}
-                            <div className="review-avatar">
-                              {review.author_details.avatar_path?(<img src={`https://media.themoviedb.org/t/p/w90_and_h90_face${review.author_details.avatar_path}`} alt="avatar"/>):(<div style={{backgroundColor: 'pink', color: 'white', textTransform: 'uppercase', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{review.author.charAt(0)}</div>)}
-                            </div>
-                            {/*<p>{review.author}</p>*/}
-                          </div>
-                          <div className="review-center">
-                            <p>{review.content}</p>
-                            <p>{review.created_at}</p>
-                          </div>
-                        </div>
+                        <ReviewItem review={review} key={review.id} />
                     ))
                 ):(<p>Hiện chưa có bình luận nào</p>)}
               </div>

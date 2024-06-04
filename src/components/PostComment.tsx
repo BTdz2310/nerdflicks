@@ -267,7 +267,6 @@ const PostComment = ({id}: {id: string}) => {
                 }
             })}/>
             <h2 className="post-comment-list">
-                {/*{console.log(superLayerCmt(dataB.data))}*/}
                 {`${(comments!==null?comments:dataB.data).length} bình luận`}
             </h2>
             <div className="post-comment__list">
@@ -283,12 +282,6 @@ const PostComment = ({id}: {id: string}) => {
 
                 {
                     Object.values(superLayerCmt(comments!==null?comments:dataB.data)).map((cmt: iFirstLayerCmt)=>(
-                    // <ListComment comments={comments} setComments={setComments} key={cmt._id} data={cmt} id={id} users={dataA.data.filter((user: {_id: string, username: string})=>user.username!==selectedUsername).map((user: {_id: string, username: string})=>{
-                    //     return {
-                    //         id: user._id,
-                    //         display: user.username
-                    //     }
-                    // })}/>
                     <NestedComment key={cmt._id} data={[cmt]} comments={comments} setComments={setComments} users={dataA.data.filter((user: {_id: string, username: string})=>user.username!==selectedUsername).map((user: {_id: string, username: string})=>{
                         return {
                             id: user._id,

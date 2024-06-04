@@ -9,7 +9,7 @@ import {nowPlayingMovie} from "@/components/type/typeSome";
 import {useCookies} from "next-client-cookies";
 import ReactLoading from "react-loading";
 
-interface postI{
+export interface postI{
     author: {
         _id: string,
         username: string,
@@ -50,7 +50,7 @@ const Page = () => {
                     </div>
                     <div className="forum__list">
                         {data.data.map((post: postI)=>(
-                            <Link href={`/forum/${post._id}`} key={post._id} className='post__card'>
+                            <Link href={`/post/main/${post._id}`} key={post._id} className='post__card'>
                                 <div className="post__card--left">
                                     <div className="post__card--left-info">
                                         <img src={post.author.avatar} alt="avatar"/>

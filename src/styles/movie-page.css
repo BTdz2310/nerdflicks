@@ -10,6 +10,7 @@
     /*transform: translate(-50%, -50%);*/
     color: #cacaca;
     padding-left: 10px;
+    text-decoration: none!important;
 
 
     /*font-size: 1.1em;*/
@@ -34,4 +35,9 @@
 
 .info-text span{
     position: relative;
+    cursor: pointer;
+}
+
+.info-text span:hover{
+    text-decoration: underline;
 }

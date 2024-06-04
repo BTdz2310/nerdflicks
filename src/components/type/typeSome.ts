@@ -32,7 +32,9 @@ export interface nowPlayingMovie {
         name: string,
         title: string
     }],
-    release_date: string
+    release_date: string,
+    original_title: string,
+    original_name: string
 }
 
 export interface keyword {

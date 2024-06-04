@@ -24,6 +24,17 @@ const checkType = {
     '': ''
 }
 
+export const statusDisplay:{
+    [id: string]: string
+} = {
+    '0': 'Sắp Trở Lại',
+    '1': 'Đang Lên Kế Hoạch',
+    '2': 'Đang Sản Xuất',
+    '3': 'Đã Kết Thúc',
+    '4': 'Bị Huỷ',
+    '5': 'Chiếu Thử',
+}
+
 const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' | 'vote_average' | 'vote_count' | 'with_origin_country' | 'with_companies' | 'with_people' | 'with_runtime' | 'with_genres'| 'with_status' | 'with_keywords' | '', content: 'tv' | 'movie'}) => {
 
     const selectedFilter = useSelector(selectFilter);
@@ -69,7 +80,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                     <div className="button-list" onWheel={(e)=>e.stopPropagation()}>
                         <div className="button-item">
                             <label><span>Không</span>
-                                <input type="radio" checked={selectedFilter[content].certification.includes('NR')} onChange={()=>dispatch(pickOne({
+                                <input type="radio" checked={selectedFilter[content].certification === 'NR'} onChange={()=>dispatch(pickOne({
                                     head: content,
                                     body: type,
                                     value: 'NR'
@@ -78,7 +89,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                         </div>
                         <div className="button-item">
                             <label><span>G</span>
-                                <input type="radio" checked={selectedFilter[content].certification.includes('G')} onChange={()=>dispatch(pickOne({
+                                <input type="radio" checked={selectedFilter[content].certification === 'G'} onChange={()=>dispatch(pickOne({
                                     head: content,
                                     body: type,
                                     value: 'G'
@@ -87,7 +98,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                         </div>
                         <div className="button-item">
                             <label><span>PG</span>
-                                <input type="radio" checked={selectedFilter[content].certification.includes('PG')} onChange={()=>dispatch(pickOne({
+                                <input type="radio" checked={selectedFilter[content].certification === 'PG'} onChange={()=>dispatch(pickOne({
                                     head: content,
                                     body: type,
                                     value: 'PG'
@@ -96,7 +107,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                         </div>
                         <div className="button-item">
                             <label><span>PG-13</span>
-                                <input type="radio" checked={selectedFilter[content].certification.includes('PG-13')} onChange={()=>dispatch(pickOne({
+                                <input type="radio" checked={selectedFilter[content].certification === 'PG-13'} onChange={()=>dispatch(pickOne({
                                     head: content,
                                     body: type,
                                     value: 'PG-13'
@@ -105,7 +116,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                         </div>
                         <div className="button-item">
                             <label><span>R</span>
-                                <input type="radio" checked={selectedFilter[content].certification.includes('R')} onChange={()=>dispatch(pickOne({
+                                <input type="radio" checked={selectedFilter[content].certification === 'R'} onChange={()=>dispatch(pickOne({
                                     head: content,
                                     body: type,
                                     value: 'R'
@@ -114,7 +125,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                         </div>
                         <div className="button-item">
                             <label><span>NC-17</span>
-                                <input type="radio" checked={selectedFilter[content].certification.includes('NC-17')} onChange={()=>dispatch(pickOne({
+                                <input type="radio" checked={selectedFilter[content].certification === 'NC-17'} onChange={()=>dispatch(pickOne({
                                     head: content,
                                     body: type,
                                     value: 'NC-17'
@@ -206,7 +217,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                         {isoCF.filter((iso)=>iso.native_name.toLowerCase().includes(searchISO.toLowerCase())).map((iso)=>(
                             <div key={iso.iso_3166_1} className="button-item">
                                 <label><span className={`fi fi-${iso.iso_3166_1.toLowerCase()}`}></span><span>{iso.native_name}</span>
-                                    <input type="radio" checked={selectedFilter[content].with_origin_country.includes(iso.iso_3166_1.toLowerCase())} onChange={()=>dispatch(pickOne({
+                                    <input type="radio" checked={selectedFilter[content].with_origin_country === iso.iso_3166_1.toLowerCase()} onChange={()=>dispatch(pickOne({
                                         head: content,
                                         body: type,
                                         value: iso.iso_3166_1.toLowerCase()
@@ -319,7 +330,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                     <h2>Phân Loại</h2>
                     <div className="button-list" onWheel={(e)=>e.stopPropagation()}>
                         <div className="button-item">
-                            <label><span>Sắp Trở Lại</span>
+                            <label><span>{statusDisplay['0']}</span>
                                 <input type="checkbox" checked={selectedFilter['tv'].with_status.includes('0')} onChange={()=>dispatch(pickArray({
                                     head: content,
                                     body: type,
@@ -328,7 +339,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                             </label>
                         </div>
                         <div className="button-item">
-                            <label><span>Đang Lên Kế Hoạch</span>
+                            <label><span>{statusDisplay['1']}</span>
                                 <input type="checkbox" checked={selectedFilter['tv'].with_status.includes('1')} onChange={()=>dispatch(pickArray({
                                     head: content,
                                     body: type,
@@ -337,7 +348,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                             </label>
                         </div>
                         <div className="button-item">
-                            <label><span>Đang Sản Xuất</span>
+                            <label><span>{statusDisplay['2']}</span>
                                 <input type="checkbox" checked={selectedFilter['tv'].with_status.includes('2')} onChange={()=>dispatch(pickArray({
                                     head: content,
                                     body: type,
@@ -346,7 +357,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                             </label>
                         </div>
                         <div className="button-item">
-                            <label><span>Đã Kết Thúc</span>
+                            <label><span>{statusDisplay['3']}</span>
                                 <input type="checkbox" checked={selectedFilter['tv'].with_status.includes('3')} onChange={()=>dispatch(pickArray({
                                     head: content,
                                     body: type,
@@ -355,7 +366,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                             </label>
                         </div>
                         <div className="button-item">
-                            <label><span>Bị Huỷ</span>
+                            <label><span>{statusDisplay['4']}</span>
                                 <input type="checkbox" checked={selectedFilter['tv'].with_status.includes('4')} onChange={()=>dispatch(pickArray({
                                     head: content,
                                     body: type,
@@ -364,7 +375,7 @@ const ActionSwitch = ({content, type}: {type: 'certification' | 'release_date' |
                             </label>
                         </div>
                         <div className="button-item">
-                            <label><span>Chiếu Thử</span>
+                            <label><span>{statusDisplay['5']}</span>
                                 <input type="checkbox" checked={selectedFilter['tv'].with_status.includes('5')} onChange={()=>dispatch(pickArray({
                                     head: content,
                                     body: type,

@@ -7,7 +7,7 @@ store.subscribe(()=>{
     console.log(store.getState())
 })
 
-console.log(store.getState())
+console.log(Object.keys(store.getState().filterSlice.movie).map((key): any =>store.getState().filterSlice.movie[key]))
 
 export const Providers = ({children}:{children: any}) => {
     return (

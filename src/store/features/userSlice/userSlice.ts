@@ -49,7 +49,9 @@ interface UserState {
     },
     _id: string,
     username: string,
-    avatar: string
+    avatar: string,
+    followers: Array<string>,
+    followings: Array<string>
 }
 
 const initialState: UserState = {
@@ -59,7 +61,9 @@ const initialState: UserState = {
     list: {},
     _id: '',
     username: '',
-    avatar: ''
+    avatar: '',
+    followers: [],
+    followings: []
 }
 
 export const userSlice = createSlice({
@@ -75,6 +79,8 @@ export const userSlice = createSlice({
             state._id = action.payload.user._id;
             state.username = action.payload.user.username;
             state.avatar = action.payload.user.avatar;
+            state.followers = action.payload.user.followers;
+            state.followings = action.payload.user.followings;
         },
         logout: (state) => {
             state.isLoggedIn = false;
@@ -84,6 +90,8 @@ export const userSlice = createSlice({
             state._id = '';
             state.username = '';
             state.avatar = '';
+            state.followings = [];
+            state.followers = []
             console.log('OUT>>>')
         },
         newList: (state, action) => {
@@ -110,7 +118,7 @@ export const userSlice = createSlice({
         builder.addCase(setFavorite.fulfilled, (state, action) => {
             // console.log(action.payload)
             if(action.payload.status===200){
-                toast.success(action.payload.json.msg);
+                // toast.success(action.payload.json.msg);
                 state.favorite = action.payload.json.data;
             }else{
                 toast.error(action.payload.json.msg);
@@ -118,7 +126,7 @@ export const userSlice = createSlice({
         });
         builder.addCase(setList.fulfilled, (state, action) => {
             if(action.payload.status===200){
-                toast.success(action.payload.json.msg);
+                // toast.success(action.payload.json.msg);
                 state.list = action.payload.json.data;
             }else{
                 toast.error(action.payload.json.msg);
@@ -127,6 +135,9 @@ export const userSlice = createSlice({
     }
 })
 
+export const selectFollowers = (state: RootState) => state.userSlice.followers;
+export const selectFollowings = (state: RootState) => state.userSlice.followings;
+export const selectLoggedIn = (state: RootState) => state.userSlice.isLoggedIn;
 export const selectAvatar = (state: RootState) => state.userSlice.avatar;
 export const selectUsername = (state: RootState) => state.userSlice.username;
 export const selectId = (state: RootState) => state.userSlice._id;

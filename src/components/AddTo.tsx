@@ -18,6 +18,7 @@ import {useCookies} from "next-client-cookies";
 import {ThunkDispatch} from "@reduxjs/toolkit";
 import {usePathname, useRouter} from "next/navigation";
 import {store} from "@/store/store";
+import {useSWRConfig} from "swr";
 
 interface listI{
     [key: string]: Array<nowPlayingMovie>
@@ -29,6 +30,8 @@ const AddTo = ({id, media, data}: {id: number, media: 'tv'|'movie', data: nowPla
     const [showAdd, setShowAdd] = useState(false);
     const [newName, setNewName] = useState('');
     const [tempList, setTempList] = useState<listI>({});
+
+    const {mutate} = useSWRConfig()
 
     const pathname = usePathname();
 
@@ -80,7 +83,7 @@ const AddTo = ({id, media, data}: {id: number, media: 'tv'|'movie', data: nowPla
         if(itemCheck.length){
             setTempList({
                 ...tempList,
-                [str]: tempList[str].filter((item1: nowPlayingMovie)=>media!==item1.media_type&&id!==item1.id)
+                [str]: tempList[str].filter((item1: nowPlayingMovie)=>media!==item1.media_type||id!==item1.id)
             })
         }else{
             setTempList({
@@ -105,6 +108,7 @@ const AddTo = ({id, media, data}: {id: number, media: 'tv'|'movie', data: nowPla
             dataList: tempList,
             token: cookies.get('token')
         }));
+        await mutate('http://localhost:5001/api/notifications')
         setShow(false);
     }
 
@@ -116,7 +120,7 @@ const AddTo = ({id, media, data}: {id: number, media: 'tv'|'movie', data: nowPla
         const itemCheck = selectedFavorite.filter((item1: nowPlayingMovie)=>media===item1.media_type&&id.toString()===item1.id.toString());
         let dataList: Array<Object> = [];
         if(itemCheck.length){
-            dataList = selectedFavorite.filter((item1: nowPlayingMovie)=>media!==item1.media_type&&id.toString()!==item1.id.toString());
+            dataList = selectedFavorite.filter((item1: nowPlayingMovie)=>media!==item1.media_type||id.toString()!==item1.id.toString());
         }else{
             dataList = [
                 ...selectedFavorite,
@@ -126,12 +130,12 @@ const AddTo = ({id, media, data}: {id: number, media: 'tv'|'movie', data: nowPla
                 }
             ]
         }
-        console.log(dataList)
-        console.log(itemCheck)
         const response = await dispatch(setFavorite({
             dataList,
             token: cookies.get('token')
         }));
+
+        await mutate('http://localhost:5001/api/notifications')
     }
 
     return (

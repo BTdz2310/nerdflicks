@@ -10,9 +10,20 @@ import useDebounce from "@/utils/useDebounce";
 import {keyword} from "@/components/type/typeSome";
 import { Link } from 'next-view-transitions'
 import {useDispatch, useSelector} from "react-redux";
-import {logout, selectAvatar, selectId} from "@/store/features/userSlice/userSlice";
+import {logout, selectAvatar, selectId, selectLoggedIn} from "@/store/features/userSlice/userSlice";
 import ReactLoading from "react-loading";
+import useSWR from "swr";
+import {toast} from "react-toastify";
 
+export interface notifyRtn{
+  content: string,
+  created_at: number,
+  idUser: string,
+  isRead: boolean,
+  link: string,
+  _id: string,
+  img: string
+}
 
 const Header = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -27,6 +38,7 @@ const Header = () => {
 
   const selectedAvatar = useSelector(selectAvatar);
   const selectedId = useSelector(selectId);
+  const selectedLoggedIn = useSelector(selectLoggedIn);
 
   const dispatch = useDispatch();
 
@@ -34,6 +46,52 @@ const Header = () => {
   const debounce = useDebounce(searchText, 200);
 
   const pathname = usePathname();
+
+
+  useEffect(() => {
+    window.addEventListener('click', () => {
+      setOpen(false)
+    });
+
+    return () => {
+      window.removeEventListener('click', () => {
+        setOpen(false)
+      });
+    }
+  }, []);
+
+
+
+  const fetcherAuth = (url: string) =>
+      fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${cookies.get('token')}`
+        }
+      }).then((res) => res.json());
+
+  const { data: dataN } = useSWR(selectedLoggedIn?`http://localhost:5001/api/notifications`:null, fetcherAuth,
+      {
+        revalidateIfStale: true,
+        revalidateOnFocus: true,
+        revalidateOnReconnect: true
+      })
+
+  const prevDataRef = useRef<number>(0);
+
+  useEffect(() => {
+
+    if (dataN && prevDataRef.current && dataN.data.length !== prevDataRef.current) {
+      toast.info('Bạn Có Thông Báo Mới', {
+        closeButton: false,
+        onClick: () => {
+          router.push(`/user/notification/${selectedId}`)
+        },
+        closeOnClick: true,
+      });
+    }
+
+    if(dataN&&dataN.data&&dataN.data.length) prevDataRef.current = dataN.data.length;
+  }, [dataN]);
 
   useEffect(()=>{
     const loadKeyword = async () => {
@@ -61,6 +119,10 @@ const Header = () => {
       });
     }
   }, []);
+
+  const CustomToast = () => (
+      <Link href={`/user/notification/${selectedId}`}>Bạn Có Thông Báo Mới</Link>
+  );
 
   const handleHome = () => {
     router.push("/");
@@ -187,7 +249,7 @@ const Header = () => {
                 </>
               </div>}
             </div>
-            <motion.div className='header--collapse-container' animate={open ? 'open' : 'closed'}>
+            <motion.div className='header--collapse-container' animate={open ? 'open' : 'closed'} onClick={(e)=>e.stopPropagation()}>
               <motion.div className='header--collapse-background' variants={variants}>
                 <motion.div className='header--collapse-links' variants={variantsLink}>
                   <motion.p
@@ -222,6 +284,17 @@ const Header = () => {
                   >
                     <Link href={'/forum'}><i className="fa-solid fa-people-line"></i>Diễn Đàn</Link>
                   </motion.p>
+                  {cookies.get('token')&&(
+                      <motion.p
+                          variants={itemVariants}
+                          // whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={()=>handleGo()}
+                      >
+                        {/*<i className="fa-solid fa-user"></i>*/}
+                        <Link href={`/user/notification/${selectedId}`}><i className="fa-solid fa-bell" style={{position: 'relative'}}>{dataN&&dataN.data&&dataN.data.length&&dataN.data.filter((notify: notifyRtn)=>!notify.isRead).length!==0&&<span className='__notify-count'>{dataN.data.filter((notify: notifyRtn)=>!notify.isRead).length}</span>}</i>Thông Báo</Link>
+                      </motion.p>
+                  )}
                   {cookies.get('token')&&(
                       <motion.p
                           variants={itemVariants}

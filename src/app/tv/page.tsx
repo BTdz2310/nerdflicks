@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, {useState} from 'react';
 import styled from "styled-components";
 import FilterDisplay from "@/components/FilterDisplay";
 import FilterForm from "@/components/FilterForm";
@@ -80,11 +80,13 @@ const StyledContainer = styled.div`
 
 const Page = () => {
 
+    const [searchText, setSearchText] = useState('')
+
     return (
         <StyledComponent>
             <StyledContainer>
-                <FilterForm check='tv'></FilterForm>
-                <FilterDisplay type='tv'></FilterDisplay>
+                <FilterForm check='tv' searchText={searchText} setSearchText={setSearchText}></FilterForm>
+                <FilterDisplay type='tv' searchText={searchText}></FilterDisplay>
             </StyledContainer>
         </StyledComponent>
     );

@@ -9,10 +9,11 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {nowPlayingMovie} from "@/components/type/typeSome";
 import {list} from "postcss";
-import {fetcher} from "@/utils/utils";
+import {fetcher, shortenString} from "@/utils/utils";
 import {useDispatch} from "react-redux";
 import {clearFilter, pickObject} from "@/store/features/filterSlice/filterSlice";
 import AddTo from "@/components/AddTo";
+import {useRouter} from "next/navigation";
 
 function generateRandomDarkColor() {
     const darkColors = [
@@ -150,15 +151,32 @@ const RightBeside = styled.div`
   padding: 40px 80px 100px 80px;
   background-color: #050c0f;
   color: #FCF1E6;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
 `
 
 const InfoGroup = styled.div`
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   
     h2{
       text-transform: uppercase;
       color: rgb(253, 57, 195);
+      font-size: 32px;
+      
     }
+
+    .movie--group-title{
+      color: gray;
+      padding-right: 10px;
+    }
+
+  .movie--group-title::after{
+    content: ':';
+  }
   
     .cast-item img{
       width: 60px;
@@ -176,7 +194,20 @@ const InfoGroup = styled.div`
     .cast-item{
       display: flex;
       flex-direction: column;
+      width: 80px;
+      align-items: center;
+      flex-shrink: 0;
+      justify-content: space-between;
     }
+
+  .cast-item p{
+    text-align: center;
+  }
+
+  .cast-name{
+    //padding-bottom: 5px;
+    color: #00FFFF;
+  }
   
     .img-item{
       width: 250px;
@@ -195,6 +226,31 @@ const InfoGroup = styled.div`
         height: 100%;
       width: 100%;
     }
+  
+  .review-center p span{
+    cursor: pointer;
+    color: #00FFFF;
+  }
+
+  .review-center p span:hover{
+    text-decoration: underline;
+  }
+  
+  .review-list{
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  
+  .review-item{
+    display: flex;
+    gap: 10px;
+  }
+
+  .review-center p:nth-child(2){
+    text-align: right;
+    color: #395B64;
+  }
 `
 
 export interface iGenre {
@@ -236,11 +292,34 @@ export interface reviewRtn{
     id: string
 }
 
+
+const ReviewItem = ({review}: {review: reviewRtn}) => {
+
+    const [full, setFull] = useState(false);
+
+    return (
+        <div className="review-item" key={review.id}>
+            <div className="review-left">
+                {/*<img src= alt=""/>*/}
+                <div className="review-avatar">
+                    {review.author_details.avatar_path?(<img src={`https://media.themoviedb.org/t/p/w90_and_h90_face${review.author_details.avatar_path}`} alt="avatar"/>):(<div style={{backgroundColor: 'pink', color: 'white', textTransform: 'uppercase', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{review.author.charAt(0)}</div>)}
+                </div>
+                {/*<p>{review.author}</p>*/}
+            </div>
+            <div className="review-center">
+                {review.content.length<320?<p>{review.content}</p>:<p>{full?review.content:shortenString(review.content, 320)} {full?(<span onClick={()=>setFull(false)}>Ẩn bớt</span>):(<span onClick={()=>setFull(true)}>Hiển thị</span>)}</p>}
+                <p>{review.created_at}</p>
+            </div>
+        </div>
+    )
+}
+
 const MoviePage = ({ params }: { params: { id: number } }) => {
 
     let keyVideo = '';
 
     const dispatch = useDispatch();
+    const router = useRouter()
 
     const handleKeyword = (id: number, name: string) => {
         dispatch(clearFilter());
@@ -251,6 +330,7 @@ const MoviePage = ({ params }: { params: { id: number } }) => {
             value: name,
             key: id.toString()
         }))
+        router.push('/movie')
     }
 
     // useLayoutEffect(() => {
@@ -300,6 +380,28 @@ const MoviePage = ({ params }: { params: { id: number } }) => {
         }
     );
 
+    const handleActor = (id: number, name: string) => {
+        dispatch(clearFilter());
+        dispatch(pickObject({
+            head: "movie",
+            body: 'with_people',
+            key: id.toString(),
+            value: name
+        }))
+        router.push('/movie')
+    }
+
+    const handleGenre = (id: number, name: string) => {
+        dispatch(clearFilter());
+        dispatch(pickObject({
+            head: "movie",
+            body: 'with_genres',
+            key: id.toString(),
+            value: name
+        }))
+        router.push('/movie')
+    }
+
   if (!dataB || !dataA || !dataC) return <Spinner animation="grow" />;
   if(dataB) keyVideo = dataB.videos.results.filter((vi: videoRtn)=>vi.site==='YouTube'&&vi.type==='Trailer').length?dataB.videos.results.filter((vi: videoRtn)=>vi.site==='YouTube'&&vi.type==='Trailer')[0].key:'';
 console.log(dataB)
@@ -323,8 +425,8 @@ console.log(dataC)
                     <div className="info-out">
                         <p className='info-text'>
                             <span>{dataA.release_date&&dataA.release_date.split('-')[0]}</span>
-                            {dataA.genres&&dataA.genres.map((genre: iGenre)=>(<span key={genre.id}><Link href={'#'}>{genre.name}</Link></span>))}
-                            <span>{`${dataA.runtime>=60&&`${Math.trunc(dataA.runtime/60)}h`} ${(dataA.runtime%60<10)?`0${dataA.runtime%60}`:dataA.runtime%60}`}</span>
+                            {dataA.genres&&dataA.genres.map((genre: iGenre)=>(<span key={genre.id} style={{cursor: 'pointer'}} onClick={()=>handleGenre(genre.id, genre.name)}>{genre.name}</span>))}
+                            <p>{`${dataA.runtime>=60&&`${Math.trunc(dataA.runtime/60)}h`} ${(dataA.runtime%60<10)?`0${dataA.runtime%60}`:dataA.runtime%60}`}</p>
                         </p>
                     </div>
                     <p className='info-overview'>{dataA.overview?dataA.overview:dataB.overview}</p>
@@ -332,11 +434,11 @@ console.log(dataC)
                         <tbody>
                             <tr>
                                 <td style={{paddingRight: '10px'}}><p>Đạo diễn</p></td>
-                                <td><p className='info-text'>{dataB.credits.crew&&dataB.credits.crew.filter((cr: crew)=>cr.job==='Director').map((act: iGenre, ind: number) => ind<3&&(<span key={act.id}><Link href={''}>{act.name}</Link></span>))}</p></td>
+                                <td><p className='info-text'>{dataB.credits.crew&&dataB.credits.crew.filter((cr: crew)=>cr.job==='Director').map((act: iGenre, ind: number) => ind<3&&(<span key={act.id} onClick={()=>handleActor(act.id, act.name)}>{act.name}</span>))}</p></td>
                             </tr>
                             <tr >
                                 <td style={{paddingTop: '10px', paddingRight: '10px'}}><p>Diễn viên</p></td>
-                                <td style={{paddingTop: '10px'}}><p className='info-text'>{dataB.credits.cast&&dataB.credits.cast.map((act: iGenre, ind: number) => ind<3&&(<span key={act.id}><Link href={''}>{act.name}</Link></span>))}</p></td>
+                                <td style={{paddingTop: '10px'}}><p className='info-text'>{dataB.credits.cast&&dataB.credits.cast.map((act: iGenre, ind: number) => ind<3&&(<span key={act.id} onClick={()=>handleActor(act.id, act.name)}>{act.name}</span>))}</p></td>
                             </tr>
                         </tbody>
                     </table>
@@ -407,8 +509,10 @@ console.log(dataC)
                     <div className="cast-list">
                         {dataB.credits.cast.slice(0,10).map((act: crew)=>(
                             <div className="cast-item" key={act.id}>
-                                <img src={act.profile_path?`https://image.tmdb.org/t/p/w100_and_h100_face${act.profile_path}`:'https://cdn.create.vista.com/api/media/small/134255626/stock-vector-avatar-male-profile-gray-person-picture-isolated-on-white-background-good-unknown-user-avatar-for'} alt={act.name}/>
-                                <p>{act.name}</p>
+                                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px', cursor: 'pointer'}} onClick={()=>handleActor(act.id, act.name)}>
+                                    <img src={act.profile_path?`https://image.tmdb.org/t/p/w100_and_h100_face${act.profile_path}`:'https://cdn.create.vista.com/api/media/small/134255626/stock-vector-avatar-male-profile-gray-person-picture-isolated-on-white-background-good-unknown-user-avatar-for'} alt={act.name}/>
+                                    <p className='cast-name'>{act.name}</p>
+                                </div>
                                 <p>{act.character}</p>
                             </div>
                         ))}
@@ -427,19 +531,7 @@ console.log(dataC)
                     <div className="review-list">
                         {dataB.reviews.results.length?(
                             dataB.reviews.results.map((review: reviewRtn)=>(
-                                <div className="review-item" key={review.id}>
-                                    <div className="review-left">
-                                        {/*<img src= alt=""/>*/}
-                                        <div className="review-avatar">
-                                            {review.author_details.avatar_path?(<img src={`https://media.themoviedb.org/t/p/w90_and_h90_face${review.author_details.avatar_path}`} alt="avatar"/>):(<div style={{backgroundColor: 'pink', color: 'white', textTransform: 'uppercase', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{review.author.charAt(0)}</div>)}
-                                        </div>
-                                        {/*<p>{review.author}</p>*/}
-                                    </div>
-                                    <div className="review-center">
-                                        <p>{review.content}</p>
-                                        <p>{review.created_at}</p>
-                                    </div>
-                                </div>
+                                <ReviewItem review={review} key={review.id} />
                             ))
                         ):(<p>Hiện chưa có bình luận nào</p>)}
                     </div>

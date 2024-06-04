@@ -119,7 +119,9 @@ export const options = {
 export const fetcher = (url: string) =>
     fetch(url, options).then((res) => res.json());
 
-export const nameGenre = {
+export const nameGenre:{
+    [id: string]: string
+} = {
     '28': 'Hành Động',
     '12': 'Phiêu Lưu',
     '16': 'Hoạt Hình',

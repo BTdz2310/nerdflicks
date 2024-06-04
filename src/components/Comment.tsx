@@ -10,7 +10,7 @@ import {toast} from "react-toastify";
 import {useCookies} from "next-client-cookies";
 import {iThirdComment} from "@/components/PostComment";
 import {useSelector} from "react-redux";
-import {selectAvatar} from "@/store/features/userSlice/userSlice";
+import {selectAvatar, selectUsername} from "@/store/features/userSlice/userSlice";
 
 const mentionsInputStyle ={
     control: {
@@ -81,19 +81,21 @@ export interface userRtn {
     display: string
 }
 
-const PostComment = ({data, reply, id, comments, setComments, initValue, setShow, cmtId}: {data: Array<userRtn>, reply: string, id: string, comments: Array<iThirdComment>|null, setComments: Function, initValue: string, setShow?: Function, cmtId?: string}) => {
+const Comment = ({data, reply, id, comments, setComments, initValue, setShow, cmtId}: {data: Array<userRtn>, reply: string, id: string, comments: Array<iThirdComment>|null, setComments: Function, initValue: string, setShow?: Function, cmtId?: string}) => {
 
     const [value, setValue] = useState<string>(initValue);
+    const [tags, setTags] = useState<Array<string>>([]);
     const cookies = useCookies();
     const router = useRouter();
     const pathname = usePathname();
 
     const selectedAvatar = useSelector(selectAvatar);
+    const selectedUsername = useSelector(selectUsername);
 
     // const [data, setData] = useState([]);
     // const emailRegex = /(([^\s@]+@[^\s@]+\.[^\s@]+))$/;
 
-    console.log('kekke')
+    console.log(value)
 
     useEffect(() => {
         setValue(initValue)
@@ -106,6 +108,13 @@ const PostComment = ({data, reply, id, comments, setComments, initValue, setShow
         }
     }
 
+    const handleTag = (id: string) => {
+        if(!tags.includes(id)){
+            setTags(prev=>[...prev, id]);
+        }
+        console.log(tags)
+    }
+
     const handleSubmit = async () => {
 
         // console.log('sub')
@@ -113,6 +122,9 @@ const PostComment = ({data, reply, id, comments, setComments, initValue, setShow
             toast.error('Bình Luận Bị Trống!!');
             return;
         }
+        console.log('check1',tags);
+
+        const validTags = tags.filter((tag: string)=>value.includes(tag));
 
         // return;
         const response = await fetch(`http://localhost:5001/api/comment`, {
@@ -125,7 +137,10 @@ const PostComment = ({data, reply, id, comments, setComments, initValue, setShow
                 postId: id,
                 created_at: Date.now(),
                 content: value,
-                reply: reply
+                reply: reply,
+                tags: validTags,
+                username: selectedUsername,
+                avatar: selectedAvatar
             })
         });
         const json = await response.json();
@@ -137,6 +152,7 @@ const PostComment = ({data, reply, id, comments, setComments, initValue, setShow
             if(setShow){
                 setShow([])
             }
+            setTags([]);
         }else{
             toast.error(json.msg)
         }
@@ -185,11 +201,10 @@ const PostComment = ({data, reply, id, comments, setComments, initValue, setShow
                             <Mention style={mentionStyle} data={(search) => {
                                 if(search.length) return data.filter((user: userRtn)=>user.display.toLowerCase().includes(search.toString())).slice(0, 3);
                                 return [];
-                            }}  trigger={'@'} className='post-comment__mention'/>
+                            }} appendSpaceOnAdd={true}  onAdd={(id, display)=>handleTag(id.toString())} trigger={'@'} className='post-comment__mention'/>
 
                         </MentionsInput>
 
-                        {/*<button onClick={()=>setValue('@[batuan152@gmail.com](664f1351659e341394543322) aw @[tuandz231003](6651b5b7da818c620a68ddda)')}>KEKEK</button>*/}
                     </div>
                     <button className="post-comment__send" disabled={!value.trim()}>
                         <i className="fa-regular fa-paper-plane"></i>
@@ -200,4 +215,4 @@ const PostComment = ({data, reply, id, comments, setComments, initValue, setShow
     );
 };
 
-export default PostComment;
+export default Comment;

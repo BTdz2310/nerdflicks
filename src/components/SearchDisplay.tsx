@@ -1,12 +1,12 @@
 'use client'
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {nowPlayingMovie} from "@/components/type/typeSome";
 import { Link } from 'next-view-transitions'
 import {genreById} from "@/components/GenreIcon";
 import styled from "styled-components";
 import {useSearchParams} from "next/navigation";
 import useSWR from "swr";
-import {fetcher} from "@/utils/utils";
+import {fetcher, options} from "@/utils/utils";
 import Spinner from "react-bootstrap/Spinner";
 
 const RightSearch = styled.div`
@@ -119,6 +119,7 @@ const SearchDisplay = () => {
 
     const search = searchParams.get('search');
     const type = searchParams.get('type') ? searchParams.get('type') : 'multi';
+
 
     const { data: dataA} = useSWR(
         `https://api.themoviedb.org/3/search/${type}?query=${search}&include_adult=false&language=vi-VN&page=1`,

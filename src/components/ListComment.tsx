@@ -6,6 +6,8 @@ import {formatCreatedUtc} from "@/utils/utils";
 import Comment, {userRtn} from "@/components/Comment";
 import {useSelector} from "react-redux";
 import {selectId} from "@/store/features/userSlice/userSlice";
+import {useCookies} from "next-client-cookies";
+import {usePathname, useRouter} from "next/navigation";
 
 interface iLevelCmt {
     postId: string,
@@ -36,6 +38,10 @@ export const NestedComment = ({data, comments, setComments, id, users} : {data: 
     const [tag, setTag] = useState('');
 
     const selectedId = useSelector(selectId)
+
+    const cookies = useCookies();
+    const router = useRouter();
+    const pathname = usePathname();
 
     const convertText = (str: string) => {
         const regex = /@\[([^\]]+)\]\(([^)]+)\)/g;
@@ -79,10 +85,11 @@ export const NestedComment = ({data, comments, setComments, id, users} : {data: 
         <>
 
             {typeof data!=='string'&&sorting(false, data).map((data1: iLevelCmt)=>(
-                <>
-
+                <Fragment key={`${data1._id}-${data1.reply.length}`}>
+                    {/*{console.log(data1)}*/}
                     {/*<p>hien thi {data.length}</p>*/}
-                    <div className="post-comment__item" key={data1._id}>
+                    <div className="post-comment__item">
+                        {/*{console.log('adwad',data1._id)}*/}
                         <Link href={`/user/profile/${data1.author._id}`}><img src={data1.author.avatar} alt="avatar"/></Link>
                         <div className="post-comment__item-text">
                             <div className="post-comment__item--parent">
@@ -93,9 +100,19 @@ export const NestedComment = ({data, comments, setComments, id, users} : {data: 
                                 </p>
                                 <div className="post-comment__item--parent-task">
                                     <span>{formatCreatedUtc(data1.created_at)}</span>
-                                    <p onClick={()=>console.log(typeof data1.reply!=='string'?data1._id:data1.reply, data1.author.username)}>Thích</p>
+                                    <p onClick={()=> {
+                                        if(!cookies.get('token')){
+                                            router.push(`/login?from=${encodeURIComponent(pathname)}`)
+                                            return;
+                                        }
+                                        console.log(typeof data1.reply !== 'string' ? data1._id : data1.reply, data1.author.username)
+                                    }}>Thích</p>
                                     {selectedId===data1.author._id?(<p onClick={()=>handleUpdateCmt()}>Chỉnh Sửa</p>):undefined}
                                     <p onClick={()=>{
+                                        if(!cookies.get('token')){
+                                            router.push(`/login?from=${encodeURIComponent(pathname)}`)
+                                            return;
+                                        }
                                         pushShowArr(data1._id)
                                         setTag(selectedId===data1.author._id?'':`@[${data1.author.username}](${data1.author._id})`)
                                     }}>Phản hồi</p>
@@ -116,7 +133,7 @@ export const NestedComment = ({data, comments, setComments, id, users} : {data: 
                                          data={users}/>
                             </div>)}
                             {(typeof data1.reply!=='string'&&Object.values(data1.reply).length)?(
-                                <NestedComment data={Object.values(data1.reply)} comments={comments} setComments={setComments} users={users} id={id}/>
+                                <NestedComment key={`${data1._id}-${data1.reply.length}`} data={Object.values(data1.reply)} comments={comments} setComments={setComments} users={users} id={id}/>
                             ):undefined}
                         </div>
                     </div>
@@ -128,7 +145,7 @@ export const NestedComment = ({data, comments, setComments, id, users} : {data: 
                                  data={users}/>
                     </div>)}
 
-                </>
+                </Fragment>
             ))}
 
         </>

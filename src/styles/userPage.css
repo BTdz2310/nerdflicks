@@ -97,6 +97,14 @@
     display: flex;
 }
 
+.user__right--info-right>div{
+    position: relative;
+}
+
+.user__right--info-right span{
+    cursor: pointer;
+}
+
 .user__right-second{
     margin-top: 80px;
     padding-left: 40px;
@@ -165,9 +173,16 @@
 
 .user__right-button button{
     padding: 16px 28px;
-    border-radius: 16px;
-    background-color: #41B06E;
+    border-radius: 12px;
+    background-color: cadetblue;
+    cursor: pointer;
     color: white;
+    border: none;
+}
+
+.user__right-button button[disabled]{
+    /*background-color: black;*/
+    color: grey;
 }
 
 .user__background p{
@@ -180,7 +195,8 @@
 }
 
 .user__background-table{
-    width: 500px;
+    width: 520px;
+    justify-content: center;
     background-color: #171717;
     height: 250px;
     position: absolute;
@@ -201,4 +217,207 @@
     object-fit: cover;
     border-radius: 8px;
     cursor: pointer;
+}
+
+.user__link-selected{
+    color: rgb(253, 57, 195);
+}
+
+.notify__list{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/*.notify__item{*/
+/*}*/
+
+.notify__item{
+    height: 80px;
+    width: 100%;
+    display: flex;
+    background-color: #242526;
+    border-radius: 12px;
+    align-items: center;
+    padding: 10px 20px;
+    gap: 20px;
+    cursor: pointer;
+}
+
+.notify__item-left{
+    flex-shrink: 0;
+}
+
+.notify__item-left img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: white;
+}
+
+.notify__item-center--read h4, .notify__item-center--read p{
+    color: grey;
+}
+
+.notify__item-center{
+    flex-grow: 2;
+}
+
+.notify__item-center p{
+    font-size: 14px;
+    color: rgb(8, 102, 255);
+}
+
+.notify__item-right{
+    width: 20px;
+    flex-shrink: 0;
+}
+
+.__notify-circle{
+    width: 10px;
+    height: 10px;
+    background-color: rgb(8, 102, 255);
+    border-radius: 50%;
+}
+
+.user__people-table{
+    position: absolute;
+    border-radius: 12px;
+    left: 50%;
+    top: 32px;
+    transform: translateX(-50%);
+    width: 280px;
+    height: 200px;
+    background-color: #171717;
+    padding: 20px;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.user__people-item{
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.user__people-item img{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.user__people-item p{
+    flex-grow: 2;
+    overflow: hidden;
+}
+
+.user__people-item button{
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    flex-shrink: 0;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+p.notify__readAll{
+    padding: 20px 0;
+    text-align: right;
+    cursor: pointer;
+    width: fit-content;
+}
+
+p.notify__readAll:hover{
+    text-decoration: underline;
+}
+
+.post-list__info-first button{
+    border-radius: 50%;
+    box-sizing: content-box;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 20px;
+    position: relative;
+}
+
+.favorite__container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.list__container{
+    display: flex;
+    /*width: 100%;*/
+}
+
+.list__container-left{
+    width: 20%;
+}
+
+.list__container-right{
+    width: 80%;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.list-name__list p{
+    cursor: pointer;
+    padding: 10px 10px;
+}
+
+.list-name--list p:hover{
+    text-decoration: underline!important;
+}
+
+.list-name--selected{
+    color: rgb(253, 57, 195);
+}
+
+.list__container-right .post-list__item{
+    width: 100%;
+}
+
+.user-post__container{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.user-post__card{
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    border: 1px solid white;
+    padding: 20px 20px 40px;
+    border-radius: 12px;
+    align-items: center;
+}
+
+.user-post__card .post__card--left-overview h3:hover{
+    text-decoration: underline;
+}
+
+.user-post__public{
+    color: rgb(253, 57, 195);
+    margin-left: 10px;
+    border: 1px solid rgb(253, 57, 195);
+    padding: 10px  20px;
+    border-radius: 12px;
+}
+
+.user-post__private{
+    color: grey;
+    margin-left: 10px;
+    border: 1px solid grey;
+    padding: 10px  20px;
+    border-radius: 12px;
 }

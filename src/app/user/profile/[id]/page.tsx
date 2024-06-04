@@ -5,12 +5,14 @@ import useSWR from "swr";
 import {fetcher} from "@/utils/utils";
 import {Spinner} from "react-bootstrap";
 import ErrorPage from "@/components/ErrorPage";
-import {useSelector} from "react-redux";
-import {selectId} from "@/store/features/userSlice/userSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {selectFollowers, selectFollowings, selectId, setUser} from "@/store/features/userSlice/userSlice";
 import {toast} from "react-toastify";
 import {useCookies} from "next-client-cookies";
 import UserNavbar from "@/components/UserNavbar";
 import ReactLoading from 'react-loading';
+import {usePathname, useRouter} from "next/navigation";
+import {Link} from "next-view-transitions";
 
 const backgroundRandom = ['https://4kwallpapers.com/images/walls/thumbs_3t/8621.jpeg', 'https://4kwallpapers.com/images/walls/thumbs_3t/8616.jpeg', 'https://4kwallpapers.com/images/walls/thumbs_3t/8626.jpeg', 'https://4kwallpapers.com/images/walls/thumbs_3t/8574.jpg', 'https://4kwallpapers.com/images/walls/thumbs_3t/8538.jpg', 'https://4kwallpapers.com/images/walls/thumbs_3t/8633.jpeg', 'https://4kwallpapers.com/images/walls/thumbs_3t/8618.jpg', 'https://4kwallpapers.com/images/walls/thumbs_3t/8623.jpeg', 'https://4kwallpapers.com/images/walls/thumbs_3t/8582.jpg', 'https://4kwallpapers.com/images/walls/thumbs_3t/8568.jpg', 'https://4kwallpapers.com/images/walls/thumbs_3t/8608.jpg', 'https://4kwallpapers.com/images/walls/thumbs_3t/8610.jpg', 'https://4kwallpapers.com/images/walls/thumbs_3t/8604.jpg', 'https://4kwallpapers.com/images/walls/thumbs_3t/8404.png'];
 
@@ -24,10 +26,20 @@ const checkEmail = (str: string) => {
     return re.test(str);
 }
 
+interface iPeople{
+    _id: string,
+    avatar: string,
+    username: string
+}
 
 const Page = ({ params }: { params: { id: string } }) => {
 
     const selectedId = useSelector(selectId);
+    const selectedFollowers = useSelector(selectFollowers);
+    const selectedFollowings = useSelector(selectFollowings);
+
+    const pathname = usePathname();
+    const router= useRouter();
 
     // const [data, setData] = useState({});
     const [username, setUsername] = useState('');
@@ -39,13 +51,16 @@ const Page = ({ params }: { params: { id: string } }) => {
     const [uploadAvatar, setUploadAvatar] = useState<File|null>(null);
     const [showBG, setShowBG] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [fer, setFer] = useState(false);
+    const [fing, setFing] = useState(false);
 
     const cookies = useCookies();
+    const dispatch = useDispatch();
 
     const usernameRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
 
-    const { data, error,isLoading } = useSWR(`http://localhost:5001/api/user/${params.id}`, fetcher,
+    const { data, error,isLoading, mutate } = useSWR(`http://localhost:5001/api/user/${params.id}`, fetcher,
         {
             revalidateIfStale: true,
             revalidateOnFocus: true,
@@ -94,6 +109,16 @@ const Page = ({ params }: { params: { id: string } }) => {
 
     if(!data.user) return <ErrorPage />
 
+    const handleFer = () => {
+        setFer(prev=>!prev);
+        setFing(false);
+    }
+
+    const handleFing = () => {
+        setFing(prev=>!prev);
+        setFer(false);
+    }
+
     const handleUsername = () => {
         if(!username){
             setUsername(data.user.username);
@@ -113,6 +138,8 @@ const Page = ({ params }: { params: { id: string } }) => {
         setCheckedEmail(null)
         setUploadAvatar(null)
         setShowBG(false)
+        setFing(false)
+        setFer(false)
     }
 
     const handleEmail = () => {
@@ -291,9 +318,63 @@ const Page = ({ params }: { params: { id: string } }) => {
         return (!username || username===data.user.username) && (!email || email===data.user.email) && (!background || background===data.user.background) && !avatar && !uploadAvatar;
     }
 
+    const handleFollow = async (id: string) => {
+        if(!cookies.get('token')){
+            router.push(`/login?from=${encodeURIComponent(pathname)}`)
+            return;
+        }
+        const response = await fetch(`http://localhost:5001/api/follow`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${cookies.get('token')}`
+            },
+            body: JSON.stringify({
+                idUser: id
+            })
+        });
+        const json = await response.json();
+        console.log(json)
+        if(response.status===200){
+            dispatch(setUser(json))
+            await mutate()
+            setFer(false)
+            setFing(false)
+        }else{
+            toast.error(json.msg)
+        }
+    }
+
+    const handleUnFollow = async (id: string) => {
+        if(!cookies.get('token')){
+            router.push(`/login?from=${encodeURIComponent(pathname)}`)
+            return;
+        }
+        const response = await fetch(`http://localhost:5001/api/unfollow`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${cookies.get('token')}`
+            },
+            body: JSON.stringify({
+                idUser: id
+            })
+        });
+        const json = await response.json();
+        console.log(json)
+        if(response.status===200){
+            dispatch(setUser(json))
+            await mutate();
+            setFer(false)
+            setFing(false)
+        }else{
+            toast.error(json.msg)
+        }
+    }
+
     return (
         <div className='main__container user__container'>
-            <UserNavbar />
+            <UserNavbar id={params.id}/>
             <div className="user__right">
                 {loading?(<div className='__loading-container'><ReactLoading type={'spinningBubbles'} color={'white'} height={50} width={50}/></div>):(
                     <>
@@ -343,8 +424,48 @@ const Page = ({ params }: { params: { id: string } }) => {
                                     <h2>{data.user.username}</h2>
                                 </div>
                                 <div className="user__right--info-right">
-                                    <p>{`${data.user.followers.length} đang theo dõi`}</p>
-                                    <p>{`${data.user.followings.length} người theo dõi`}</p>
+                                    <div><span onClick={()=>handleFing()}>{`${data.user.followings.length} đang theo dõi`}</span>
+                                        {fing?(
+                                            <div className="user__people-table" onWheel={(e) => e.stopPropagation()}>
+                                                {data.user.followings.map((user: iPeople)=>(
+                                                    <div className='user__people-item' key={user._id}>
+                                                        <img src={user.avatar} alt="avatar"/>
+                                                        <p><Link href={`/user/profile/${user._id}`}>{user.username}</Link></p>
+                                                        {selectedId!==user._id&&(
+                                                            <>
+                                                                {selectedFollowings.includes(user._id)?(
+                                                                    <button className='user__people-button' onClick={()=>handleUnFollow(user._id)}>Bỏ Theo Dõi</button>
+                                                                ):(
+                                                                    <button className='user__people-button' onClick={()=>handleFollow(user._id)}>Theo Dõi</button>
+                                                                )}
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ):undefined}
+                                    </div>
+                                    <div><span onClick={()=>handleFer()}>{`${data.user.followers.length} người theo dõi`}</span>
+                                        {fer?(
+                                            <div className="user__people-table" onWheel={(e) => e.stopPropagation()}>
+                                                {data.user.followers.map((user: iPeople)=>(
+                                                    <div className='user__people-item' key={user._id}>
+                                                        <img src={user.avatar} alt="avatar"/>
+                                                        <p><Link href={`/user/profile/${user._id}`}>{user.username}</Link></p>
+                                                        {selectedId!==user._id&&
+                                                            <>
+                                                                {selectedFollowings.includes(user._id)?(
+                                                                    <button className='user__people-button' onClick={()=>handleUnFollow(user._id)}>Bỏ Theo Dõi</button>
+                                                                ):(
+                                                                    <button className='user__people-button' onClick={()=>handleFollow(user._id)}>Theo Dõi</button>
+                                                                )}
+                                                            </>
+                                                        }
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ):undefined}
+                                    </div>
                                 </div>
                             </div>
                         </div>

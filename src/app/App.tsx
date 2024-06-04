@@ -1,12 +1,14 @@
 'use client'
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useCookies } from 'next-client-cookies';
-import {useDispatch} from "react-redux";
-import {logout, setUser} from "@/store/features/userSlice/userSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {logout, selectLoggedIn, setUser} from "@/store/features/userSlice/userSlice";
 
 const App = ({children}:{children: any}) => {
+
     const cookies = useCookies();
     const dispatch = useDispatch();
+
 
     useEffect( () => {
         (
