@@ -33,7 +33,7 @@ export default function Home() {
     useEffect(() => {
         if(codeParam){
             getAccessTokenGithub(codeParam).then(async (resp) => {
-                const response = await fetch(`http://localhost:5001/api/github/login?accessToken=${resp.access_token}`);
+                const response = await fetch(`https://nerdflicks-backend.vercel.app/api/github/login?accessToken=${resp.access_token}`);
                 const json = await response.json();
                 if(response.status===200){
                     cookies.set('token', json.access_token);
@@ -119,19 +119,9 @@ export default function Home() {
             movie: movie.data.results,
             tv: tv.data.results
         }}/>
-        <Genre />
-        <div className="__home" style={{height: '100vh', backgroundColor: 'red', marginTop: '700vw'}}>
-
-        </div>
         <div className='__hide' style={{display: 'none'}}>
             {data.results.map((ele:nowPlayingMovie)=>(<img loading='eager' key={ele.id} src={`https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${ele.backdrop_path}`} style={{display: 'none'}}/>))}
         </div>
-
-
-        {/*<Check />*/}
-      {/*/!*<div className="trending">*!/*/}
-      {/*  <Trending />*/}
-      {/*</div>*/}
     </main>
       </>
   )

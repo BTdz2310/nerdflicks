@@ -11,12 +11,22 @@
     margin-top: calc(100vh + 800px);
 }
 
+.__popular--head>p:first-child{
+    position: absolute;
+    font-size: 40px;
+    text-transform: uppercase;
+    top: 0;
+    left: 0;
+    padding-left: 80px;
+    color: rgb(253, 57, 195);
+}
+
 .__popular--head{
     width: 100%;
     display: flex;
     justify-content: center;
     margin: 40px 0;
-
+    position: relative;
 }
 
 .__popular--switch{

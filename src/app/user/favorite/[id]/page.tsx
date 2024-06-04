@@ -35,7 +35,7 @@ const Page = ({params}: {params: {id: string}}) => {
             }
         }).then((res) => res.json());
 
-    const { data, isLoading, mutate: mutate1} = useSWR(selectedLoggedIn?`http://localhost:5001/api/favorite`:null, fetcherAuth,
+    const { data, isLoading, mutate: mutate1} = useSWR(selectedLoggedIn?`https://nerdflicks-backend.vercel.app/api/favorite`:null, fetcherAuth,
         {
             revalidateIfStale: true,
             revalidateOnFocus: true,
@@ -67,7 +67,7 @@ const Page = ({params}: {params: {id: string}}) => {
         }));
 
         await mutate1();
-        await mutate('http://localhost:5001/api/notifications')
+        await mutate('https://nerdflicks-backend.vercel.app/api/notifications')
     }
 
     return (

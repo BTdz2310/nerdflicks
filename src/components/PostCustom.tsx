@@ -189,7 +189,7 @@ const PostCustom = ({title, content, listMedia, listTag, publish, where, _id}: {
             isPublic: save
         }
 
-        const response = await fetch('http://localhost:5001/api/post', {
+        const response = await fetch('https://nerdflicks-backend.vercel.app/api/post', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
@@ -206,7 +206,7 @@ const PostCustom = ({title, content, listMedia, listTag, publish, where, _id}: {
             }else{
                 router.push(`/user/post/${selectedId}`)
             }
-            await mutate('http://localhost:5001/api/notifications')
+            await mutate('https://nerdflicks-backend.vercel.app/api/notifications')
         }else{
             toast.error(json);
         }
@@ -214,14 +214,14 @@ const PostCustom = ({title, content, listMedia, listTag, publish, where, _id}: {
     }
 
     const handleRemove = async () => {
-        const response = fetch(`http://localhost:5001/api/post/${_id}`, {
+        const response = fetch(`https://nerdflicks-backend.vercel.app/api/post/${_id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
                 'Authorization': `Bearer ${cookies.get('token')}`
             },
         });
-        await mutate('http://localhost:5001/api/notifications')
+        await mutate('https://nerdflicks-backend.vercel.app/api/notifications')
         router.push(`/user/post/${selectedId}`)
     }
 
@@ -240,7 +240,7 @@ const PostCustom = ({title, content, listMedia, listTag, publish, where, _id}: {
         if(!checkEqualArrString(tagList, listTag)) dataChange.tags = listTag
         if(!checkEqualArrMedia(mediaList, listMedia)) dataChange.list_review = listMedia
 
-        const response = await fetch(`http://localhost:5001/api/post/${_id}`, {
+        const response = await fetch(`https://nerdflicks-backend.vercel.app/api/post/${_id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
@@ -256,7 +256,7 @@ const PostCustom = ({title, content, listMedia, listTag, publish, where, _id}: {
         });
         const json = await response.json()
         if(response.status===200){
-            await mutate('http://localhost:5001/api/notifications')
+            await mutate('https://nerdflicks-backend.vercel.app/api/notifications')
             router.push(`/post/main/${_id}`)
         }else{
             toast.error(json.msg)
@@ -277,7 +277,7 @@ const PostCustom = ({title, content, listMedia, listTag, publish, where, _id}: {
             isPublic: save
         }
 
-        const response = await fetch(`http://localhost:5001/api/post/${_id}`, {
+        const response = await fetch(`https://nerdflicks-backend.vercel.app/api/post/${_id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
@@ -297,7 +297,7 @@ const PostCustom = ({title, content, listMedia, listTag, publish, where, _id}: {
             }else{
                 router.push(`/user/post/${selectedId}`)
             }
-            await mutate('http://localhost:5001/api/notifications')
+            await mutate('https://nerdflicks-backend.vercel.app/api/notifications')
         }else{
             toast.error(json);
         }

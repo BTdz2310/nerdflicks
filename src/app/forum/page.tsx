@@ -29,7 +29,7 @@ const Page = () => {
 
     const cookies = useCookies();
 
-    const { data, error,isLoading } = useSWR('http://localhost:5001/api/posts', fetcher,
+    const { data, error,isLoading } = useSWR('https://nerdflicks-backend.vercel.app/api/posts', fetcher,
         {
             revalidateIfStale: true,
             revalidateOnFocus: true,

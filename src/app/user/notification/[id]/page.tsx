@@ -34,7 +34,7 @@ const Page = ({params}: {params: {id: string}}) => {
             }
         }).then((res) => res.json());
 
-    const { data: dataN, isLoading, mutate} = useSWR(selectedLoggedIn?`http://localhost:5001/api/notifications`:null, fetcherAuth,
+    const { data: dataN, isLoading, mutate} = useSWR(selectedLoggedIn?`https://nerdflicks-backend.vercel.app/api/notifications`:null, fetcherAuth,
         {
             revalidateIfStale: true,
             revalidateOnFocus: true,
@@ -44,7 +44,7 @@ const Page = ({params}: {params: {id: string}}) => {
     if(isLoading) return (<div className='__loading-container'><ReactLoading type={'spinningBubbles'} color={'white'} height={50} width={50}/></div>)
 
     const handleRead = async (id: string, link: string) => {
-        const response = await fetch(`http://localhost:5001/api/readNotify/${id}`,{
+        const response = await fetch(`https://nerdflicks-backend.vercel.app/api/readNotify/${id}`,{
             headers: {
                 'Authorization': `Bearer ${cookies.get('token')}`
             }
@@ -53,7 +53,7 @@ const Page = ({params}: {params: {id: string}}) => {
     }
 
     const handleReadAll = async () => {
-        const response = await fetch(`http://localhost:5001/api/readAllNotify`,{
+        const response = await fetch(`https://nerdflicks-backend.vercel.app/api/readAllNotify`,{
             headers: {
                 'Authorization': `Bearer ${cookies.get('token')}`
             }

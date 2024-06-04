@@ -22,7 +22,7 @@ const App = ({children}:{children: any}) => {
     useEffect( () => {
         const check = async()=>{
             if(cookies.get('token')){
-                const response = await fetch('http://localhost:5001/api/credential', {
+                const response = await fetch('https://nerdflicks-backend.vercel.app/api/credential', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8',

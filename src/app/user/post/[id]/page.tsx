@@ -25,7 +25,7 @@ const Page = ({params}: {params: {id: string}}) => {
             }
         }).then((res) => res.json());
 
-    const { data, isLoading, mutate} = useSWR(selectedLoggedIn?`http://localhost:5001/api/getPostAuth/${params.id}`:`http://localhost:5001/api/getPostNoAuth/${params.id}`, selectedLoggedIn?fetcherAuth:fetcher,
+    const { data, isLoading, mutate} = useSWR(selectedLoggedIn?`https://nerdflicks-backend.vercel.app/api/getPostAuth/${params.id}`:`https://nerdflicks-backend.vercel.app/api/getPostNoAuth/${params.id}`, selectedLoggedIn?fetcherAuth:fetcher,
         {
             revalidateIfStale: true,
             revalidateOnFocus: true,

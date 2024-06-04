@@ -22,7 +22,7 @@ const Page = ({params}: {params: {id: string}}) => {
             }
         }).then((res) => res.json());
 
-    const { data, isLoading, mutate} = useSWR(`http://localhost:5001/api/postAuth/${params.id}`,fetcherAuth,
+    const { data, isLoading, mutate} = useSWR(`https://nerdflicks-backend.vercel.app/api/postAuth/${params.id}`,fetcherAuth,
         {
             revalidateIfStale: true,
             revalidateOnFocus: true,

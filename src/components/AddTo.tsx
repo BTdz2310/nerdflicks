@@ -108,7 +108,7 @@ const AddTo = ({id, media, data}: {id: number, media: 'tv'|'movie', data: nowPla
             dataList: tempList,
             token: cookies.get('token')
         }));
-        await mutate('http://localhost:5001/api/notifications')
+        await mutate('https://nerdflicks-backend.vercel.app/api/notifications')
         setShow(false);
     }
 
@@ -135,7 +135,7 @@ const AddTo = ({id, media, data}: {id: number, media: 'tv'|'movie', data: nowPla
             token: cookies.get('token')
         }));
 
-        await mutate('http://localhost:5001/api/notifications')
+        await mutate('https://nerdflicks-backend.vercel.app/api/notifications')
     }
 
     return (

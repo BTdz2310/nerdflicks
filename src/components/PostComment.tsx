@@ -166,14 +166,14 @@ const PostComment = ({id}: {id: string}) => {
     const [comments, setComments] = useState<Array<iThirdComment>|null>(null);
     const selectedUsername = useSelector(selectUsername);
 
-    const { data: dataA } = useSWR(`http://localhost:5001/api/allUser`, fetcher,
+    const { data: dataA } = useSWR(`https://nerdflicks-backend.vercel.app/api/allUser`, fetcher,
         {
             revalidateIfStale: false,
             revalidateOnFocus: false,
             revalidateOnReconnect: false
         })
 
-    const { data: dataB } = useSWR(`http://localhost:5001/api/comments/${id}`, fetcher,
+    const { data: dataB } = useSWR(`https://nerdflicks-backend.vercel.app/api/comments/${id}`, fetcher,
         {
             revalidateIfStale: true,
             revalidateOnFocus: true,

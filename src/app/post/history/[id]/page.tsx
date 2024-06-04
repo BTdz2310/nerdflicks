@@ -70,7 +70,7 @@ const Page = ({params}: {params: {id: string}}) => {
 
     const [updateTime, setUpdateTime] = useState('');
 
-    const { data, error,isLoading } = useSWR(`http://localhost:5001/api/post/${params.id}`, fetcher,
+    const { data, error,isLoading } = useSWR(`https://nerdflicks-backend.vercel.app/api/post/${params.id}`, fetcher,
         {
             revalidateIfStale: true,
             revalidateOnFocus: true,

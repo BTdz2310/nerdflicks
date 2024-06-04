@@ -53,7 +53,7 @@ const Page = ({params}: {params: {id: string}}) => {
             token: cookies.get('token')
         }));
 
-        await mutate('http://localhost:5001/api/notifications')
+        await mutate('https://nerdflicks-backend.vercel.app/api/notifications')
 
     }
 

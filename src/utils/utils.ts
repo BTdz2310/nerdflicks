@@ -1490,7 +1490,7 @@ export const movieGenre = [
 
 
 export const getAccessTokenGithub = async (code: string) => {
-    const response = await fetch(`http://localhost:5001/api/github/accessToken?code=${code}`);
+    const response = await fetch(`https://nerdflicks-backend.vercel.app/api/github/accessToken?code=${code}`);
     const json = await response.json();
     return json;
 }

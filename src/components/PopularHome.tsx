@@ -16,7 +16,7 @@ const PopularHome = ({data}: {data: objProp}) => {
     return (
         <div className='__popular'>
             <div className="__popular--head">
-                {/*<p>Thịnh Hành</p>*/}
+                <p>Thịnh Hành</p>
                 <div className="__popular--switch">
                     <div style={{width: '50%', height: '100%', background: 'white', position: 'absolute', top: '0', left: '0', transform: `translateX(${type === 'movie' ? 0 : 100}%)`, transition: '0.5s'}}></div>
                     <div style={{color: type === 'movie' ? 'black' : 'white', zIndex: '10', transition: '1s'}}

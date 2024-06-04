@@ -127,7 +127,7 @@ const Comment = ({data, reply, id, comments, setComments, initValue, setShow, cm
         const validTags = tags.filter((tag: string)=>value.includes(tag));
 
         // return;
-        const response = await fetch(`http://localhost:5001/api/comment`, {
+        const response = await fetch(`https://nerdflicks-backend.vercel.app/api/comment`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',

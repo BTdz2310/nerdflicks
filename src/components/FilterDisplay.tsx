@@ -207,6 +207,7 @@ const FilterDisplay = ({type, searchText}: {type: 'tv'|'movie', searchText: stri
     const [data, setData] = useState<Array<nowPlayingMovie>>([]);
     const [totalPage, setTotalPage] = useState(0);
     const [newLoad, setNewLoad] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         setPage(1);
@@ -219,6 +220,8 @@ const FilterDisplay = ({type, searchText}: {type: 'tv'|'movie', searchText: stri
     useEffect(() => {
 
         const fetchData = async () => {
+
+            setIsLoading(true);
             const response = await fetch(type==='movie' ? queryMovie() : queryTV(), options);
 
             const json = await response.json();
@@ -228,7 +231,7 @@ const FilterDisplay = ({type, searchText}: {type: 'tv'|'movie', searchText: stri
             setTotalPage(json.total_pages);
 
             console.warn(json.results)
-
+            setIsLoading(false)
         }
 
         fetchData()
@@ -276,6 +279,7 @@ const FilterDisplay = ({type, searchText}: {type: 'tv'|'movie', searchText: stri
             {data.filter((item: nowPlayingMovie)=>type==='movie'?(item.title.toLowerCase().includes(searchText.toLowerCase())||item.original_title.toLowerCase().includes(searchText.toLowerCase())):((item.name.toLowerCase().includes(searchText.toLowerCase()))||(item.original_name.toLowerCase().includes(searchText.toLowerCase())))).map((ele: nowPlayingMovie)=>(
                 <MediaItem key={ele.id} type={type} ele={ele}/>
             ))}
+            {isLoading&&(<div className='__loading-container'><ReactLoading type={'spinningBubbles'} color={'white'} height={50} width={50}/></div>)}
             {page<Math.min(totalPage, 500)&&(
                 <div className='__loadMore'>
                     <button onClick={()=>setPage(prev=>prev+1)}>Hiện Thêm</button>

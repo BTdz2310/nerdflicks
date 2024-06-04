@@ -69,7 +69,7 @@ const Header = () => {
         }
       }).then((res) => res.json());
 
-  const { data: dataN } = useSWR(selectedLoggedIn?`http://localhost:5001/api/notifications`:null, fetcherAuth,
+  const { data: dataN } = useSWR(selectedLoggedIn?`https://nerdflicks-backend.vercel.app/api/notifications`:null, fetcherAuth,
       {
         revalidateIfStale: true,
         revalidateOnFocus: true,

@@ -40,7 +40,7 @@ const PostHead = ({ id }: { id: string }) => {
     const router = useRouter();
     const selectedId = useSelector(selectId);
 
-    const { data, error,isLoading } = useSWR(`http://localhost:5001/api/post/${id}`, fetcher,
+    const { data, error,isLoading } = useSWR(`https://nerdflicks-backend.vercel.app/api/post/${id}`, fetcher,
         {
             revalidateIfStale: true,
             revalidateOnFocus: true,
@@ -57,7 +57,7 @@ const PostHead = ({ id }: { id: string }) => {
             router.push(`/login?from=${encodeURIComponent(pathname)}`)
             return;
         }
-        const response = await fetch(`http://localhost:5001/api/${str}/${id}`, {
+        const response = await fetch(`https://nerdflicks-backend.vercel.app/api/${str}/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',

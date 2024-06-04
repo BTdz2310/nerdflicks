@@ -34,8 +34,8 @@ const InfoBackground = styled.div`
   width: 100%;
   height: 100%;
   z-index: -1;
-  //opacity: 0.4;
-  //filter: brightness(0.5);
+  background-size: cover;
+  background-repeat: no-repeat;
 `
 
 const InfoContainer = styled.div`

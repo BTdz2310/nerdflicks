@@ -9,7 +9,7 @@ interface listI{
 }
 
 export const setFavorite = createAsyncThunk("userSlice/setFavorite", async (data: {dataList: Array<Object>, token: any}, thunkAPI) => {
-    const response = await fetch('http://localhost:5001/api/favorite', {
+    const response = await fetch('https://nerdflicks-backend.vercel.app/api/favorite', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
@@ -25,7 +25,7 @@ export const setFavorite = createAsyncThunk("userSlice/setFavorite", async (data
 });
 
 export const setList = createAsyncThunk("userSlice/setList", async (data: {dataList: listI, token: any}, thunkAPI) => {
-    const response = await fetch('http://localhost:5001/api/list', {
+    const response = await fetch('https://nerdflicks-backend.vercel.app/api/list', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json; charset=utf-8',

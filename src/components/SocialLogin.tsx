@@ -20,7 +20,7 @@ const SocialLogin = () => {
 
     const loginToGoogle = useGoogleLogin({
         onSuccess:  async (tokenResponse: any) => {
-            const response = await fetch(`http://localhost:5001/api/google/login?accessToken=${tokenResponse.access_token}`);
+            const response = await fetch(`https://nerdflicks-backend.vercel.app/api/google/login?accessToken=${tokenResponse.access_token}`);
             const json = await response.json();
             if(response.status===200){
                 cookies.set('token', json.access_token)

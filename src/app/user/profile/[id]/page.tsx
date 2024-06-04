@@ -60,7 +60,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     const usernameRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
 
-    const { data, error,isLoading, mutate } = useSWR(`http://localhost:5001/api/user/${params.id}`, fetcher,
+    const { data, error,isLoading, mutate } = useSWR(`https://nerdflicks-backend.vercel.app/api/user/${params.id}`, fetcher,
         {
             revalidateIfStale: true,
             revalidateOnFocus: true,
@@ -176,7 +176,7 @@ const Page = ({ params }: { params: { id: string } }) => {
             return;
         }
 
-        const response = await fetch(`http://localhost:5001/api/checkUsername/${username}`, {
+        const response = await fetch(`https://nerdflicks-backend.vercel.app/api/checkUsername/${username}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
@@ -214,7 +214,7 @@ const Page = ({ params }: { params: { id: string } }) => {
             return;
         }
 
-        const response = await fetch(`http://localhost:5001/api/checkEmail/${email}`, {
+        const response = await fetch(`https://nerdflicks-backend.vercel.app/api/checkEmail/${email}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
@@ -269,7 +269,7 @@ const Page = ({ params }: { params: { id: string } }) => {
             imgAvatar = json.url;
         }
 
-        const response = await fetch(`http://localhost:5001/api/user/${params.id}`, {
+        const response = await fetch(`https://nerdflicks-backend.vercel.app/api/user/${params.id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
@@ -323,7 +323,7 @@ const Page = ({ params }: { params: { id: string } }) => {
             router.push(`/login?from=${encodeURIComponent(pathname)}`)
             return;
         }
-        const response = await fetch(`http://localhost:5001/api/follow`, {
+        const response = await fetch(`https://nerdflicks-backend.vercel.app/api/follow`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
@@ -350,7 +350,7 @@ const Page = ({ params }: { params: { id: string } }) => {
             router.push(`/login?from=${encodeURIComponent(pathname)}`)
             return;
         }
-        const response = await fetch(`http://localhost:5001/api/unfollow`, {
+        const response = await fetch(`https://nerdflicks-backend.vercel.app/api/unfollow`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
