@@ -76,6 +76,8 @@ const Header = () => {
         revalidateOnReconnect: true
       })
 
+  console.warn(dataN)
+
   const prevDataRef = useRef<number>(0);
 
   useEffect(() => {
@@ -292,7 +294,7 @@ const Header = () => {
                           onClick={()=>handleGo()}
                       >
                         {/*<i className="fa-solid fa-user"></i>*/}
-                        <Link href={`/user/notification/${selectedId}`}><i className="fa-solid fa-bell" style={{position: 'relative'}}>{dataN&&dataN.data&&dataN.data.length&&dataN.data.filter((notify: notifyRtn)=>!notify.isRead).length!==0&&<span className='__notify-count'>{dataN.data.filter((notify: notifyRtn)=>!notify.isRead).length}</span>}</i>Thông Báo</Link>
+                        <Link href={`/user/notification/${selectedId}`}><i className="fa-solid fa-bell" style={{position: 'relative'}}>{dataN&&dataN.data&&dataN.data.length!==0&&dataN.data.filter((notify: notifyRtn)=>!notify.isRead).length!==0&&<span className='__notify-count'>{dataN.data.filter((notify: notifyRtn)=>!notify.isRead).length}</span>}</i>Thông Báo</Link>
                       </motion.p>
                   )}
                   {cookies.get('token')&&(
